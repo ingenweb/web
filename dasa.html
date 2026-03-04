@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es-ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conócenos | Dasa Genómica</title>
+    <meta name="description" content="Mucho gusto, somos Dasa Genómica. Medicina diagnóstica especializada en pruebas genéticas y genómicas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        /* ============================================
+           VARIABLES & RESET
+           ============================================ */
+        :root {
+            /* GREEN palette replacing Dasa's blue/pink */
+            --brand-primary: #0A2E1C;
+            --brand-dark: #071E13;
+            --brand-deep: #0D3F26;
+            --accent: #22A95E;
+            --accent-light: #3DC776;
+            --accent-lighter: #6FDB9A;
+            --accent-pale: #A8ECBF;
+            --accent-bg: #EDFAF2;
+            --accent-bg2: #D4F5E0;
+            --white: #FFFFFF;
+            --neutral00: #FEFEFE;
+            --gray-strong: #161616;
+            --gray: #EBEBEB;
+            --gray2: #595959;
+            --gray3: #363636;
+            --gray-light: #F5F7F6;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: var(--font-body);
+            color: var(--gray-strong);
+            background: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* ============================================
+           LOADER
+           ============================================ */
+        .loader {
+            position: fixed; inset: 0; z-index: 10000;
+            background: var(--brand-primary);
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 20px;
+        }
+        .loader-text {
+            font-family: var(--font-display);
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--accent-light);
+            letter-spacing: 3px; text-transform: uppercase;
+            opacity: 0;
+        }
+        .loader-bar-wrap { width: 180px; height: 2px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+        .loader-bar { height: 100%; width: 0; background: var(--accent); border-radius: 2px; }
+
+        /* ============================================
+           HEADER / NAV
+           ============================================ */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 5000;
+            background: var(--white);
+            transition: box-shadow 0.4s, background 0.4s;
+        }
+        .header.scrolled {
+            box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 32px;
+        }
+        .header-logo {
+            font-family: var(--font-display);
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--brand-primary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .header-logo .dot {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        .header-logo span {
+            font-weight: 400; color: var(--accent);
+        }
+        .header-nav { display: flex; gap: 32px; align-items: center; }
+        .header-nav a {
+            font-size: 0.875rem; font-weight: 500;
+            color: var(--brand-primary);
+            position: relative;
+            transition: color 0.3s;
+        }
+        .header-nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--accent);
+            transition: width 0.3s;
+        }
+        .header-nav a:hover { color: var(--accent); }
+        .header-nav a:hover::after { width: 100%; }
+        .header-nav a.active { color: var(--accent); }
+        .header-nav a.active::after { width: 100%; }
+        .header-cta {
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--white); background: var(--accent);
+            padding: 10px 22px; border-radius: 6px;
+            transition: background 0.3s, transform 0.2s;
+            border: none; cursor: pointer;
+        }
+        .header-cta:hover { background: var(--brand-deep); transform: translateY(-1px); }
+
+        /* Mobile */
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 6px; background: none; border: none;
+        }
+        .hamburger span { width: 22px; height: 2px; background: var(--brand-primary); transition: all 0.3s; display: block; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .mobile-menu {
+            display: none; position: fixed; inset: 0; z-index: 4999;
+            background: var(--white);
+            flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-family: var(--font-display); font-size: 1.5rem; font-weight: 600;
+            color: var(--brand-primary);
+        }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .header-cta { display: none; }
+            .hamburger { display: flex; }
+        }
+
+        /* ============================================
+           BREADCRUMB
+           ============================================ */
+        .breadcrumb-bar {
+            padding: 24px 32px 0;
+            max-width: 1200px; margin: 100px auto 0;
+        }
+        .breadcrumb {
+            font-size: 0.75rem; color: var(--gray3); font-weight: 500;
+        }
+        .breadcrumb a { color: var(--accent); }
+        .breadcrumb .sep { margin: 0 8px; color: var(--gray2); }
+
+        /* ============================================
+           HERO / ABOUT INTRO
+           ============================================ */
+        .hero-about {
+            max-width: 1200px; margin: 0 auto;
+            padding: 48px 32px 0;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 56px; align-items: center;
+        }
+        .hero-about-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700; line-height: 1.15;
+            color: var(--brand-primary);
+            margin-bottom: 24px;
+        }
+        .hero-about-text h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+        .hero-about-text p {
+            font-size: 1rem; line-height: 1.75;
+            color: var(--gray2); max-width: 520px;
+            margin-bottom: 28px;
+        }
+        .btn-accent {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 0.9rem; font-weight: 600;
+            color: var(--white); background: var(--accent);
+            padding: 14px 32px; border-radius: 6px;
+            transition: all 0.3s; border: none; cursor: pointer;
+        }
+        .btn-accent:hover { background: var(--brand-deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,169,94,0.2); }
+
+        .hero-about-image {
+            position: relative;
+            border-radius: 16px; overflow: hidden;
+            aspect-ratio: 4/3; background: var(--gray);
+        }
+        .hero-about-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ============================================
+           SECTION: EXCELENCIA CIENTÍFICA
+           ============================================ */
+        .section { padding: 96px 32px; position: relative; }
+        .section-inner { max-width: 1200px; margin: 0 auto; }
+
+        .excelencia { background: var(--gray-light); }
+        .excelencia-header { text-align: center; max-width: 750px; margin: 0 auto 56px; }
+        .excelencia-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700; color: var(--brand-primary);
+            margin-bottom: 20px;
+        }
+        .excelencia-header h2 em { font-style: normal; color: var(--accent); }
+        .excelencia-header p {
+            font-size: 0.95rem; line-height: 1.75; color: var(--gray2);
+        }
+
+        /* Specialty carousel / grid */
+        .specialties-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px; margin-top: 40px;
+        }
+        .specialty-card {
+            background: var(--white); border-radius: 14px;
+            padding: 28px 20px; text-align: center;
+            border: 1px solid var(--gray);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+        .specialty-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(10,46,28,0.08);
+            border-color: var(--accent-pale);
+        }
+        .specialty-icon {
+            width: 56px; height: 56px; margin: 0 auto 16px;
+            background: var(--accent-bg); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .specialty-icon svg {
+            width: 26px; height: 26px; stroke: var(--accent); fill: none;
+            stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .specialty-card h3 {
+            font-family: var(--font-display);
+            font-size: 0.88rem; font-weight: 600;
+            color: var(--brand-primary); line-height: 1.3;
+        }
+
+        /* ============================================
+           SECTION: NUESTRAS DIFERENCIAS
+           ============================================ */
+        .diferencias { background: var(--white); }
+        .diferencias-header {
+            text-align: center; max-width: 600px; margin: 0 auto 60px;
+        }
+        .diferencias-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700; color: var(--brand-primary);
+        }
+        .diferencias-header h2 em { font-style: normal; color: var(--accent); }
+
+        .diff-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .diff-card {
+            display: flex; gap: 24px; align-items: flex-start;
+            background: var(--gray-light); border-radius: 16px;
+            padding: 32px; border: 1px solid var(--gray);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .diff-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(10,46,28,0.06);
+        }
+        .diff-card-img {
+            width: 120px; height: 100px; border-radius: 12px;
+            overflow: hidden; flex-shrink: 0; background: var(--gray);
+        }
+        .diff-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .diff-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.05rem; font-weight: 700;
+            color: var(--brand-primary); margin-bottom: 8px;
+        }
+        .diff-card p {
+            font-size: 0.88rem; line-height: 1.7; color: var(--gray2);
+        }
+
+        /* ============================================
+           SECTION: BANNER / MEDICINA DEL FUTURO
+           ============================================ */
+        .banner-futuro {
+            background: linear-gradient(160deg, var(--brand-primary) 0%, var(--brand-deep) 60%, #145C35 100%);
+            color: var(--white); padding: 100px 32px;
+            position: relative; overflow: hidden;
+        }
+        .banner-futuro-bg {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(61,199,118,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(34,169,94,0.08) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .banner-futuro-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+        .banner-futuro .section-inner {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 56px; align-items: center; position: relative; z-index: 2;
+        }
+        .banner-futuro h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700; line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        .banner-futuro h2 em { font-style: normal; color: var(--accent-light); }
+        .banner-futuro .subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 300; color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .banner-futuro p {
+            font-size: 0.95rem; line-height: 1.75;
+            color: rgba(255,255,255,0.55); max-width: 500px;
+        }
+        .banner-futuro-image {
+            border-radius: 16px; overflow: hidden; aspect-ratio: 4/3;
+            background: rgba(255,255,255,0.05);
+        }
+        .banner-futuro-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ============================================
+           SECTION: PORTAFOLIO DE EXÁMENES
+           ============================================ */
+        .portfolio { background: var(--white); }
+        .portfolio-header { text-align: center; max-width: 700px; margin: 0 auto 48px; }
+        .portfolio-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700; color: var(--brand-primary);
+            margin-bottom: 16px;
+        }
+        .portfolio-header h2 em { font-style: normal; color: var(--accent); }
+        .portfolio-header p {
+            font-size: 0.95rem; line-height: 1.75; color: var(--gray2);
+        }
+
+        .portfolio-search {
+            max-width: 600px; margin: 0 auto 40px;
+            position: relative;
+        }
+        .portfolio-search input {
+            width: 100%; padding: 16px 20px 16px 52px;
+            border: 2px solid var(--gray);
+            border-radius: 12px; font-family: var(--font-body);
+            font-size: 0.95rem; color: var(--gray-strong);
+            background: var(--gray-light);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+        .portfolio-search input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(34,169,94,0.1);
+        }
+        .portfolio-search .search-icon {
+            position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+            width: 20px; height: 20px; color: var(--gray2);
+        }
+
+        .exam-list { max-width: 700px; margin: 0 auto; }
+        .exam-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 24px; background: var(--gray-light);
+            border-radius: 10px; margin-bottom: 12px;
+            border: 1px solid transparent;
+            transition: border-color 0.3s, background 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+        .exam-item:hover {
+            border-color: var(--accent-pale);
+            background: var(--accent-bg);
+            transform: translateX(4px);
+        }
+        .exam-item-name {
+            font-size: 0.9rem; font-weight: 500; color: var(--gray-strong);
+        }
+        .exam-item-arrow {
+            color: var(--accent); font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+        .exam-item:hover .exam-item-arrow { transform: translateX(4px); }
+
+        /* ============================================
+           SECTION: NUESTRA PRESENCIA
+           ============================================ */
+        .presencia { background: var(--gray-light); }
+        .presencia-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700; color: var(--brand-primary);
+            text-align: center; margin-bottom: 56px;
+        }
+        .presencia-header h2 em { font-style: normal; color: var(--accent); }
+
+        .presencia-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+        }
+        .presencia-card {
+            background: var(--white); border-radius: 16px;
+            padding: 40px 32px; text-align: center;
+            border: 1px solid var(--gray);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .presencia-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(10,46,28,0.06);
+        }
+        .presencia-card h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-weight: 700; color: var(--brand-primary);
+            margin-bottom: 4px;
+        }
+        .presencia-card h2 em { font-style: normal; color: var(--accent); }
+        .presencia-card .big-number {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 4vw, 3.5rem);
+            font-weight: 800; color: var(--accent);
+            line-height: 1; margin-bottom: 8px;
+        }
+        .presencia-card .big-number-label {
+            font-size: 0.85rem; font-weight: 500; color: var(--gray2);
+            margin-bottom: 16px;
+        }
+        .presencia-card p {
+            font-size: 0.88rem; line-height: 1.7; color: var(--gray2);
+        }
+
+        /* ============================================
+           SECTION: CERTIFICACIONES
+           ============================================ */
+        .certificaciones {
+            background: var(--white);
+            text-align: center;
+        }
+        .certificaciones p {
+            font-size: 0.95rem; line-height: 1.75;
+            color: var(--gray2); max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        .certificaciones h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-weight: 700; color: var(--brand-primary);
+            margin-bottom: 16px;
+        }
+        .cert-logos {
+            display: flex; justify-content: center; align-items: center;
+            gap: 48px; flex-wrap: wrap;
+        }
+        .cert-logo {
+            width: 100px; height: 60px;
+            background: var(--gray-light); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; color: var(--gray2); font-weight: 600;
+            border: 1px solid var(--gray);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: var(--brand-primary);
+            padding: 64px 32px 28px;
+            color: var(--white);
+        }
+        .footer-inner { max-width: 1200px; margin: 0 auto; }
+        .footer-top {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px; padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.25rem; font-weight: 700;
+            color: var(--white); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .footer-brand .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+        .footer-brand span { font-weight: 400; color: var(--accent-light); }
+        .footer-description {
+            font-size: 0.88rem; line-height: 1.7;
+            color: rgba(255,255,255,0.4); max-width: 300px;
+        }
+        .footer-col h4 {
+            font-family: var(--font-display);
+            font-size: 0.8rem; font-weight: 600;
+            color: var(--accent-light);
+            letter-spacing: 1px; text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .footer-col a {
+            display: block; font-size: 0.85rem;
+            color: rgba(255,255,255,0.4); margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        .footer-col a:hover { color: var(--white); }
+        .footer-social {
+            display: flex; gap: 16px; margin-top: 20px;
+        }
+        .footer-social a {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px; display: flex;
+            align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .footer-social a:hover { background: var(--accent); }
+        .footer-social svg {
+            width: 16px; height: 16px; fill: var(--white);
+        }
+        .footer-bottom {
+            padding-top: 24px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.78rem; color: rgba(255,255,255,0.25);
+        }
+        .footer-bottom a { color: var(--accent-light); }
+
+        /* ============================================
+           PLACEHOLDER IMAGES
+           ============================================ */
+        .placeholder-img {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 6px;
+            background: linear-gradient(135deg, #e8ede9, #d5ddd7);
+            color: var(--gray2); font-size: 0.7rem; font-weight: 500;
+            text-align: center; padding: 16px;
+        }
+        .placeholder-img.dark {
+            background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.08));
+            color: rgba(255,255,255,0.3);
+        }
+        .placeholder-img svg {
+            width: 28px; height: 28px; opacity: 0.35;
+        }
+
+        /* ============================================
+           ANIMATION BASE STATES
+           ============================================ */
+        .reveal-up { opacity: 0; transform: translateY(50px); }
+        .reveal-left { opacity: 0; transform: translateX(-50px); }
+        .reveal-right { opacity: 0; transform: translateX(50px); }
+        .reveal-scale { opacity: 0; transform: scale(0.92); }
+        .stagger-item { opacity: 0; transform: translateY(30px); }
+        .fade-in { opacity: 0; }
+        .char-reveal .char { display: inline-block; opacity: 0; transform: translateY(100%); }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-about { gap: 32px; }
+            .diff-cards { gap: 20px; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+        }
+        @media (max-width: 768px) {
+            .section { padding: 64px 20px; }
+            .hero-about {
+                grid-template-columns: 1fr; padding: 32px 20px 0; gap: 32px;
+            }
+            .diff-cards { grid-template-columns: 1fr; }
+            .banner-futuro .section-inner { grid-template-columns: 1fr; }
+            .banner-futuro-image { display: none; }
+            .presencia-grid { grid-template-columns: 1fr; }
+            .footer-top { grid-template-columns: 1fr; gap: 24px; }
+            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+            .breadcrumb-bar { margin-top: 80px; padding: 20px 20px 0; }
+            .specialties-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-text">Dasa Genómica</div>
+        <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#" class="header-logo"><span class="dot"></span>Dasa <span>Genómica</span></a>
+            <nav class="header-nav">
+                <a href="#" class="active">Conócenos</a>
+                <a href="#">Examenes</a>
+                <a href="#">Especialidades</a>
+                <a href="#">Blog</a>
+                <a href="#contacto" class="header-cta">Contáctenos</a>
+            </nav>
+            <button class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="closeMobile()">Conócenos</a>
+        <a href="#" onclick="closeMobile()">Examenes</a>
+        <a href="#" onclick="closeMobile()">Especialidades</a>
+        <a href="#" onclick="closeMobile()">Blog</a>
+        <a href="#" onclick="closeMobile()">Contáctenos</a>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="#">Home</a><span class="sep">|</span><span>Conócenos</span>
+        </div>
+    </div>
+
+    <!-- HERO ABOUT -->
+    <section class="hero-about" id="conocenos">
+        <div class="hero-about-text">
+            <h1 class="reveal-up">Mucho gusto, somos<br><em>Dasa Genómica</em></h1>
+            <p class="reveal-up">Formamos parte de Dasa, una marca de medicina diagnóstica especializada en pruebas genéticas y genómicas. Con un equipo médico y técnico altamente capacitado y equipos de última generación, operamos con un enfoque constante en la excelencia y la calidad.</p>
+            <a href="#especialidades" class="btn-accent reveal-up">Descubre nuestras especialidades</a>
+        </div>
+        <div class="hero-about-image reveal-right">
+            <!-- IMAGEN: hero-lab.jpg | 800x600px | Laboratorio genómico, equipo trabajando -->
+            <div class="placeholder-img">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                hero-lab.jpg<br>800 × 600 px
+            </div>
+        </div>
+    </section>
+
+    <!-- EXCELENCIA CIENTÍFICA -->
+    <section class="section excelencia" id="especialidades">
+        <div class="section-inner">
+            <div class="excelencia-header">
+                <h2 class="reveal-up">Excelencia <em>Científica</em>,<br>Tecnológica y Clínica</h2>
+                <p class="reveal-up">Ofrecemos un portafolio con más de 750 exámenes, actuando en las siguientes especialidades médicas: oncología, oncohematología, enfermedades raras y neurología, medicina fetal y reproducción humana, cardiogenética y oftalmología.</p>
+            </div>
+            <div class="specialties-grid">
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </div>
+                    <h3>Reproducción Humana y Medicina Fetal</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+                    </div>
+                    <h3>Oncología</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 2v6m6-6v6M9 16v6m6-6v6M2 9h6m8 0h6M2 15h6m8 0h6"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h3>Enfermedades Raras</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1 0-20z"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>Neurología</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </div>
+                    <h3>Cardiología</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 5v-.5M17 7l.5-.5M19 12h.5M17 17l.5.5M12 19v.5M7 17l-.5.5M5 12h-.5M7 7l-.5-.5"/></svg>
+                    </div>
+                    <h3>Oftalmología</h3>
+                </div>
+                <div class="specialty-card stagger-item">
+                    <div class="specialty-icon">
+                        <svg viewBox="0 0 24 24"><path d="M6 2v6M18 2v6"/><path d="M2 10h20"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+                    </div>
+                    <h3>Onco-Hematología</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUESTRAS DIFERENCIAS -->
+    <section class="section diferencias" id="diferencias">
+        <div class="section-inner">
+            <div class="diferencias-header">
+                <h2 class="reveal-up">Nuestras <em>diferencias</em></h2>
+            </div>
+            <div class="diff-cards">
+                <div class="diff-card stagger-item">
+                    <div class="diff-card-img">
+                        <!-- IMAGEN: diff-asesoria.jpg | 240x200px | Médico asesorando -->
+                        <div class="placeholder-img">
+                            diff-asesoria.jpg<br>240×200
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Asesoramiento médico de especialistas.</h4>
+                        <p>Servicio exclusivo para médicos para discusiones técnicas y especializadas sobre pruebas genéticas.</p>
+                    </div>
+                </div>
+                <div class="diff-card stagger-item">
+                    <div class="diff-card-img">
+                        <!-- IMAGEN: diff-excelencia.jpg | 240x200px | Tecnología de laboratorio -->
+                        <div class="placeholder-img">
+                            diff-excelencia.jpg<br>240×200
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Excelencia científica, tecnológica y clínica</h4>
+                        <p>Nos especializamos en atención integral y en garantizar que más personas tengan acceso a los beneficios de la Medicina Genómica. Combinamos inteligencia y tecnología avanzadas para transformar.</p>
+                    </div>
+                </div>
+                <div class="diff-card stagger-item">
+                    <div class="diff-card-img">
+                        <!-- IMAGEN: diff-portafolio.jpg | 240x200px | Muestras de laboratorio -->
+                        <div class="placeholder-img">
+                            diff-portafolio.jpg<br>240×200
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Amplio portafolio de pruebas genéticas</h4>
+                        <p>Combinamos la excelencia científica y tecnológica en diagnósticos precisos para posibilitar y compartir un nuevo modelo de atención: preventiva, predictiva, personalizada y de por vida.</p>
+                    </div>
+                </div>
+                <div class="diff-card stagger-item">
+                    <div class="diff-card-img">
+                        <!-- IMAGEN: diff-equipo.jpg | 240x200px | Equipo clínico -->
+                        <div class="placeholder-img">
+                            diff-equipo.jpg<br>240×200
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Personal clínico especializado.</h4>
+                        <p>Hemos reunido un equipo clínico calificado y reconocido en Genética Médica, con un equipo altamente especializado para ofrecer diagnósticos certeros y de alta calidad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER MEDICINA DEL FUTURO -->
+    <section class="banner-futuro">
+        <div class="banner-futuro-bg"></div>
+        <div class="banner-futuro-grid"></div>
+        <div class="section-inner">
+            <div>
+                <h2 class="reveal-up"><em>Dasa Genómica</em></h2>
+                <div class="subtitle reveal-up">Medicina del futuro. Todos los días.</div>
+                <p class="reveal-up">Unimos la excelencia científica, tecnológica y médica de Geneone, Chromosome, Genia e Insitus para visibilizar y compartir un nuevo modelo de cuidado preventivo, predictivo, personalizado y de por vida.</p>
+            </div>
+            <div class="banner-futuro-image reveal-scale">
+                <!-- IMAGEN: banner-futuro.jpg | 800x600px | Tecnología médica avanzada / microscopio -->
+                <div class="placeholder-img dark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    banner-futuro.jpg<br>800 × 600 px
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAFOLIO DE EXÁMENES -->
+    <section class="section portfolio" id="examenes">
+        <div class="section-inner">
+            <div class="portfolio-header">
+                <h2 class="reveal-up">Amplio portafolio de <em>exámenes genéticos</em></h2>
+                <p class="reveal-up">Combinamos excelencia científica y tecnológica en diagnósticos precisos, para viabilizar y compartir un nuevo modelo de cuidado: preventivo, predictivo, personalizado y de por vida.</p>
+            </div>
+            <div class="portfolio-search reveal-up">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" placeholder="Buscar examen por nombre o código...">
+            </div>
+            <div class="exam-list">
+                <div class="exam-item stagger-item">
+                    <span class="exam-item-name">Adrenoleucodistrofia - secuencia por NGS del gen ABCD1</span>
+                    <span class="exam-item-arrow">→</span>
+                </div>
+                <div class="exam-item stagger-item">
+                    <span class="exam-item-name">Panel NGS para enfermedades Mitocondriales con oftalmoplejia progresiva</span>
+                    <span class="exam-item-arrow">→</span>
+                </div>
+                <div class="exam-item stagger-item">
+                    <span class="exam-item-name">Detección del polimorfismo 4G/5G en el gen PAI-1</span>
+                    <span class="exam-item-arrow">→</span>
+                </div>
+                <div class="exam-item stagger-item">
+                    <span class="exam-item-name">Secuenciación completa del exoma (WES)</span>
+                    <span class="exam-item-arrow">→</span>
+                </div>
+                <div class="exam-item stagger-item">
+                    <span class="exam-item-name">Panel de cáncer hereditario - 40 genes por NGS</span>
+                    <span class="exam-item-arrow">→</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUESTRA PRESENCIA -->
+    <section class="section presencia" id="presencia">
+        <div class="section-inner">
+            <div class="presencia-header">
+                <h2 class="reveal-up">Nuestra <em>Presencia</em></h2>
+            </div>
+            <div class="presencia-grid">
+                <div class="presencia-card stagger-item">
+                    <h2>Más <em>capilaridad</em><br>del mercado brasileño</h2>
+                    <p>Estamos presentes en más de 45 marcas de diagnóstico, incluyendo las principales marcas de Dasa, lo que amplía el acceso nacional a las pruebas genómicas.</p>
+                </div>
+                <div class="presencia-card stagger-item">
+                    <div class="big-number">+900</div>
+                    <div class="big-number-label">unidades de servicio</div>
+                    <p>Contamos con más de 900 ubicaciones acreditadas en Brasil, ofreciendo comodidad a los pacientes sin sacrificar la calidad.</p>
+                </div>
+                <div class="presencia-card stagger-item">
+                    <h2>Asociaciones en<br><em>América Latina</em></h2>
+                    <p>Expandimos nuestro alcance a través de alianzas estratégicas con laboratorios y centros médicos en toda la región latinoamericana.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICACIONES -->
+    <section class="section certificaciones" id="certificaciones">
+        <div class="section-inner">
+            <h2 class="reveal-up">Certificaciones y <em style="font-style:normal;color:var(--accent)">Acreditaciones</em></h2>
+            <p class="reveal-up">Somos referencia en medicina genómica en Brasil, con importantes acreditaciones como PALC y el Colegio Americano de Patología, referencia internacional en el control de calidad de los laboratorios.</p>
+            <div class="cert-logos reveal-up">
+                <div class="cert-logo">PALC</div>
+                <div class="cert-logo">CAP</div>
+                <div class="cert-logo">ISO 15189</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contacto">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div>
+                    <div class="footer-brand"><span class="dot"></span>Dasa <span>Genómica</span></div>
+                    <p class="footer-description">Medicina diagnóstica especializada en pruebas genéticas y genómicas. Excelencia y calidad al servicio de la vida.</p>
+                    <div class="footer-social">
+                        <a href="#"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                        <a href="#"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+                        <a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></a>
+                        <a href="#"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.13C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54z" fill="var(--brand-primary)"/></svg></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <a href="#">Conócenos</a>
+                    <a href="#">Examenes</a>
+                    <a href="#">Especialidades</a>
+                    <a href="#">Blog</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Especialidades</h4>
+                    <a href="#">Oncología</a>
+                    <a href="#">Enfermedades raras</a>
+                    <a href="#">Neurología</a>
+                    <a href="#">Cardiología</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <a href="#">+55 11 3003-7323</a>
+                    <a href="#">contacto@dasagenomica.com</a>
+                    <a href="https://dasa.com.br" target="_blank">Dasa →</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Dasa Genómica. Todos los derechos reservados.</span>
+                <span>RT: Dr. Cristovam Scapulatempo Neto | CRM 102037</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ============================================
+        // LOADER
+        // ============================================
+        const loader = document.getElementById('loader');
+        const loaderBar = document.getElementById('loaderBar');
+        gsap.to('.loader-text', { opacity: 1, duration: 0.5, delay: 0.15 });
+        gsap.to(loaderBar, {
+            width: '100%', duration: 1.6, ease: 'power2.inOut', delay: 0.3,
+            onComplete: () => {
+                gsap.to(loader, {
+                    opacity: 0, duration: 0.4,
+                    onComplete: () => { loader.style.display = 'none'; initAnimations(); }
+                });
+            }
+        });
+
+        // ============================================
+        // HEADER SCROLL
+        // ============================================
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+        });
+        function closeMobile() {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // ANIMATIONS
+        // ============================================
+        function initAnimations() {
+            // Reveal up
+            gsap.utils.toArray('.reveal-up').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                    opacity: 1, y: 0, duration: 0.85, ease: 'power3.out'
+                });
+            });
+
+            // Reveal left
+            gsap.utils.toArray('.reveal-left').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                    opacity: 1, x: 0, duration: 0.9, ease: 'power3.out'
+                });
+            });
+
+            // Reveal right
+            gsap.utils.toArray('.reveal-right').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                    opacity: 1, x: 0, duration: 0.9, ease: 'power3.out'
+                });
+            });
+
+            // Reveal scale
+            gsap.utils.toArray('.reveal-scale').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                    opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out'
+                });
+            });
+
+            // Stagger groups
+            const staggerParents = [
+                '.specialties-grid',
+                '.diff-cards',
+                '.exam-list',
+                '.presencia-grid'
+            ];
+            staggerParents.forEach(sel => {
+                const parent = document.querySelector(sel);
+                if (!parent) return;
+                const items = parent.querySelectorAll('.stagger-item');
+                gsap.to(items, {
+                    scrollTrigger: { trigger: parent, start: 'top 82%', toggleActions: 'play none none none' },
+                    opacity: 1, y: 0, duration: 0.65, stagger: 0.1, ease: 'power3.out'
+                });
+            });
+
+            // Fade ins
+            gsap.utils.toArray('.fade-in').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                    opacity: 1, duration: 0.8, ease: 'power2.out'
+                });
+            });
+
+            // Counter animation for +900
+            const bigNumbers = document.querySelectorAll('.big-number');
+            bigNumbers.forEach(el => {
+                const text = el.textContent.trim();
+                const match = text.match(/\+?(\d+)/);
+                if (match) {
+                    const target = parseInt(match[1]);
+                    const prefix = text.startsWith('+') ? '+' : '';
+                    el.textContent = prefix + '0';
+                    ScrollTrigger.create({
+                        trigger: el,
+                        start: 'top 85%',
+                        onEnter: () => {
+                            let obj = { val: 0 };
+                            gsap.to(obj, {
+                                val: target, duration: 2, ease: 'power2.out',
+                                onUpdate: () => { el.textContent = prefix + Math.round(obj.val); }
+                            });
+                        },
+                        once: true
+                    });
+                }
+            });
+
+            // Parallax on banner
+            gsap.to('.banner-futuro-bg', {
+                scrollTrigger: { trigger: '.banner-futuro', start: 'top bottom', end: 'bottom top', scrub: 1 },
+                y: 80, ease: 'none'
+            });
+        }
+
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triple Medicina · Ingenes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Darker+Grotesque:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <style>
+    /* ─── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #003087;
+      --navy-deep:  #002060;
+      --navy-light: #e8edf7;
+      --green:      #8DBF2E;
+      --green-dark: #6a9420;
+      --gray-900:   #1c2335;
+      --gray-700:   #444444;
+      --gray-500:   #76797a;
+      --gray-300:   #b8b8bc;
+      --gray-100:   #f0f2f6;
+      --white:      #ffffff;
+      --border:     #dde2ec;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--white);
+      color: var(--gray-900);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--gray-100); }
+    ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 4px; }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: height .3s, box-shadow .3s;
+    }
+    nav.scrolled { height: 58px; box-shadow: 0 2px 20px rgba(0,48,135,0.08); }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav-logo-g {
+      width: 36px; height: 36px;
+      background: var(--navy); border-radius: 8px;
+      display: grid; place-items: center; overflow: hidden;
+    }
+    .nav-logo-g svg { width: 22px; height: 22px; }
+    .nav-wordmark { line-height: 1; }
+    .nav-wordmark .top { font-family: 'Darker Grotesque', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: var(--navy); }
+    .nav-wordmark .bottom { font-family: 'Poppins', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-500); }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; font-weight: 500; color: var(--gray-700); transition: color .2s; }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-cta {
+      background: var(--navy); color: var(--white);
+      padding: 9px 22px; border-radius: 6px;
+      font-size: 13px; font-weight: 600;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--navy-deep); transform: translateY(-1px); }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: var(--white);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 110px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+    /* diagonal bg element */
+    #hero::before {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 55%; height: 100%;
+      background: var(--navy-light);
+      clip-path: polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%);
+      z-index: 0;
+    }
+    /* Decorative large "g" watermark */
+    .hero-g-bg {
+      position: absolute; right: -2%; bottom: -8%;
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: clamp(300px, 30vw, 480px);
+      font-weight: 900;
+      color: rgba(0,48,135,0.05);
+      line-height: 1; pointer-events: none; z-index: 0;
+      user-select: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; max-width: 1000px; width: 100%;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--green-dark);
+      background: rgba(141,191,46,0.1); border: 1px solid rgba(141,191,46,0.3);
+      padding: 6px 16px; border-radius: 4px;
+      margin-bottom: 28px;
+      opacity: 0;
+    }
+    .hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; }
+    .hero-headline {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 900; line-height: 1;
+      color: var(--navy);
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--green);
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--gray-500); max-width: 560px;
+      margin: 0 auto 60px;
+      line-height: 1.65;
+      opacity: 0;
+    }
+
+    /* ─── 3D FLIP CARDS ──────────────────────────────────── */
+    .cards-row {
+      display: flex; gap: 24px; justify-content: center;
+      flex-wrap: wrap; perspective: 1400px;
+      position: relative; z-index: 1;
+    }
+    .tri-card {
+      width: 272px; height: 336px;
+      position: relative; transform-style: preserve-3d;
+      cursor: pointer; opacity: 0;
+    }
+    .tri-card-inner {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform .75s cubic-bezier(.175,.885,.32,1.275);
+    }
+    .tri-card:hover .tri-card-inner { transform: rotateY(180deg); }
+
+    .tri-card-front, .tri-card-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      padding: 32px 28px;
+      display: flex; flex-direction: column;
+    }
+
+    /* Front: navy background */
+    .tri-card-front {
+      background: var(--navy);
+      box-shadow: 0 20px 60px rgba(0,48,135,0.25), 0 4px 16px rgba(0,48,135,0.15);
+    }
+    /* Back: white with navy border */
+    .tri-card-back {
+      transform: rotateY(180deg);
+      background: var(--white);
+      border: 2px solid var(--navy);
+      box-shadow: 0 20px 60px rgba(0,48,135,0.2);
+    }
+    .card-top-bar {
+      height: 3px; border-radius: 2px;
+      margin-bottom: 28px;
+    }
+    .bar-1 { background: linear-gradient(90deg, var(--green), #b6df5e); }
+    .bar-2 { background: linear-gradient(90deg, #5ba4f5, var(--green)); }
+    .bar-3 { background: linear-gradient(90deg, #f5a25b, var(--green)); }
+
+    .card-num {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 72px; font-weight: 900; line-height: 1;
+      color: rgba(255,255,255,0.08);
+      letter-spacing: -4px;
+      position: absolute; top: 20px; right: 20px;
+    }
+    .card-icon {
+      width: 44px; height: 44px; border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: grid; place-items: center;
+      margin-bottom: auto; color: rgba(255,255,255,0.7);
+    }
+    .card-icon svg { width: 22px; height: 22px; }
+    .card-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 26px; font-weight: 800; line-height: 1.1;
+      color: var(--white);
+    }
+    .card-hint-flip {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      margin-top: 14px; letter-spacing: 1px;
+    }
+
+    /* Back content */
+    .back-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+    .back-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 22px; font-weight: 800; color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .back-text { font-size: 13px; color: var(--gray-500); line-height: 1.6; }
+    .back-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 14px; }
+    .back-tag {
+      font-size: 10px; font-weight: 600;
+      padding: 3px 10px; border-radius: 4px;
+      background: var(--navy-light); color: var(--navy);
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      margin-top: 48px; position: relative; z-index: 1;
+      opacity: 0;
+    }
+    .scroll-cue span { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray-300); }
+    .scroll-dot-wrap {
+      width: 28px; height: 44px; border: 1.5px solid var(--gray-300); border-radius: 14px;
+      display: flex; justify-content: center; padding-top: 6px;
+    }
+    .scroll-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--navy); }
+
+    /* ─── DIAGONAL DIVIDER ───────────────────────────────── */
+    .diag-divider {
+      height: 80px; position: relative; overflow: hidden;
+    }
+    .diag-divider.to-gray {
+      background: var(--white);
+    }
+    .diag-divider.to-gray::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+      background: var(--gray-100);
+      clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0 100%);
+    }
+    .diag-divider.to-white {
+      background: var(--gray-100);
+    }
+    .diag-divider.to-white::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+      background: var(--white);
+      clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0 100%);
+    }
+    .diag-divider.to-navy {
+      background: var(--gray-100);
+    }
+    .diag-divider.to-navy::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+      background: var(--navy);
+      clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0 100%);
+    }
+    .diag-divider.from-navy {
+      background: var(--navy);
+    }
+    .diag-divider.from-navy::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100%;
+      background: var(--white);
+      clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0 100%);
+    }
+
+    /* ─── SHARED SECTION STYLES ──────────────────────────── */
+    section { padding: 80px 5%; position: relative; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--green-dark);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--green); flex-shrink: 0; }
+    .section-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 900; color: var(--navy);
+      line-height: 1.05; letter-spacing: -1px;
+    }
+    .section-sub {
+      font-size: clamp(15px, 1.8vw, 17px);
+      color: var(--gray-500); line-height: 1.7;
+      max-width: 560px; margin-top: 14px;
+    }
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* ─── CONCEPT SECTION ────────────────────────────────── */
+    #concept { background: var(--gray-100); }
+    .concept-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    /* Venn */
+    .venn-wrap {
+      position: relative;
+      width: 100%; aspect-ratio: 1; max-width: 400px; margin: 0 auto;
+    }
+    .venn-circle {
+      position: absolute; border-radius: 50%;
+      width: 60%; height: 60%;
+    }
+    .vc-1 { background: var(--navy); opacity: .14; top: 2%; left: 50%; transform: translateX(-50%); }
+    .vc-2 { background: var(--green); opacity: .22; bottom: 2%; left: 6%; }
+    .vc-3 { background: #5b8def; opacity: .18; bottom: 2%; right: 6%; }
+    .venn-label {
+      position: absolute;
+      font-size: 11px; font-weight: 700; color: var(--navy);
+      text-align: center; line-height: 1.3; letter-spacing: .2px;
+    }
+    .vl-1 { top: 8%; left: 50%; transform: translateX(-50%); }
+    .vl-2 { bottom: 8%; left: 4%; }
+    .vl-3 { bottom: 8%; right: 2%; text-align: right; }
+    .venn-center {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      text-align: center;
+    }
+    .venn-center-ring {
+      width: 88px; height: 88px; border-radius: 50%;
+      border: 2px solid var(--navy);
+      background: var(--white);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,48,135,0.15);
+    }
+    .venn-center-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 13px; font-weight: 900; color: var(--navy); line-height: 1.1;
+    }
+    .venn-center-sub { font-size: 8px; font-weight: 600; letter-spacing: 1.5px; color: var(--green-dark); text-transform: uppercase; }
+
+    .concept-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 36px;
+    }
+    .stat-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px;
+      border-left: 3px solid var(--navy);
+    }
+    .stat-card.accent { border-left-color: var(--green); }
+    .stat-num {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 42px; font-weight: 900; line-height: 1;
+      color: var(--navy);
+    }
+    .stat-card.accent .stat-num { color: var(--green-dark); }
+    .stat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; line-height: 1.4; }
+
+    /* ─── PILLARS ────────────────────────────────────────── */
+    #pillars { background: var(--white); }
+    .pillars-header { margin-bottom: 56px; }
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .pillar-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 36px 28px;
+      position: relative; overflow: hidden;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .pillar-card:hover { box-shadow: 0 12px 40px rgba(0,48,135,0.12); transform: translateY(-4px); }
+    .pillar-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    }
+    .pillar-card.p1::before { background: linear-gradient(90deg, var(--navy), #5b8def); }
+    .pillar-card.p2::before { background: linear-gradient(90deg, var(--green), #b6df5e); }
+    .pillar-card.p3::before { background: linear-gradient(90deg, #f5a25b, var(--green)); }
+    .pillar-num-bg {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 100px; font-weight: 900; line-height: 1;
+      color: rgba(0,48,135,0.04);
+      position: absolute; top: 12px; right: 16px;
+      pointer-events: none;
+    }
+    .pillar-icon {
+      width: 52px; height: 52px; border-radius: 10px;
+      display: grid; place-items: center; margin-bottom: 24px;
+    }
+    .p1 .pillar-icon { background: var(--navy-light); color: var(--navy); }
+    .p2 .pillar-icon { background: rgba(141,191,46,0.12); color: var(--green-dark); }
+    .p3 .pillar-icon { background: rgba(245,162,91,0.12); color: #c47a2e; }
+    .pillar-icon svg { width: 26px; height: 26px; }
+    .pillar-num-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-300); margin-bottom: 6px; }
+    .pillar-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 24px; font-weight: 800; color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .pillar-text { font-size: 14px; color: var(--gray-500); line-height: 1.7; }
+    .pillar-list { list-style: none; margin-top: 20px; display: flex; flex-direction: column; gap: 9px; }
+    .pillar-list li {
+      font-size: 13px; color: var(--gray-700);
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .pillar-list li::before {
+      content: ''; display: block; flex-shrink: 0;
+      width: 6px; height: 6px; border-radius: 50%;
+      margin-top: 6px; background: var(--green);
+    }
+
+    /* ─── HOW IT WORKS (navy section) ────────────────────── */
+    #how { background: var(--navy); }
+    #how .eyebrow { color: var(--green); }
+    #how .eyebrow::before { background: var(--green); }
+    #how .section-title { color: var(--white); }
+    #how .section-sub { color: rgba(255,255,255,0.55); }
+    .how-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; align-items: start; margin-top: 56px;
+    }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 22px; top: 8px; bottom: 8px; width: 2px;
+      background: linear-gradient(to bottom, var(--green), rgba(141,191,46,0.1));
+    }
+    .timeline-step { display: flex; gap: 28px; margin-bottom: 44px; }
+    .step-dot {
+      flex-shrink: 0; width: 46px; height: 46px;
+      border-radius: 50%; z-index: 1;
+      display: grid; place-items: center;
+      font-family: 'Darker Grotesque', sans-serif; font-weight: 900; font-size: 20px;
+    }
+    .step-dot.d1 { background: var(--green); color: var(--navy); }
+    .step-dot.d2 { background: rgba(141,191,46,0.15); color: var(--green); border: 2px solid var(--green); }
+    .step-dot.d3 { background: rgba(141,191,46,0.15); color: var(--green); border: 2px solid var(--green); }
+    .step-dot.d4 { background: rgba(141,191,46,0.15); color: var(--green); border: 2px solid var(--green); }
+    .step-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); }
+    .step-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 22px; font-weight: 800; color: var(--white);
+      margin: 4px 0 8px;
+    }
+    .step-text { font-size: 13.5px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    /* Right column of how section */
+    .how-right { display: flex; flex-direction: column; gap: 20px; }
+    .how-card {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 28px;
+    }
+    .how-card-num {
+      font-family: 'Darker Grotesque', sans-serif; font-size: 44px; font-weight: 900;
+      color: var(--green); line-height: 1;
+    }
+    .how-card-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+    /* ─── EVIDENCE ───────────────────────────────────────── */
+    #evidence { background: var(--white); }
+    .evidence-header { margin-bottom: 52px; }
+    .evidence-layout {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: 32px; align-items: stretch;
+    }
+    .evidence-main {
+      background: var(--navy); border-radius: 12px;
+      padding: 48px 40px; display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+    /* large "g" decoration inside card */
+    .evidence-main::after {
+      content: 'g';
+      position: absolute; right: -20px; bottom: -40px;
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 200px; font-weight: 900;
+      color: rgba(255,255,255,0.04); pointer-events: none;
+      line-height: 1;
+    }
+    .evidence-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--green); background: rgba(141,191,46,0.12);
+      border: 1px solid rgba(141,191,46,0.3);
+      padding: 5px 12px; border-radius: 4px; align-self: flex-start;
+      margin-bottom: 24px;
+    }
+    .evidence-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 28px; font-weight: 900; color: var(--white); line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .evidence-text { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.75; flex: 1; }
+    .evidence-result {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 18px 20px; margin-top: 28px;
+    }
+    .result-badge {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(141,191,46,0.15); color: var(--green);
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .result-badge svg { width: 20px; height: 20px; }
+    .result-copy { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+    .result-copy strong { color: var(--green); }
+    .evidence-side { display: flex; flex-direction: column; gap: 20px; }
+    .evidence-mini {
+      background: var(--gray-100); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px;
+      border-left: 3px solid var(--green);
+      flex: 1;
+    }
+    .em-num {
+      font-family: 'Darker Grotesque', sans-serif; font-size: 48px; font-weight: 900;
+      color: var(--navy); line-height: 1;
+    }
+    .em-label { font-size: 13px; color: var(--gray-500); margin-top: 6px; line-height: 1.4; }
+
+    /* ─── FAQ ────────────────────────────────────────────── */
+    #faq { background: var(--gray-100); }
+    .faq-layout {
+      display: grid; grid-template-columns: 1fr 1.6fr;
+      gap: 80px; align-items: start;
+    }
+    .faq-sticky { position: sticky; top: 90px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; background: none; border: none; text-align: left;
+      font-size: 15px; font-weight: 600; color: var(--gray-900);
+      padding: 20px 0;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      cursor: pointer; font-family: 'Poppins', sans-serif;
+      transition: color .2s;
+    }
+    .faq-q:hover { color: var(--navy); }
+    .faq-icon {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      display: grid; place-items: center;
+      transition: transform .35s, background .2s, border-color .2s;
+      color: var(--gray-500);
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--navy); border-color: var(--navy); color: var(--white); }
+    .faq-item.open .faq-q { color: var(--navy); }
+    .faq-a {
+      font-size: 14px; color: var(--gray-500); line-height: 1.75;
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .35s ease;
+      padding-bottom: 0;
+    }
+    .faq-item.open .faq-a { max-height: 400px; padding-bottom: 20px; }
+
+    /* ─── CTA ────────────────────────────────────────────── */
+    #cta {
+      background: var(--navy); padding: 100px 5%;
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+    #cta::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 50%, rgba(141,191,46,0.08), transparent),
+        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(91,141,239,0.08), transparent);
+      pointer-events: none;
+    }
+    /* big "g" bg */
+    #cta::after {
+      content: 'g';
+      position: absolute; right: 3%; bottom: -10%;
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: 400px; font-weight: 900;
+      color: rgba(255,255,255,0.03); pointer-events: none; line-height: 1;
+    }
+    .cta-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+    .cta-eyebrow {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--green);
+      background: rgba(141,191,46,0.1); border: 1px solid rgba(141,191,46,0.25);
+      padding: 5px 14px; border-radius: 4px; margin-bottom: 24px;
+    }
+    .cta-title {
+      font-family: 'Darker Grotesque', sans-serif;
+      font-size: clamp(38px, 6vw, 64px); font-weight: 900;
+      color: var(--white); line-height: 1; letter-spacing: -1px;
+      margin-bottom: 18px;
+    }
+    .cta-sub { font-size: 16px; color: rgba(255,255,255,0.55); line-height: 1.65; margin-bottom: 40px; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 14px 34px;
+      background: var(--green); color: var(--navy);
+      border: none; border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 4px 20px rgba(141,191,46,0.4);
+    }
+    .btn-primary:hover { background: #a0d438; transform: translateY(-2px); }
+    .btn-ghost {
+      padding: 14px 34px;
+      background: none; color: rgba(255,255,255,0.8);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--navy-deep);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 36px 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-g {
+      width: 28px; height: 28px; background: rgba(255,255,255,0.08);
+      border-radius: 6px; display: grid; place-items: center;
+    }
+    .footer-g svg { width: 16px; height: 16px; color: var(--white); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.35); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 12px; color: rgba(255,255,255,0.4); transition: color .2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .concept-grid, .how-grid, .evidence-layout, .faq-layout { grid-template-columns: 1fr; gap: 40px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .how-right { display: none; }
+    }
+    @media (max-width: 600px) {
+      .cards-row { flex-direction: column; align-items: center; }
+      .tri-card { width: 100%; max-width: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-g">
+      <!-- Simplified "g" isotipo svg -->
+      <svg viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 2C6.58 2 3 5.58 3 10s3.58 8 8 8h1v4H8v2h8v-6h-3v-1.17C15.75 15.7 19 13.05 19 10c0-4.42-3.58-8-8-8z" fill="white" opacity=".9"/>
+        <!-- sperm dot -->
+        <circle cx="15.5" cy="3.5" r="2" fill="#8DBF2E"/>
+      </svg>
+    </div>
+    <div class="nav-wordmark">
+      <div class="top">Triple Medicina</div>
+      <div class="bottom">Instituto Ingenes</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#concept">El Concepto</a></li>
+    <li><a href="#pillars">Los Pilares</a></li>
+    <li><a href="#how">Proceso</a></li>
+    <li><a href="#evidence">Evidencia</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Habla con un especialista</a>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-g-bg">g</div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <span></span>
+      Instituto Ingenes · Innovación en Fertilidad
+    </div>
+
+    <h1 class="hero-headline" id="hero-headline">
+      La medicina que<br><em>multiplica</em> tus<br>posibilidades
+    </h1>
+
+    <p class="hero-sub" id="hero-sub">
+      Tres disciplinas médicas integradas para un solo objetivo:
+      que tengas a tu bebé. Este es el enfoque <strong>Triple Medicina</strong> de Ingenes.
+    </p>
+
+    <!-- CARDS -->
+    <div class="cards-row" id="cards-row">
+
+      <!-- Reproductiva -->
+      <div class="tri-card" id="card-1">
+        <div class="tri-card-inner">
+          <div class="tri-card-front">
+            <div class="card-top-bar bar-1"></div>
+            <span class="card-num">01</span>
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-7.5-2 2M5.5 18.5l2-2m0-11 2 2m6 6 2 2"/></svg>
+            </div>
+            <div>
+              <div class="card-label">Primer pilar</div>
+              <div class="card-title">Medicina<br>Reproductiva</div>
+              <div class="card-hint-flip">Toca para saber más →</div>
+            </div>
+          </div>
+          <div class="tri-card-back">
+            <div class="card-top-bar bar-1"></div>
+            <div class="back-label">Primer pilar</div>
+            <div class="back-title">Medicina Reproductiva</div>
+            <p class="back-text">Diagnóstico avanzado del ovocito, espermatozoide y embrión. Selección genética (PGT-A) y laboratorio de última generación para maximizar la implantación.</p>
+            <div class="back-tags">
+              <span class="back-tag">FIV</span>
+              <span class="back-tag">PGT-A</span>
+              <span class="back-tag">ICSI</span>
+              <span class="back-tag">Donación</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regenerativa -->
+      <div class="tri-card" id="card-2">
+        <div class="tri-card-inner">
+          <div class="tri-card-front">
+            <div class="card-top-bar bar-2"></div>
+            <span class="card-num">02</span>
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="card-label">Segundo pilar</div>
+              <div class="card-title">Medicina<br>Regenerativa</div>
+              <div class="card-hint-flip">Toca para saber más →</div>
+            </div>
+          </div>
+          <div class="tri-card-back">
+            <div class="card-top-bar bar-2"></div>
+            <div class="back-label">Segundo pilar</div>
+            <div class="back-title">Medicina Regenerativa</div>
+            <p class="back-text">Restauramos la receptividad endometrial con PRP, factores de crecimiento y terapias celulares. Ideal para fallo repetido de implantación.</p>
+            <div class="back-tags">
+              <span class="back-tag">PRP</span>
+              <span class="back-tag">Células Madre</span>
+              <span class="back-tag">G-CSF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metabólica -->
+      <div class="tri-card" id="card-3">
+        <div class="tri-card-inner">
+          <div class="tri-card-front">
+            <div class="card-top-bar bar-3"></div>
+            <span class="card-num">03</span>
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div>
+              <div class="card-label">Tercer pilar</div>
+              <div class="card-title">Medicina<br>Metabólica</div>
+              <div class="card-hint-flip">Toca para saber más →</div>
+            </div>
+          </div>
+          <div class="tri-card-back">
+            <div class="card-top-bar bar-3"></div>
+            <div class="back-label">Tercer pilar</div>
+            <div class="back-title">Medicina Metabólica</div>
+            <p class="back-text">El equilibrio metabólico es clave para la fertilidad. Evaluamos insulina, tiroides e inflamación para crear el entorno corporal óptimo para el embarazo.</p>
+            <div class="back-tags">
+              <span class="back-tag">Tiroides</span>
+              <span class="back-tag">Insulina</span>
+              <span class="back-tag">Nutrición</span>
+              <span class="back-tag">Microbioma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cards-row -->
+
+    <div class="scroll-cue" id="scroll-cue">
+      <span>Descubrir más</span>
+      <div class="scroll-dot-wrap">
+        <div class="scroll-dot" id="scroll-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIAGONAL → gray ───────────────────────────── -->
+<div class="diag-divider to-gray"></div>
+
+<!-- ─── CONCEPT ──────────────────────────────────── -->
+<section id="concept">
+  <div class="section-inner">
+    <div class="concept-grid">
+      <!-- Venn diagram -->
+      <div class="venn-wrap reveal">
+        <div class="vc-1 venn-circle"></div>
+        <div class="vc-2 venn-circle"></div>
+        <div class="vc-3 venn-circle"></div>
+        <div class="venn-label vl-1">Medicina<br>Reproductiva</div>
+        <div class="venn-label vl-2">Medicina<br>Regenerativa</div>
+        <div class="venn-label vl-3">Medicina<br>Metabólica</div>
+        <div class="venn-center">
+          <div class="venn-center-ring" id="venn-ring">
+            <div class="venn-center-title">Triple<br>Medicina</div>
+            <div class="venn-center-sub">Ingenes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text + stats -->
+      <div class="reveal reveal-delay-1">
+        <div class="eyebrow">El concepto</div>
+        <h2 class="section-title">Un enfoque que<br>ninguna otra<br>clínica tiene</h2>
+        <p class="section-sub">
+          En Ingenes desarrollamos la metodología <strong>Triple Medicina</strong>:
+          la integración simultánea de tres especialidades para abordar la infertilidad
+          desde todos sus ángulos. Porque la fertilidad no es solo reproductiva.
+        </p>
+        <div class="concept-stats">
+          <div class="stat-card reveal reveal-delay-1">
+            <div class="stat-num"><span class="counter" data-target="30">0</span>+</div>
+            <div class="stat-label">años de experiencia en reproducción asistida</div>
+          </div>
+          <div class="stat-card accent reveal reveal-delay-2">
+            <div class="stat-num"><span class="counter" data-target="3">0</span></div>
+            <div class="stat-label">disciplinas médicas integradas en un equipo</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-num"><span class="counter" data-target="90">0</span>%</div>
+            <div class="stat-label">de los casos complejos sí logran embarazo</div>
+          </div>
+          <div class="stat-card accent reveal reveal-delay-3">
+            <div class="stat-num"><span class="counter" data-target="1">0</span></div>
+            <div class="stat-label">objetivo: que tengas a tu bebé en brazos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIAGONAL → white ──────────────────────────── -->
+<div class="diag-divider to-white"></div>
+
+<!-- ─── PILLARS ──────────────────────────────────── -->
+<section id="pillars">
+  <div class="section-inner">
+    <div class="pillars-header reveal">
+      <div class="eyebrow">Los tres pilares</div>
+      <h2 class="section-title">Cada disciplina,<br>un mundo.</h2>
+      <p class="section-sub">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.
+      </p>
+    </div>
+    <div class="pillars-grid">
+
+      <div class="pillar-card p1 reveal">
+        <span class="pillar-num-bg">01</span>
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-7.5-2 2M5.5 18.5l2-2m0-11 2 2m6 6 2 2"/></svg>
+        </div>
+        <div class="pillar-num-label">Pilar 01</div>
+        <h3 class="pillar-title">Medicina Reproductiva</h3>
+        <p class="pillar-text">El núcleo de nuestro trabajo. Desde el diagnóstico profundo hasta la selección del mejor embrión con tecnología de vanguardia.</p>
+        <ul class="pillar-list">
+          <li>Análisis cromosómico de embriones (PGT-A / PGT-M)</li>
+          <li>Banco de óvulos y esperma con selección avanzada</li>
+          <li>Laboratorio de embriología de alta complejidad</li>
+          <li>Diagnóstico de reserva ovárica y conteo folicular</li>
+          <li>Estimulación ovárica personalizada y monitoreo</li>
+        </ul>
+      </div>
+
+      <div class="pillar-card p2 reveal reveal-delay-1">
+        <span class="pillar-num-bg">02</span>
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="pillar-num-label">Pilar 02</div>
+        <h3 class="pillar-title">Medicina Regenerativa</h3>
+        <p class="pillar-text">Para que un embrión perfectamente seleccionado pueda implantarse, el endometrio tiene que estar en sus mejores condiciones.</p>
+        <ul class="pillar-list">
+          <li>Plasma rico en plaquetas (PRP) endometrial</li>
+          <li>Factor estimulante de colonias (G-CSF)</li>
+          <li>Terapias con células madre autólogas</li>
+          <li>Evaluación del microbioma uterino</li>
+          <li>Histeroscopia diagnóstica y operatoria</li>
+        </ul>
+      </div>
+
+      <div class="pillar-card p3 reveal reveal-delay-2">
+        <span class="pillar-num-bg">03</span>
+        <div class="pillar-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="pillar-num-label">Pilar 03</div>
+        <h3 class="pillar-title">Medicina Metabólica</h3>
+        <p class="pillar-text">El cuerpo como sistema. La infertilidad tiene raíces metabólicas que muchas clínicas ignoran. Nosotros las resolvemos primero.</p>
+        <ul class="pillar-list">
+          <li>Panel metabólico y hormonal completo</li>
+          <li>Diagnóstico y manejo de resistencia a insulina</li>
+          <li>Optimización de función tiroidea</li>
+          <li>Programas de nutrición funcional para fertilidad</li>
+          <li>Control de inflamación sistémica y autoinmunidad</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIAGONAL → navy ───────────────────────────── -->
+<div class="diag-divider to-navy"></div>
+
+<!-- ─── HOW IT WORKS ─────────────────────────────── -->
+<section id="how">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="eyebrow">El proceso</div>
+      <h2 class="section-title">¿Cómo funciona<br>en la práctica?</h2>
+      <p class="section-sub">
+        Desde el primer día, tres especialidades trabajan en paralelo —no en secuencia—
+        para diseñar tu plan personalizado.
+      </p>
+    </div>
+    <div class="how-grid">
+      <div class="timeline">
+        <div class="timeline-step reveal">
+          <div class="step-dot d1">1</div>
+          <div>
+            <div class="step-label">Semana 1</div>
+            <h3 class="step-title">Diagnóstico 360°</h3>
+            <p class="step-text">Un panel médico completo que evalúa simultáneamente tu perfil reproductivo, regenerativo y metabólico. Aquí encontramos lo que otros no encontraron.</p>
+          </div>
+        </div>
+        <div class="timeline-step reveal">
+          <div class="step-dot d2">2</div>
+          <div>
+            <div class="step-label">Semana 2–3</div>
+            <h3 class="step-title">Plan personalizado</h3>
+            <p class="step-text">Con base en los resultados, diseñamos un protocolo único para tu caso. Nada es genérico: cada tratamiento se construye desde tu biología específica.</p>
+          </div>
+        </div>
+        <div class="timeline-step reveal">
+          <div class="step-dot d3">3</div>
+          <div>
+            <div class="step-label">Meses 1–3</div>
+            <h3 class="step-title">Tratamiento integrado</h3>
+            <p class="step-text">Las tres especialidades actúan en sincronía. Todo en paralelo, todo coordinado. Preparación del endometrio, optimización metabólica y selección de embriones simultáneas.</p>
+          </div>
+        </div>
+        <div class="timeline-step reveal">
+          <div class="step-dot d4">★</div>
+          <div>
+            <div class="step-label">Resultado</div>
+            <h3 class="step-title">La transferencia ideal</h3>
+            <p class="step-text">El embrión correcto, en el momento correcto, en el ambiente correcto. Eso es Triple Medicina.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-right reveal reveal-delay-1">
+        <div class="how-card">
+          <div class="how-card-num counter" data-target="1">0</div>
+          <div class="how-card-label">equipo multidisciplinario desde el día uno, no derivaciones entre especialistas</div>
+        </div>
+        <div class="how-card">
+          <div class="how-card-num"><span class="counter" data-target="3">0</span>x</div>
+          <div class="how-card-label">Lorem ipsum — mayor probabilidad de éxito vs. protocolo convencional en casos complejos (placeholder)</div>
+        </div>
+        <div class="how-card">
+          <div class="how-card-num">
+            <span class="counter" data-target="21">0</span> días
+          </div>
+          <div class="how-card-label">Lorem ipsum — promedio para completar diagnóstico triple y tener un plan de tratamiento definido (placeholder)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIAGONAL navy → white ────────────────────── -->
+<div class="diag-divider from-navy"></div>
+
+<!-- ─── EVIDENCE ─────────────────────────────────── -->
+<section id="evidence">
+  <div class="section-inner">
+    <div class="evidence-header reveal">
+      <div class="eyebrow">Casos y evidencia</div>
+      <h2 class="section-title">Resultados donde<br>otros dijeron "imposible"</h2>
+    </div>
+    <div class="evidence-layout">
+      <div class="evidence-main reveal">
+        <div class="evidence-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Caso Clínico Publicado
+        </div>
+        <h3 class="evidence-title">FIV compleja resuelta con enfoque multinivel</h3>
+        <p class="evidence-text">
+          Paciente con tres fallos previos de implantación en otras clínicas. Al evaluar
+          desde Triple Medicina, identificamos resistencia a insulina no diagnosticada,
+          endometrio con microbioma alterado y embriones con mosaicismo. Los tres problemas
+          resueltos en paralelo resultaron en embarazo exitoso tras la primera transferencia
+          con nosotros.
+        </p>
+        <div class="evidence-result">
+          <div class="result-badge">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="result-copy">
+            <strong>Embarazo logrado</strong> en el primer intento tras diagnóstico triple.
+            Caso documentado en investigación clínica Ingenes.
+          </div>
+        </div>
+      </div>
+
+      <div class="evidence-side">
+        <div class="evidence-mini reveal">
+          <div class="em-num"><span class="counter" data-target="3">0</span></div>
+          <div class="em-label">Fallos previos de implantación en promedio antes de llegar a Ingenes con enfoque Triple Medicina</div>
+        </div>
+        <div class="evidence-mini reveal reveal-delay-1">
+          <div class="em-num"><span class="counter" data-target="68">0</span>%</div>
+          <div class="em-label">Lorem ipsum — tasa de éxito en casos complejos con protocolo Triple Medicina (placeholder)</div>
+        </div>
+        <div class="evidence-mini reveal reveal-delay-2">
+          <div class="em-num"><span class="counter" data-target="12">0</span>k+</div>
+          <div class="em-label">Lorem ipsum — pacientes tratados con metodología de alta complejidad en Ingenes (placeholder)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DIAGONAL → gray ───────────────────────────── -->
+<div class="diag-divider to-gray"></div>
+
+<!-- ─── FAQ ──────────────────────────────────────── -->
+<section id="faq">
+  <div class="section-inner">
+    <div class="faq-layout">
+      <div class="faq-sticky reveal">
+        <div class="eyebrow">FAQ</div>
+        <h2 class="section-title">Lo que todos<br>preguntan</h2>
+        <p class="section-sub" style="margin-top:16px">
+          Resolvemos las dudas más frecuentes sobre el enfoque Triple Medicina y cómo puede
+          aplicar a tu caso específico.
+        </p>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="faq-item">
+          <button class="faq-q">
+            ¿Para quién es el enfoque Triple Medicina?
+            <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></div>
+          </button>
+          <p class="faq-a">Especialmente valioso para personas con fallos repetidos de implantación, diagnósticos sin causa clara, edad materna avanzada o condiciones como endometriosis, SOP o problemas metabólicos. También puede usarse preventivamente para maximizar las posibilidades desde el primer intento.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            ¿Cuánto tiempo adicional toma vs. un tratamiento convencional?
+            <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></div>
+          </button>
+          <p class="faq-a">En muchos casos no toma más tiempo porque las tres evaluaciones se hacen en paralelo. En casos donde se detectan condiciones que requieren estabilización previa, puede agregar 4–8 semanas que multiplican exponencialmente las probabilidades de éxito.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            ¿Los seguros médicos cubren este enfoque?
+            <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></div>
+          </button>
+          <p class="faq-a">Lorem ipsum dolor sit amet, consectetur adipiscing elit. La cobertura varía según tu plan y país. Nuestro equipo de orientación financiera puede ayudarte a revisar tu póliza y explorar las opciones de financiamiento disponibles en Ingenes.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            ¿Ingenes es la única clínica con Triple Medicina?
+            <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></div>
+          </button>
+          <p class="faq-a">Ingenes es pionera en la integración formal de estas tres disciplinas como metodología clínica unificada. Otras clínicas pueden ofrecer algunos servicios por separado, pero el protocolo integrado de Triple Medicina es un desarrollo exclusivo de Ingenes.</p>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">
+            ¿Puedo comenzar aunque no haya intentado FIV antes?
+            <div class="faq-icon"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"/></svg></div>
+          </button>
+          <p class="faq-a">Absolutamente. El diagnóstico Triple Medicina te da claridad total sobre tu situación reproductiva, regenerativa y metabólica antes de comenzar cualquier tratamiento, permitiendo diseñar el camino más eficiente desde el principio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ───────────────────────────────────────── -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <div class="cta-eyebrow">Tu próximo paso</div>
+    <h2 class="cta-title">El diagnóstico<br>que cambia todo</h2>
+    <p class="cta-sub">
+      Una consulta con nuestro equipo de Triple Medicina puede revelar lo que ningún otro
+      médico había encontrado. Empieza con una evaluación sin compromiso.
+    </p>
+    <div class="cta-buttons">
+      <button class="btn-primary">Agendar mi evaluación</button>
+      <button class="btn-ghost">Hablar con un especialista</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────── -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-g">
+      <svg viewBox="0 0 22 24" fill="none"><path d="M11 2C6.58 2 3 5.58 3 10s3.58 8 8 8h1v4H8v2h8v-6h-3v-1.17C15.75 15.7 19 13.05 19 10c0-4.42-3.58-8-8-8z" fill="white" opacity=".7"/></svg>
+    </div>
+    <div class="footer-copy">
+      <strong style="color:rgba(255,255,255,.55)">Triple Medicina · Ingenes</strong><br>
+      triplemed.ingenes.com · © 2025 Instituto Ingenes. Todos los derechos reservados.
+    </div>
+  </div>
+  <div class="footer-links">
+    <a href="#">Aviso de Privacidad</a>
+    <a href="#">Términos</a>
+    <a href="#">ingenes.com</a>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ───────────────────────────────────── -->
+<script>
+/* ── Nav scroll behavior ────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ── Hero entrance ──────────────────────────── */
+window.addEventListener('load', () => {
+  anime.timeline({ easing: 'easeOutExpo' })
+    .add({ targets: '#hero-eyebrow', opacity:[0,1], translateY:[16,0], duration:600 })
+    .add({ targets: '#hero-headline', opacity:[0,1], translateY:[24,0], duration:700 }, '-=350')
+    .add({ targets: '#hero-sub',      opacity:[0,1], translateY:[16,0], duration:600 }, '-=400')
+    .add({ targets: '#card-1', opacity:[0,1], translateY:[50,0], scale:[.92,1], duration:800 }, '-=300')
+    .add({ targets: '#card-2', opacity:[0,1], translateY:[50,0], scale:[.92,1], duration:800 }, '-=650')
+    .add({ targets: '#card-3', opacity:[0,1], translateY:[50,0], scale:[.92,1], duration:800 }, '-=650')
+    .add({ targets: '#scroll-cue', opacity:[0,.9], translateY:[8,0], duration:500 }, '-=200');
+
+  // Scroll dot animation
+  anime({
+    targets: '#scroll-dot',
+    translateY: [0, 18], opacity:[1, 0],
+    loop: true, duration: 1100, easing: 'easeInCubic', delay: 600
+  });
+
+  // Venn center pulse
+  anime({
+    targets: '#venn-ring',
+    scale: [1, 1.06],
+    loop: true, direction: 'alternate',
+    duration: 2000, easing: 'easeInOutSine'
+  });
+});
+
+/* ── 3D Mouse Tilt ─────────────────────────── */
+document.querySelectorAll('.tri-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    // only tilt if NOT flipped
+    if (!card.matches(':hover') || card.querySelector('.tri-card-inner').style.transform === 'rotateY(180deg)') return;
+    card.style.transform = `perspective(900px) rotateY(${x * 16}deg) rotateX(${-y * 12}deg) scale(1.03)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    anime({ targets: card, rotateY: 0, rotateX: 0, scale: 1, duration: 500, easing: 'easeOutElastic(1,.6)' });
+  });
+});
+
+/* ── Scroll reveal ─────────────────────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    // animate any counters inside
+    e.target.querySelectorAll('.counter').forEach(el => {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const t = parseInt(el.dataset.target);
+      anime({ targets: el, innerHTML: [0, t], round: 1, duration: 1600, easing: 'easeOutExpo',
+        update: a => el.innerHTML = Math.round(a.animations[0].currentValue) });
+    });
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Also observe counters not wrapped in .reveal
+const counterIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    if (el.dataset.done) return;
+    el.dataset.done = '1';
+    const t = parseInt(el.dataset.target);
+    anime({ targets: el, innerHTML: [0, t], round: 1, duration: 1600, easing: 'easeOutExpo',
+      update: a => el.innerHTML = Math.round(a.animations[0].currentValue) });
+    counterIO.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterIO.observe(el));
+
+/* ── FAQ Accordion ─────────────────────────── */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

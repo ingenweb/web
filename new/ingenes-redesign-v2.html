@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingenes — Líderes en Reproducción Asistida de Latinoamérica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Paleta principal */
+    --navy:        #0B2545;
+    --navy-mid:    #1A3A63;
+    --navy-light:  #2C5282;
+    --gold:        #C8A040;
+    --gold-light:  #DEB96A;
+    --gold-pale:   #F5ECD4;
+    --green:       #4A8B5C;   /* Verde Ingenes */
+    --green-light: #5FA872;
+    --green-pale:  #EBF5EE;
+
+    /* Fondos */
+    --bg:          #FFFFFF;
+    --bg-soft:     #F7F8FA;
+    --bg-warm:     #FAF9F7;
+    --bg-section:  #F2F4F7;
+
+    /* Texto */
+    --text:        #0B2545;
+    --text-mid:    #3A526E;
+    --text-muted:  #7A8FA8;
+    --text-light:  #A8B8CB;
+
+    /* Bordes */
+    --border:      #DDE3EC;
+    --border-gold: rgba(200,160,64,0.3);
+    --border-green: rgba(74,139,92,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-soft); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* ═══════════════════════════════════════
+     NAV
+  ═══════════════════════════════════════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    padding: 18px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, box-shadow 0.3s, padding 0.3s;
+  }
+  nav.scrolled {
+    border-color: var(--border);
+    box-shadow: 0 2px 24px rgba(11,37,69,0.07);
+    padding: 13px 56px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-mark {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-mark span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.05em;
+  }
+  .nav-logo-text em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .nav-links {
+    display: flex; align-items: center;
+    gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 100%;
+    height: 1.5px;
+    background: var(--gold);
+    transition: right 0.3s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-links a:hover::after { right: 0; }
+
+  .nav-cta {
+    background: var(--navy) !important;
+    color: #fff !important;
+    padding: 10px 26px;
+    border-radius: 3px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--navy-mid) !important; }
+
+  /* ═══════════════════════════════════════
+     IMG PLACEHOLDER SYSTEM
+  ═══════════════════════════════════════ */
+  .img-placeholder {
+    background: linear-gradient(135deg, #EEF2F8 0%, #E2E9F3 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1.5px dashed #B0BED0;
+    position: relative;
+    overflow: hidden;
+  }
+  .img-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(176,190,208,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(176,190,208,0.3) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .img-placeholder-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+  }
+  .img-placeholder-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    opacity: 0.5;
+  }
+  .img-placeholder-name {
+    font-family: 'DM Sans', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--navy-mid);
+    letter-spacing: 0.06em;
+    background: rgba(255,255,255,0.7);
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+  }
+  .img-placeholder-dims {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .img-placeholder-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    max-width: 180px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  /* ═══════════════════════════════════════
+     HERO
+  ═══════════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  /* Franja decorativa diagonal fondo */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--bg-soft);
+    clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 130px 56px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.2s forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(28px); }
+  }
+
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+  .hero-eyebrow-line { width: 36px; height: 2px; background: var(--green); }
+  .hero-eyebrow span {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 4.2vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 24px;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+  }
+  .hero-title strong {
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .hero-subtitle {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--text-mid);
+    max-width: 460px;
+    margin-bottom: 44px;
+    font-weight: 300;
+  }
+  .hero-subtitle strong { color: var(--navy); font-weight: 600; }
+
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    padding: 15px 34px;
+    border: none; border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .btn-primary:hover {
+    background: var(--navy-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(11,37,69,0.2);
+  }
+  .btn-primary.green {
+    background: var(--green);
+  }
+  .btn-primary.green:hover {
+    background: var(--green-light);
+    box-shadow: 0 8px 28px rgba(74,139,92,0.25);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--navy);
+    padding: 15px 34px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-outline:hover {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+  .btn-outline.gold {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .btn-outline.gold:hover {
+    background: var(--gold);
+    color: #fff;
+  }
+
+  .hero-visual {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 48px 80px 24px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+
+  .hero-image-wrap {
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 520px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(11,37,69,0.14);
+  }
+
+  /* Stats flotantes sobre la imagen */
+  .hero-stat-float {
+    position: absolute;
+    background: #fff;
+    border-radius: 6px;
+    padding: 18px 22px;
+    box-shadow: 0 8px 32px rgba(11,37,69,0.12);
+    border: 1px solid var(--border);
+  }
+  .hero-stat-float-1 {
+    bottom: -20px; left: -40px;
+    animation: float1 6s ease-in-out infinite;
+  }
+  .hero-stat-float-2 {
+    top: 40px; right: -36px;
+    animation: float2 7s ease-in-out infinite;
+  }
+  @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+  .float-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 400;
+    color: var(--navy); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .float-number .accent { color: var(--gold); }
+  .float-label {
+    font-size: 0.7rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .float-badge {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .float-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s ease-in-out infinite;
+  }
+  .float-badge-text {
+    font-size: 0.64rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green);
+    font-weight: 600;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ═══════════════════════════════════════
+     TRUST BAR
+  ═══════════════════════════════════════ */
+  .trust-bar {
+    padding: 22px 0;
+    background: var(--navy);
+    overflow: hidden;
+  }
+  .trust-scroll {
+    display: flex; gap: 56px; align-items: center;
+    animation: marquee 32s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .trust-item {
+    display: flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .trust-sep { color: var(--gold); font-size: 0.6rem; }
+  .trust-text {
+    font-size: 0.72rem; color: rgba(255,255,255,0.65);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .trust-text strong { color: var(--gold-light); font-weight: 600; }
+
+  /* ═══════════════════════════════════════
+     SHARED LAYOUT
+  ═══════════════════════════════════════ */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 56px; }
+  .container-wide { max-width: 1400px; margin: 0 auto; padding: 0 56px; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .section-label-line { width: 28px; height: 2px; background: var(--gold); }
+  .section-label span {
+    font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); font-weight: 600;
+  }
+  .section-label.green .section-label-line { background: var(--green); }
+  .section-label.green span { color: var(--green); }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    font-weight: 400; line-height: 1.2;
+    color: var(--navy); margin-bottom: 18px;
+  }
+  .section-title em { font-style: italic; font-weight: 300; color: var(--gold); }
+  .section-title strong { font-weight: 600; }
+
+  /* ═══════════════════════════════════════
+     INTRO / STATS
+  ═══════════════════════════════════════ */
+  .intro {
+    padding: 112px 0;
+    background: var(--bg);
+  }
+  .intro-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+  .intro-body {
+    font-size: 1rem; line-height: 1.85;
+    color: var(--text-mid); font-weight: 300;
+    margin-top: 20px;
+  }
+  .intro-body p + p { margin-top: 18px; }
+  .intro-body strong { color: var(--navy); font-weight: 600; }
+
+  .intro-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem; font-style: italic;
+    font-weight: 300; line-height: 1.5;
+    color: var(--navy);
+    border-left: 3px solid var(--green);
+    padding-left: 24px;
+    margin: 36px 0;
+  }
+
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .stat-block {
+    padding: 36px 32px;
+    background: var(--bg-warm);
+    transition: background 0.3s;
+    position: relative;
+  }
+  .stat-block::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 32px; right: 32px;
+    height: 2px;
+    background: transparent;
+    transition: background 0.3s;
+  }
+  .stat-block:hover { background: var(--bg); }
+  .stat-block:hover::after { background: var(--gold); }
+
+  .stat-block-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 400;
+    color: var(--navy); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-block-accent { color: var(--gold); }
+  .stat-block-label {
+    font-size: 0.78rem; color: var(--text-muted);
+    line-height: 1.5; letter-spacing: 0.02em;
+  }
+
+  .awards-row {
+    margin-top: 48px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+  }
+  .awards-title {
+    font-size: 0.68rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 20px; font-weight: 600;
+  }
+  .awards-list {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+  .award-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--bg-soft);
+    font-size: 0.73rem;
+    color: var(--text-mid);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .award-chip:hover { border-color: var(--gold); background: var(--gold-pale); }
+  .award-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .award-chip.is-green .award-chip-dot { background: var(--green); }
+  .award-chip.is-green:hover { border-color: var(--green); background: var(--green-pale); }
+
+  /* ═══════════════════════════════════════
+     SERVICES — TRES PILARES
+  ═══════════════════════════════════════ */
+  .services {
+    padding: 112px 0;
+    background: var(--bg-soft);
+  }
+  .services-header { max-width: 680px; margin-bottom: 60px; }
+  .services-intro {
+    font-size: 0.95rem; color: var(--text-muted);
+    line-height: 1.8; margin-top: 18px;
+  }
+
+  .pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .pillar {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  .pillar:hover {
+    box-shadow: 0 12px 40px rgba(11,37,69,0.1);
+    transform: translateY(-4px);
+  }
+
+  .pillar-image {
+    width: 100%; height: 200px;
+  }
+
+  .pillar-body-wrap {
+    padding: 32px;
+  }
+  .pillar-number-badge {
+    display: inline-flex; align-items: center;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold); font-weight: 600;
+    border: 1px solid var(--border-gold);
+    background: var(--gold-pale);
+    padding: 4px 12px; border-radius: 100px;
+    margin-bottom: 16px;
+  }
+  .pillar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 500;
+    margin-bottom: 14px; color: var(--navy);
+    line-height: 1.25;
+  }
+  .pillar-desc {
+    font-size: 0.86rem; color: var(--text-muted);
+    line-height: 1.8; margin-bottom: 24px;
+  }
+  .pillar-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 24px;
+  }
+  .pillar-tag {
+    font-size: 0.65rem; letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--navy-light);
+    border: 1px solid rgba(44,82,130,0.2);
+    background: rgba(44,82,130,0.05);
+    padding: 3px 10px; border-radius: 2px;
+  }
+  .pillar-link {
+    font-size: 0.74rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy); font-weight: 600;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: gap 0.2s, color 0.2s;
+  }
+  .pillar-link:hover { gap: 14px; color: var(--gold); }
+
+  .services-callout {
+    margin-top: 40px;
+    padding: 40px 48px;
+    background: var(--navy);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+  .callout-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 300;
+    line-height: 1.65; color: rgba(255,255,255,0.9);
+  }
+  .callout-text em { font-style: italic; color: var(--gold-light); }
+
+  /* ═══════════════════════════════════════
+     SURROGACY
+  ═══════════════════════════════════════ */
+  .surrogacy {
+    padding: 112px 0;
+    background: var(--bg);
+  }
+  .surrogacy-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .surrogacy-image-wrap {
+    position: relative;
+  }
+  .surrogacy-img {
+    width: 100%; height: 480px;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 20px 56px rgba(11,37,69,0.1);
+  }
+  .surrogacy-badge {
+    position: absolute;
+    bottom: -20px; right: -20px;
+    background: var(--green);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(74,139,92,0.3);
+  }
+  .surrogacy-badge-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .surrogacy-badge-sub {
+    font-size: 0.7rem; opacity: 0.8;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .covers-list {
+    margin-top: 28px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .covers-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 0.88rem; color: var(--text-mid); line-height: 1.5;
+    padding: 12px 16px;
+    background: var(--bg-soft);
+    border-radius: 3px;
+    border-left: 2px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .covers-item:hover {
+    border-color: var(--green);
+    background: var(--green-pale);
+  }
+  .covers-check { color: var(--green); font-size: 0.7rem; margin-top: 2px; flex-shrink: 0; }
+
+  .country-block {
+    margin-top: 32px;
+    border: 1px solid var(--border);
+    border-radius: 4px; overflow: hidden;
+  }
+  .country-block-title {
+    font-size: 0.68rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted);
+    padding: 12px 16px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+  .country-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .country-item:last-child { border-bottom: none; }
+  .country-item:hover { background: var(--bg-soft); }
+  .country-flag { font-size: 1.3rem; }
+  .country-name { font-size: 0.84rem; font-weight: 500; color: var(--text); flex: 1; }
+  .country-status {
+    font-size: 0.68rem; letter-spacing: 0.07em;
+    padding: 3px 10px; border-radius: 100px; font-weight: 600;
+  }
+  .status-red { background: #FEE2E2; color: #B91C1C; }
+  .status-yellow { background: var(--gold-pale); color: #92700A; }
+  .status-green { background: var(--green-pale); color: var(--green); }
+
+  .diversity-pill {
+    margin-top: 28px;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 20px 22px;
+    background: var(--green-pale);
+    border: 1px solid var(--border-green);
+    border-radius: 4px;
+    font-size: 0.86rem; color: var(--text-mid); line-height: 1.65;
+  }
+  .diversity-pill-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════
+     PRICING
+  ═══════════════════════════════════════ */
+  .pricing {
+    padding: 112px 0;
+    background: var(--bg-soft);
+  }
+  .pricing-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: 72px; align-items: start;
+  }
+  .value-props { margin-top: 40px; }
+  .value-prop {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.3s;
+  }
+  .value-prop:first-child { border-top: 1px solid var(--border); }
+  .value-prop:hover { padding-left: 6px; }
+  .value-prop-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    background: var(--bg);
+    color: var(--navy);
+  }
+  .value-prop:hover .value-prop-icon {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+  .value-prop-text h4 {
+    font-size: 0.95rem; font-weight: 600;
+    margin-bottom: 5px; color: var(--navy);
+  }
+  .value-prop-text p {
+    font-size: 0.83rem; color: var(--text-muted); line-height: 1.65;
+  }
+
+  .guarantee-card {
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 44px 40px;
+    color: #fff;
+    position: sticky; top: 100px;
+  }
+  .guarantee-badge-wrap {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+    background: rgba(200,160,64,0.1);
+  }
+  .guarantee-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 400;
+    margin-bottom: 14px; line-height: 1.3;
+  }
+  .guarantee-body {
+    font-size: 0.88rem; color: rgba(255,255,255,0.7);
+    line-height: 1.8; margin-bottom: 32px;
+  }
+  .guarantee-body strong { color: var(--gold-light); font-weight: 600; }
+  .guarantee-note {
+    margin-top: 18px;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+    text-align: center; line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════
+     JOURNEY
+  ═══════════════════════════════════════ */
+  .journey {
+    padding: 112px 0;
+    background: var(--bg);
+  }
+  .journey-inner {
+    display: grid; grid-template-columns: 1fr 1.3fr;
+    gap: 80px; align-items: start;
+  }
+  .journey-left { position: sticky; top: 120px; }
+  .journey-subtitle {
+    font-size: 0.95rem; color: var(--text-muted);
+    line-height: 1.8; margin-top: 18px; max-width: 380px;
+  }
+
+  .journey-image {
+    width: 100%; height: 360px;
+    border-radius: 4px; overflow: hidden;
+    margin-top: 36px;
+    box-shadow: 0 16px 48px rgba(11,37,69,0.1);
+  }
+
+  .steps-track {
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .steps-track::before {
+    content: '';
+    position: absolute;
+    left: 27px; top: 28px; bottom: 28px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--border) 100%);
+  }
+
+  .step {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 28px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0; transform: translateX(-16px);
+    transition: opacity 0.55s, transform 0.55s;
+  }
+  .step.visible { opacity: 1; transform: translateX(0); }
+  .step:last-child { border-bottom: none; }
+
+  .step-number {
+    width: 56px; height: 56px; flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 400;
+    color: var(--navy);
+    position: relative; z-index: 1;
+    transition: all 0.3s;
+  }
+  .step:hover .step-number {
+    background: var(--gold-pale);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .step-content { padding: 6px 0; }
+  .step-tag {
+    font-size: 0.65rem; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green); font-weight: 600;
+    margin-bottom: 7px;
+  }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 500;
+    margin-bottom: 8px; color: var(--navy);
+  }
+  .step-body {
+    font-size: 0.86rem; color: var(--text-muted);
+    line-height: 1.75; max-width: 480px;
+  }
+
+  /* ═══════════════════════════════════════
+     PATHS
+  ═══════════════════════════════════════ */
+  .paths {
+    padding: 112px 0;
+    background: var(--bg-soft);
+  }
+  .paths-header { margin-bottom: 52px; }
+  .paths-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .path-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px 24px;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .path-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .path-card:hover {
+    box-shadow: 0 8px 32px rgba(11,37,69,0.1);
+    transform: translateY(-3px);
+  }
+  .path-card:hover::before { transform: scaleX(1); }
+
+  .path-image {
+    width: 100%; height: 120px;
+    border-radius: 3px; overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .path-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 500;
+    margin-bottom: 8px; color: var(--navy); line-height: 1.3;
+  }
+  .path-desc {
+    font-size: 0.76rem; color: var(--text-muted); line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════
+     TESTIMONIALS
+  ═══════════════════════════════════════ */
+  .testimonials {
+    padding: 112px 0;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  .testimonials-header {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: end; margin-bottom: 56px;
+  }
+  .testimonials-count {
+    text-align: right;
+  }
+  .testimonials-count-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 300;
+    color: var(--navy); line-height: 1;
+  }
+  .testimonials-count-number span { color: var(--gold); }
+  .testimonials-count-label {
+    font-size: 0.68rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .testimonials-track {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .testimonial-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .testimonial-card:hover {
+    box-shadow: 0 12px 40px rgba(11,37,69,0.1);
+    transform: translateY(-4px);
+    border-color: var(--gold);
+  }
+
+  .testimonial-image {
+    width: 100%; height: 180px;
+  }
+
+  .testimonial-body {
+    padding: 28px 28px 32px;
+  }
+  .testimonial-name {
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--navy); margin-bottom: 4px;
+  }
+  .testimonial-subtitle {
+    font-size: 0.72rem; color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-style: italic; font-weight: 300;
+    line-height: 1.7; color: var(--text-mid);
+    position: relative; padding-left: 18px;
+  }
+  .testimonial-quote::before {
+    content: '"';
+    position: absolute;
+    left: 0; top: -6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300;
+    color: var(--gold); line-height: 1;
+    opacity: 0.6;
+  }
+
+  /* ═══════════════════════════════════════
+     MAP / SUCURSALES
+  ═══════════════════════════════════════ */
+  .locations {
+    padding: 80px 0;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .locations-inner {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: 56px; align-items: center;
+  }
+  .locations-text h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 400;
+    color: var(--navy); margin-bottom: 8px;
+  }
+  .locations-text p {
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.7;
+  }
+  .locations-map {
+    height: 220px; border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  /* ═══════════════════════════════════════
+     ABOUT
+  ═══════════════════════════════════════ */
+  .about {
+    padding: 112px 0;
+    background: var(--bg);
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .about-image {
+    width: 100%; height: 500px;
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(11,37,69,0.1);
+    position: relative;
+  }
+  .about-image-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(11,37,69,0.85));
+    padding: 40px 28px 28px;
+    color: #fff;
+  }
+  .about-image-caption-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300;
+    color: var(--gold-light); line-height: 1;
+  }
+  .about-image-caption-text {
+    font-size: 0.78rem; opacity: 0.8;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .about-body {
+    font-size: 0.97rem; line-height: 1.85;
+    color: var(--text-mid); font-weight: 300;
+    margin-top: 24px;
+  }
+  .about-body p + p { margin-top: 18px; }
+  .about-body strong { color: var(--navy); font-weight: 600; }
+
+  .milestones { margin-top: 40px; }
+  .milestone {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left 0.3s;
+  }
+  .milestone:hover { padding-left: 8px; }
+  .milestone-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 500;
+    color: var(--gold); min-width: 52px; flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .milestone-text {
+    font-size: 0.83rem; color: var(--text-muted); line-height: 1.65;
+  }
+
+  /* ═══════════════════════════════════════
+     FOOTER CTA
+  ═══════════════════════════════════════ */
+  .footer-cta {
+    padding: 96px 0;
+    background: var(--navy);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,160,64,0.08) 0%, transparent 70%);
+  }
+  .footer-cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .footer-cta-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--green-light); font-weight: 600; margin-bottom: 20px;
+  }
+  .footer-cta-label::before, .footer-cta-label::after {
+    content: ''; flex: 1; height: 1px; width: 24px; background: var(--green-light); opacity: 0.5;
+  }
+  .footer-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300; color: #fff; margin-bottom: 18px; line-height: 1.2;
+  }
+  .footer-cta-title em { font-style: italic; color: var(--gold-light); }
+  .footer-cta-sub {
+    font-size: 0.95rem; color: rgba(255,255,255,0.65);
+    line-height: 1.8; margin-bottom: 44px;
+  }
+  .footer-cta-actions {
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-white {
+    background: #fff; color: var(--navy);
+    padding: 15px 34px; border: none; border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-white:hover { background: var(--gold-pale); transform: translateY(-2px); }
+  .btn-outline-white {
+    background: transparent; color: rgba(255,255,255,0.85);
+    padding: 15px 34px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-outline-white:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+  }
+  .footer-cta-contact {
+    margin-top: 40px;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+  .footer-cta-contact a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-cta-contact a:hover { color: var(--gold-light); }
+
+  /* ═══════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════ */
+  footer {
+    background: var(--navy-deep, #07182E);
+    padding: 64px 0 32px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 600;
+    color: #fff; margin-bottom: 14px;
+  }
+  .footer-brand-name em { font-style: normal; color: var(--green-light); }
+  .footer-tagline {
+    font-size: 0.82rem; color: rgba(255,255,255,0.45);
+    line-height: 1.7; max-width: 270px; margin-bottom: 24px;
+  }
+  .footer-contact-links { display: flex; flex-direction: column; gap: 8px; }
+  .footer-contact-links a {
+    font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    text-decoration: none; transition: color 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .footer-contact-links a:hover { color: var(--gold-light); }
+  .footer-col-title {
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 18px; font-weight: 600;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a {
+    font-size: 0.81rem; color: rgba(255,255,255,0.5);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: #fff; }
+  .footer-bottom {
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-legal {
+    font-size: 0.7rem; color: rgba(255,255,255,0.3);
+    line-height: 1.7;
+  }
+  .footer-legal a { color: inherit; text-decoration: none; }
+  .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+  .footer-socials { display: flex; gap: 10px; }
+  .social-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ═══════════════════════════════════════
+     SCROLL ANIMATIONS
+  ═══════════════════════════════════════ */
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left {
+    opacity: 0; transform: translateX(-22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right {
+    opacity: 0; transform: translateX(22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    nav, nav.scrolled { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .container, .container-wide { padding: 0 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-content { padding: 130px 24px 60px; }
+    .hero-visual { display: none; }
+    .intro-grid, .surrogacy-grid, .pricing-grid,
+    .about-grid, .journey-inner { grid-template-columns: 1fr; gap: 48px; }
+    .pillars, .testimonials-track { grid-template-columns: 1fr; }
+    .paths-grid { grid-template-columns: repeat(2,1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .testimonials-header { grid-template-columns: 1fr; }
+    .services-callout { grid-template-columns: 1fr; }
+    .journey-left { position: static; }
+    .locations-inner { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════ -->
+<nav id="mainNav">
+<a href="#" class="nav-logo">
+  <img src="logo-ingenes.png" alt="Ingenes" style="height: 80px; width: auto;">
+</a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#subrogacion">Subrogación</a></li>
+    <li><a href="#costos">Costos</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#agenda" class="nav-cta">Agenda tu consulta</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Líderes en Reproducción Asistida · Latinoamérica</span>
+    </div>
+
+    <h1 class="hero-title">
+      La ciencia reproductiva<br>
+      que el mundo viene<br>
+      a buscar a <em>México</em>
+    </h1>
+
+    <p class="hero-subtitle">
+      Somos el único instituto que integra salud reproductiva, genética y medicina regenerativa bajo un mismo techo. Nos respaldan <strong>20 años de experiencia</strong>, certificaciones internacionales, y la confianza de pacientes que viajan desde <strong>más de 40 países</strong>.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#agenda" class="btn-primary">Quiero tener un bebé →</a>
+      <a href="#servicios" class="btn-outline">Conoce nuestros servicios</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-image-wrap">
+      <!-- IMAGEN HERO PRINCIPAL -->
+      <div class="hero-img img-placeholder">
+        <div class="img-placeholder-inner">
+          <div class="img-placeholder-icon">🖼</div>
+          <div class="img-placeholder-name">hero-principal.jpg</div>
+          <div class="img-placeholder-dims">460 × 520 px</div>
+          <div class="img-placeholder-desc">Pareja o mamá con bebé. Cálida, real, esperanzadora. Fondo neutro o clínica.</div>
+        </div>
+      </div>
+
+      <!-- Stat float 1 -->
+      <div class="hero-stat-float hero-stat-float-1">
+        <div class="float-badge">
+          <div class="float-dot"></div>
+          <span class="float-badge-text">Verificado</span>
+        </div>
+        <div class="float-number"><span class="accent">75,000</span></div>
+        <div class="float-label">Bebés nacidos</div>
+      </div>
+
+      <!-- Stat float 2 -->
+      <div class="hero-stat-float hero-stat-float-2">
+        <div class="float-number">40<span class="accent">+</span></div>
+        <div class="float-label">Países de origen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST BAR ══════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-scroll">
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ESHRE</strong> · Foro Científico Europeo</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text">Estadísticas certificadas <strong>legalmente</strong></span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ESR</strong> · Empresa Socialmente Responsable</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>Great Place to Work</strong> · Múltiples años</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>REDLARA</strong> · Máxima cert. Latinoamérica</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ASRM</strong> · Sociedad Líder Norteamérica</span></div>
+    <!-- duplicado para loop continuo -->
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ESHRE</strong> · Foro Científico Europeo</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text">Estadísticas certificadas <strong>legalmente</strong></span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ESR</strong> · Empresa Socialmente Responsable</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>Great Place to Work</strong> · Múltiples años</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>REDLARA</strong> · Máxima cert. Latinoamérica</span></div>
+    <div class="trust-item"><span class="trust-sep">◆</span><span class="trust-text"><strong>ASRM</strong> · Sociedad Líder Norteamérica</span></div>
+  </div>
+</div>
+
+<!-- ══ INTRO / STATS ══════════════════════ -->
+<section class="intro">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="reveal-left">
+        <div class="section-label">
+          <div class="section-label-line"></div>
+          <span>Quiénes somos</span>
+        </div>
+        <h2 class="section-title">El instituto más <em>premiado</em> de América Latina</h2>
+
+        <blockquote class="intro-quote">
+          "Cuando abrimos nuestras puertas en 2005, éramos un instituto de fertilidad en la Ciudad de México. Hoy somos otra cosa."
+        </blockquote>
+
+        <div class="intro-body">
+          <p>Hoy tenemos <strong>20 sucursales en dos países</strong>, investigamos y desarrollamos terapias que no existen en ningún otro instituto de la región, y hemos celebrado la llegada de más de <strong>75,000 bebés</strong>.</p>
+          <p>Recibimos pacientes de más de <strong>40 países</strong>. Nos avalan certificaciones internacionales, reconocimientos empresariales, y sobre todo, <strong>resultados</strong>.</p>
+        </div>
+
+        <div class="awards-row">
+          <div class="awards-title">Reconocimientos y certificaciones</div>
+          <div class="awards-list">
+            <div class="award-chip"><div class="award-chip-dot"></div>ESHRE · Europa</div>
+            <div class="award-chip is-green"><div class="award-chip-dot"></div>Estadísticas legalmente certificadas</div>
+            <div class="award-chip"><div class="award-chip-dot"></div>ESR · México</div>
+            <div class="award-chip is-green"><div class="award-chip-dot"></div>Great Place to Work</div>
+            <div class="award-chip"><div class="award-chip-dot"></div>REDLARA</div>
+            <div class="award-chip"><div class="award-chip-dot"></div>ASRM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="stats-grid">
+          <div class="stat-block">
+            <div class="stat-block-number">75<span class="stat-block-accent">,000</span></div>
+            <div class="stat-block-label">Bebés nacidos desde 2005</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-block-number">40<span class="stat-block-accent">+</span></div>
+            <div class="stat-block-label">Países de origen de pacientes</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-block-number">20<span class="stat-block-accent">+</span></div>
+            <div class="stat-block-label">Sucursales en México y EE.UU.</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-block-number">20</div>
+            <div class="stat-block-label">Años de experiencia clínica e investigación</div>
+          </div>
+        </div>
+
+        <!-- IMAGEN GALERÍA PEQUEÑA -->
+        <div style="margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div class="img-placeholder" style="height:140px; border-radius:4px;">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-name">laboratorio.jpg</div>
+              <div class="img-placeholder-dims">280 × 140 px</div>
+              <div class="img-placeholder-desc">Laboratorio o tecnología Ingenes</div>
+            </div>
+          </div>
+          <div class="img-placeholder" style="height:140px; border-radius:4px;">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-name">especialista.jpg</div>
+              <div class="img-placeholder-dims">280 × 140 px</div>
+              <div class="img-placeholder-desc">Especialista en consulta o procedimiento</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══════════════════════════ -->
+<section class="services" id="servicios">
+  <div class="container">
+    <div class="services-header reveal">
+      <div class="section-label">
+        <div class="section-label-line"></div>
+        <span>Nuestras especialidades</span>
+      </div>
+      <h2 class="section-title">Tres ramas de la medicina.<br><em>Un solo instituto.</em></h2>
+      <p class="services-intro">La mayoría de los centros de fertilidad en el mundo ofrecen servicios de reproducción asistida… y nada más. Ingenes integra tres ramas de la medicina bajo un mismo techo. Eso nos permite resolver casos que otros centros no pueden.</p>
+    </div>
+
+    <div class="pillars">
+      <!-- PILAR 1 -->
+      <div class="pillar reveal">
+        <div class="pillar-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">medicina-reproductiva.jpg</div>
+            <div class="img-placeholder-dims">380 × 200 px</div>
+            <div class="img-placeholder-desc">FIV, procedimiento o pareja en consulta</div>
+          </div>
+        </div>
+        <div class="pillar-body-wrap">
+          <div class="pillar-number-badge">01 · Reproducción</div>
+          <h3 class="pillar-title">Medicina Reproductiva</h3>
+          <p class="pillar-desc">FIV tradicional, FIV con ICSI y PICSI, inseminación, preservación de óvulos, donación de gametos. Todo el espectro, de baja y alta complejidad.</p>
+          <div class="pillar-tags">
+            <span class="pillar-tag">FIV / ICSI</span>
+            <span class="pillar-tag">Inseminación</span>
+            <span class="pillar-tag">Preservación</span>
+            <span class="pillar-tag">Donación</span>
+          </div>
+          <a href="#" class="pillar-link">Conoce más →</a>
+        </div>
+      </div>
+
+      <!-- PILAR 2 -->
+      <div class="pillar reveal">
+        <div class="pillar-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">medicina-regenerativa.jpg</div>
+            <div class="img-placeholder-dims">380 × 200 px</div>
+            <div class="img-placeholder-desc">Tecnología, microscopio, células madre o laboratorio avanzado</div>
+          </div>
+        </div>
+        <div class="pillar-body-wrap">
+          <div class="pillar-number-badge">02 · Regenerativa</div>
+          <h3 class="pillar-title">Medicina Regenerativa y Genética</h3>
+          <p class="pillar-desc">Ovagen® regenera el tejido ovárico; Endogen® restaura endometrio dañado. IVF MORE® restaura óvulos a nivel mitocondrial. Tecnología exclusiva del Instituto Regenera®, pioneros a nivel mundial.</p>
+          <div class="pillar-tags">
+            <span class="pillar-tag">Ovagen®</span>
+            <span class="pillar-tag">Endogen®</span>
+            <span class="pillar-tag">IVF MORE®</span>
+            <span class="pillar-tag">PGT-A / PGT-M</span>
+          </div>
+          <a href="#" class="pillar-link">Conoce más →</a>
+        </div>
+      </div>
+
+      <!-- PILAR 3 -->
+      <div class="pillar reveal">
+        <div class="pillar-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">medicina-metabolica.jpg</div>
+            <div class="img-placeholder-dims">380 × 200 px</div>
+            <div class="img-placeholder-desc">Nutrición, bienestar, consulta metabólica o estilo de vida saludable</div>
+          </div>
+        </div>
+        <div class="pillar-body-wrap">
+          <div class="pillar-number-badge">03 · Metabólica</div>
+          <h3 class="pillar-title">Medicina Metabólica</h3>
+          <p class="pillar-desc">Evaluamos y optimizamos cómo tu cuerpo procesa la energía: nutrición, perfil hormonal, inflamación, resistencia a la insulina. Un cuerpo metabólicamente preparado responde mejor a los tratamientos.</p>
+          <div class="pillar-tags">
+            <span class="pillar-tag">Nutrición</span>
+            <span class="pillar-tag">SOP</span>
+            <span class="pillar-tag">Climaterio</span>
+            <span class="pillar-tag">Longevidad</span>
+          </div>
+          <a href="#" class="pillar-link">Conoce más →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-callout reveal">
+      <p class="callout-text">Si llegaste con múltiples FIVs fallidas, si te dijeron que no hay opciones con tus propios óvulos, si tu endometrio no responde a tratamientos convencionales, <em>en Ingenes hay herramientas que probablemente nadie más te ha ofrecido.</em></p>
+      <div>
+        <a href="#" class="btn-white" style="white-space:nowrap">Descubre tecnologías exclusivas →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SURROGACY ══════════════════════════ -->
+<section class="surrogacy" id="subrogacion">
+  <div class="container">
+    <div class="surrogacy-grid">
+      <div class="reveal-right">
+        <div class="surrogacy-image-wrap">
+          <!-- IMAGEN SUBROGACIÓN -->
+          <div class="surrogacy-img img-placeholder">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-name">subrogacion-familia.jpg</div>
+              <div class="img-placeholder-dims">520 × 480 px</div>
+              <div class="img-placeholder-desc">Familia diversa, gestante, o bebé recién nacido con padres. Imagen cálida e inclusiva.</div>
+            </div>
+          </div>
+          <div class="surrogacy-badge">
+            <div class="surrogacy-badge-title">Legal en México</div>
+            <div class="surrogacy-badge-sub">Regulada · Protegida</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-left">
+        <div class="section-label green">
+          <div class="section-label-line"></div>
+          <span>Subrogación Gestacional</span>
+        </div>
+        <h2 class="section-title">Uno de los programas de subrogación más <em>completos del mundo</em></h2>
+        <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.8;margin-top:16px;">México es uno de los pocos países donde la subrogación gestacional es legal y está regulada. La ley protege a padres intencionales, gestante y bebé. Sin restricciones por orientación sexual o estado civil.</p>
+
+        <div class="covers-list">
+          <div class="covers-item"><span class="covers-check">◆</span>Selección y evaluación de la gestante</div>
+          <div class="covers-item"><span class="covers-check">◆</span>Fecundación In Vitro completa</div>
+          <div class="covers-item"><span class="covers-check">◆</span>Acompañamiento legal de principio a fin</div>
+          <div class="covers-item"><span class="covers-check">◆</span>Seguimiento médico del embarazo</div>
+          <div class="covers-item"><span class="covers-check">◆</span>Coordinación para pacientes internacionales</div>
+        </div>
+
+        <div class="country-block" style="margin-top:28px;">
+          <div class="country-block-title">Contexto global · Legalidad por país</div>
+          <div class="country-item">
+            <span class="country-flag">🇩🇪🇫🇷🇮🇹🇪🇸</span>
+            <span class="country-name">Alemania, Francia, Italia, España</span>
+            <span class="country-status status-red">Prohibida</span>
+          </div>
+          <div class="country-item">
+            <span class="country-flag">🇺🇸</span>
+            <span class="country-name">Estados Unidos</span>
+            <span class="country-status status-yellow">+$250,000 USD</span>
+          </div>
+          <div class="country-item">
+            <span class="country-flag">🇲🇽</span>
+            <span class="country-name">México · Ingenes</span>
+            <span class="country-status status-green">Legal · Regulada · Accesible</span>
+          </div>
+        </div>
+
+        <div class="diversity-pill">
+          <span class="diversity-pill-icon">🌈</span>
+          <span>Recibimos a <strong>parejas heterosexuales, parejas de hombres, parejas de mujeres, mujeres solas y hombres solos.</strong> La inclusión no es una política. Es nuestra práctica.</span>
+        </div>
+
+        <div style="margin-top:32px;">
+          <a href="#" class="btn-primary green">Conoce el programa de subrogación →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══════════════════════════ -->
+<section class="pricing" id="costos">
+  <div class="container">
+    <div class="pricing-grid">
+      <div>
+        <div class="section-label reveal">
+          <div class="section-label-line"></div>
+          <span>Tecnología y costos</span>
+        </div>
+        <h2 class="section-title reveal">Tecnología de nivel mundial.<br><em>Costos que solo México puede ofrecer.</em></h2>
+        <p class="reveal" style="font-size:0.95rem;color:var(--text-muted);line-height:1.8;max-width:540px;">Operamos laboratorios con certificación internacional, nuestros médicos se formaron en las mejores instituciones, y desarrollamos tecnología propia que no existe en ningún otro centro de la región. La diferencia está en estar en México.</p>
+
+        <div class="value-props">
+          <div class="value-prop reveal">
+            <div class="value-prop-icon">💎</div>
+            <div class="value-prop-text">
+              <h4>El precio que cotizamos es el precio que pagas</h4>
+              <p>Sin cargos ocultos. Sin sorpresas al final del proceso. Precio cerrado desde el inicio.</p>
+            </div>
+          </div>
+          <div class="value-prop reveal">
+            <div class="value-prop-icon">🔁</div>
+            <div class="value-prop-text">
+              <h4>Garantía de devolución de inversión</h4>
+              <p>En nuestros Programas Multiciclo Plus, si no logramos que tengas a tu bebé, devolvemos tu inversión completa.</p>
+            </div>
+          </div>
+          <div class="value-prop reveal">
+            <div class="value-prop-icon">📋</div>
+            <div class="value-prop-text">
+              <h4>Opciones de financiamiento disponibles</h4>
+              <p>Porque el sueño de tener una familia no debería verse limitado por el acceso al capital inicial.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="guarantee-card">
+          <div class="guarantee-badge-wrap">🏆</div>
+          <h3 class="guarantee-title">Programas Multiciclo Plus</h3>
+          <p class="guarantee-body">Nuestro compromiso más alto. Si no logramos que tengas a tu bebé, <strong>devolvemos tu inversión completa</strong>. Así de seguros estamos de lo que hacemos.</p>
+          <a href="#" class="btn-white" style="width:100%;justify-content:center;display:flex;">Ver programas y costos →</a>
+          <p class="guarantee-note">También contamos con financiamiento flexible.<br>Consulta condiciones con tu coordinador.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ JOURNEY ══════════════════════════ -->
+<section class="journey">
+  <div class="container">
+    <div class="journey-inner">
+      <div class="journey-left reveal-left">
+        <div class="section-label green">
+          <div class="section-label-line"></div>
+          <span>Cómo funciona</span>
+        </div>
+        <h2 class="section-title">Tu proceso, paso a paso.</h2>
+        <p class="journey-subtitle">Ya sea que viajes desde otra ciudad de México o desde otro país, el proceso es el mismo. Nos encargamos de que tu única preocupación sea tu tratamiento.</p>
+
+        <!-- IMAGEN TURISMO MÉDICO -->
+        <div class="journey-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">turismo-medico.jpg</div>
+            <div class="img-placeholder-dims">480 × 360 px</div>
+            <div class="img-placeholder-desc">Paciente internacional llegando, ciudad de México, aeropuerto o clínica con bienvenida.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="steps-track">
+          <div class="step">
+            <div class="step-number">01</div>
+            <div class="step-content">
+              <div class="step-tag">Inicio</div>
+              <h3 class="step-title">Consulta virtual</h3>
+              <p class="step-body">En casa y en tu idioma. Con un especialista. Evaluamos tu caso, te damos un diagnóstico preliminar y un plan con costos.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">02</div>
+            <div class="step-content">
+              <div class="step-tag">Planificación</div>
+              <h3 class="step-title">Plan y cotización</h3>
+              <p class="step-body">Recibes por escrito: tratamiento recomendado, timeline, y precio cerrado sin sorpresas.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">03</div>
+            <div class="step-content">
+              <div class="step-tag">Logística</div>
+              <h3 class="step-title">Coordinación de viaje</h3>
+              <p class="step-body">Si necesitas ayuda con vuelos, hotel y transporte, la ofrecemos. Si prefieres organizarlo tú, te damos las recomendaciones.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">04</div>
+            <div class="step-content">
+              <div class="step-tag">Bienvenida</div>
+              <h3 class="step-title">Llegada</h3>
+              <p class="step-body">Un coordinador que habla tu idioma te acompaña desde el aeropuerto. Conoce tu caso, tu cultura y tu proceso.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">05</div>
+            <div class="step-content">
+              <div class="step-tag">Tratamiento</div>
+              <h3 class="step-title">Tratamiento y seguimiento</h3>
+              <p class="step-body">Realizamos el tratamiento en México y coordinamos seguimiento en tu ciudad de origen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PATHS ══════════════════════════ -->
+<section class="paths">
+  <div class="container">
+    <div class="paths-header reveal">
+      <div class="section-label">
+        <div class="section-label-line"></div>
+        <span>Tu camino</span>
+      </div>
+      <h2 class="section-title">Un camino para <em>cada situación.</em></h2>
+      <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.8;max-width:560px;margin-top:14px;">Cada persona llega a Ingenes en un momento diferente. Conoce la opción que mejor describe tu situación.</p>
+    </div>
+
+    <div class="paths-grid">
+      <div class="path-card reveal">
+        <div class="path-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">camino-bebe.jpg</div>
+            <div class="img-placeholder-dims">220 × 120 px</div>
+            <div class="img-placeholder-desc">Pareja o persona que quiere concebir</div>
+          </div>
+        </div>
+        <div class="path-title">Quiero ser mamá o papá</div>
+        <div class="path-desc">Evaluamos tu caso y diseñamos el camino más directo hacia tu bebé.</div>
+      </div>
+      <div class="path-card reveal">
+        <div class="path-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">camino-preservar.jpg</div>
+            <div class="img-placeholder-dims">220 × 120 px</div>
+            <div class="img-placeholder-desc">Mujer joven o profesional, preservación de fertilidad</div>
+          </div>
+        </div>
+        <div class="path-title">Preservar mi fertilidad</div>
+        <div class="path-desc">Congela óvulos, esperma o embriones. Protege tus opciones a tu ritmo.</div>
+      </div>
+      <div class="path-card reveal">
+        <div class="path-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">camino-diversas.jpg</div>
+            <div class="img-placeholder-dims">220 × 120 px</div>
+            <div class="img-placeholder-desc">Familia diversa, pareja LGBTQ+ con bebé o sonrientes</div>
+          </div>
+        </div>
+        <div class="path-title">Familias diversas</div>
+        <div class="path-desc">Parejas de hombres, parejas de mujeres, madres y padres solos. Rutas claras y acompañadas.</div>
+      </div>
+      <div class="path-card reveal">
+        <div class="path-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">camino-regenerativa.jpg</div>
+            <div class="img-placeholder-dims">220 × 120 px</div>
+            <div class="img-placeholder-desc">Laboratorio o imagen de tecnología avanzada</div>
+          </div>
+        </div>
+        <div class="path-title">Medicina regenerativa</div>
+        <div class="path-desc">Ovagen®, Endogen®, IVF MORE®. Tecnología exclusiva para casos complejos.</div>
+      </div>
+      <div class="path-card reveal">
+        <div class="path-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">camino-subrogacion.jpg</div>
+            <div class="img-placeholder-dims">220 × 120 px</div>
+            <div class="img-placeholder-desc">Padres con bebé recién nacido o gestante sonriente</div>
+          </div>
+        </div>
+        <div class="path-title">Subrogación</div>
+        <div class="path-desc">Legal en México. Programa integral para todas las configuraciones familiares.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════ -->
+<section class="testimonials">
+  <div class="container">
+    <div class="testimonials-header reveal">
+      <div>
+        <div class="section-label">
+          <div class="section-label-line"></div>
+          <span>Historias reales</span>
+        </div>
+        <h2 class="section-title">75,000 finales felices.<br><em>Cada uno con su propio camino.</em></h2>
+      </div>
+      <div class="testimonials-count">
+        <div class="testimonials-count-number">75<span>,000</span></div>
+        <div class="testimonials-count-label">Bebés nacidos</div>
+      </div>
+    </div>
+
+    <div class="testimonials-track">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">testimonio-maria.jpg</div>
+            <div class="img-placeholder-dims">380 × 180 px</div>
+            <div class="img-placeholder-desc">María de los Ángeles con su bebé o en consulta. Emotiva, real.</div>
+          </div>
+        </div>
+        <div class="testimonial-body">
+          <div class="testimonial-name">María de los Ángeles</div>
+          <div class="testimonial-subtitle">Los sueños más difíciles se cumplen</div>
+          <p class="testimonial-quote">El momento en que me dijeron que estaba embarazada fue un momento wow, tras casi 20 años de lucha.</p>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <div class="testimonial-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">testimonio-susana-ericka.jpg</div>
+            <div class="img-placeholder-dims">380 × 180 px</div>
+            <div class="img-placeholder-desc">Susana y Ericka juntas con su bebé. Imagen de amor y familia.</div>
+          </div>
+        </div>
+        <div class="testimonial-body">
+          <div class="testimonial-name">Susana y Ericka</div>
+          <div class="testimonial-subtitle">Una historia hecha de amor y decisión</div>
+          <p class="testimonial-quote">La maternidad para nosotras no fue un accidente ni un capricho: fue un acto de amor, libertad y valentía.</p>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <div class="testimonial-image img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-name">testimonio-itzel-armando.jpg</div>
+            <div class="img-placeholder-dims">380 × 180 px</div>
+            <div class="img-placeholder-desc">Itzel y Armando con Yareth. Familia feliz, imagen cálida.</div>
+          </div>
+        </div>
+        <div class="testimonial-body">
+          <div class="testimonial-name">Itzel y Armando</div>
+          <div class="testimonial-subtitle">Nunca pierdan la fe</div>
+          <p class="testimonial-quote">Después de dos años intentando tener un bebé, con varias pérdidas en el camino... Yareth llegó y transformó nuestras vidas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;" class="reveal">
+      <a href="#" class="btn-outline">Ver más historias</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══════════════════════════ -->
+<section class="about" id="nosotros">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal-left">
+        <!-- IMAGEN HISTORIA INGENES -->
+        <div class="about-image">
+          <div class="img-placeholder" style="width:100%;height:500px;border-radius:4px;">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-name">ingenes-20-anos.jpg</div>
+              <div class="img-placeholder-dims">560 × 500 px</div>
+              <div class="img-placeholder-desc">Imagen institucional poderosa: equipo Ingenes, fachada emblemática, o foto histórica de los 20 años. Formato vertical.</div>
+            </div>
+          </div>
+          <div class="about-image-caption">
+            <div class="about-image-caption-number">2005–2025</div>
+            <div class="about-image-caption-text">20 años haciendo posible lo extraordinario</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-right">
+        <div class="section-label">
+          <div class="section-label-line"></div>
+          <span>Nuestra historia</span>
+        </div>
+        <h2 class="section-title">Más de 20 años<br>haciendo posible <em>lo extraordinario.</em></h2>
+        <div class="about-body">
+          <p>Cuando abrimos nuestras puertas en 2005, éramos un instituto de fertilidad en la Ciudad de México. Hoy tenemos <strong>20 sucursales en dos países</strong>, investigamos y desarrollamos terapias que no existen en ningún otro instituto de la región.</p>
+          <p>Hemos celebrado la llegada de más de <strong>75,000 bebés</strong> y recibimos pacientes de más de <strong>40 países</strong>. Lo que nos mueve hoy es lo mismo que nos movió el primer día.</p>
+        </div>
+
+        <div class="milestones">
+          <div class="milestone">
+            <div class="milestone-year">2005</div>
+            <div class="milestone-text">Apertura del primer instituto en Ciudad de México.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-year">2010</div>
+            <div class="milestone-text">Expansión a múltiples sucursales. Primeros pacientes internacionales sistematizados.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-year">2015</div>
+            <div class="milestone-text">Creación del Instituto Regenera®. Desarrollo de Ovagen® y Endogen®.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-year">2020</div>
+            <div class="milestone-text">Primer instituto de LatAm en certificar estadísticas de éxito legalmente.</div>
+          </div>
+          <div class="milestone">
+            <div class="milestone-year">2025</div>
+            <div class="milestone-text">75,000 bebés nacidos. 20+ sucursales en México y EE.UU. 40+ países de origen.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:36px;">
+          <a href="#" class="btn-primary">Conoce nuestra historia completa →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER CTA ══════════════════════ -->
+<section class="footer-cta" id="agenda">
+  <div class="container">
+    <div class="footer-cta-inner reveal">
+      <div class="footer-cta-label">Tu próximo paso</div>
+      <h2 class="footer-cta-title">Tu camino empieza<br>con <em>una conversación.</em></h2>
+      <p class="footer-cta-sub">En casa y en tu idioma. Con un especialista que conoce tu caso. Sin compromiso, sin costos adicionales.</p>
+      <div class="footer-cta-actions">
+        <a href="#" class="btn-white">Quiero tener un bebé →</a>
+        <a href="#" class="btn-outline-white">Quiero evaluar mi fertilidad</a>
+      </div>
+      <div class="footer-cta-contact">
+        <a href="tel:18886279747">📞 1 888 627-9747</a> &nbsp;·&nbsp;
+        <a href="sms:12058923221">💬 1 205 892-3221 (SMS)</a> &nbsp;·&nbsp;
+        <a href="tel:8006007001">☎️ 800 600-7001</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">INGE<em>NES</em></div>
+        <p class="footer-tagline">Instituto de Salud Reproductiva, Genética y Medicina Regenerativa. Líderes en América Latina desde 2005.</p>
+        <div class="footer-contact-links">
+          <a href="tel:18886279747">📞 1 888 627-9747 (Llamadas EE.UU.)</a>
+          <a href="tel:8006007001">☎️ 800 600-7001 (México)</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Inicia tu camino</div>
+        <ul class="footer-links">
+          <li><a href="#">Quiero tener un bebé</a></li>
+          <li><a href="#">Quiero preservar / congelar</a></li>
+          <li><a href="#">Quiero donar</a></li>
+          <li><a href="#">Vengo del extranjero</a></li>
+          <li><a href="#">LGBTQ+</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#">Fecundación in Vitro</a></li>
+          <li><a href="#">Programas Multiciclo</a></li>
+          <li><a href="#">Gestación Subrogada</a></li>
+          <li><a href="#">Medicina Regenerativa</a></li>
+          <li><a href="#">Medicina Metabólica</a></li>
+          <li><a href="#">Costos y Financiamiento</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Institución</div>
+        <ul class="footer-links">
+          <li><a href="#">Sobre Ingenes</a></li>
+          <li><a href="#">20 Años</a></li>
+          <li><a href="#">Sucursales</a></li>
+          <li><a href="#">Especialistas</a></li>
+          <li><a href="#">Tasa de Éxito</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        ©2025 Instituto Ingenes, Fertilidad & Genética · Permiso Cofepris: 133300201A1156 · Dr. Felipe Camargo Cédula SEP: 4452501<br>
+        <a href="#">Aviso de Privacidad</a> &nbsp;·&nbsp; <a href="#">Términos y Condiciones</a> &nbsp;·&nbsp; <a href="#">Aviso de Prácticas de Privacidad</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Instagram">in</a>
+        <a href="#" class="social-btn" title="YouTube">▶</a>
+        <a href="#" class="social-btn" title="TikTok">♪</a>
+        <a href="#" class="social-btn" title="LinkedIn">Li</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+
+  // Intersection Observer — reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Unobserve after first trigger for performance
+        // observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .step').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Stagger delays for grid children
+  const staggerGroups = [
+    '.pillars .pillar',
+    '.stats-grid .stat-block',
+    '.testimonials-track .testimonial-card',
+    '.paths-grid .path-card',
+    '.awards-list .award-chip',
+  ];
+  staggerGroups.forEach(selector => {
+    document.querySelectorAll(selector).forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.09}s`;
+    });
+  });
+
+  // Steps stagger
+  document.querySelectorAll('.step').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.1}s`;
+  });
+</script>
+</body>
+</html>

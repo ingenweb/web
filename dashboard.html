@@ -1,0 +1,557 @@
+
+<h2 class="sr-only">Dashboard completo tipo Power BI — Clínica de fertilidad. Tendencias de leads, PVR, TAL y retención por sucursal, campaña, medio, landing y código postal.</h2>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.db{padding:0.75rem 0.5rem}
+/* TOP BAR */
+.topbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:0.75rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px}
+.topbar label{font-size:11px;color:var(--color-text-secondary);white-space:nowrap}
+.topbar select{font-size:12px;padding:3px 6px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
+.sep{width:1px;height:24px;background:var(--color-border-tertiary);margin:0 4px}
+/* NAV TABS */
+.navtabs{display:flex;gap:3px;margin-bottom:0.75rem;flex-wrap:wrap;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:4px}
+.ntab{padding:5px 12px;font-size:12px;border:0.5px solid transparent;border-radius:6px 6px 0 0;cursor:pointer;background:transparent;color:var(--color-text-secondary);font-weight:400}
+.ntab.on{background:var(--color-background-primary);border-color:var(--color-border-secondary);border-bottom-color:transparent;color:var(--color-text-primary);font-weight:500}
+/* KPI ROW */
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:0.75rem}
+.kpi{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px;border-left:3px solid transparent}
+.kpi.blue{border-left-color:#185FA5}.kpi.green{border-left-color:#1A7A4A}.kpi.amber{border-left-color:#BA7517}.kpi.red{border-left-color:#C0392B}.kpi.teal{border-left-color:#0B6E7A}
+.kl{font-size:10px;color:var(--color-text-secondary);margin-bottom:3px}
+.kv{font-size:20px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.ks{font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+/* PANELS */
+.panel{display:none}.panel.on{display:block}
+/* 2-col grid */
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px}
+.card h3{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+/* CHART WRAP */
+.cw{position:relative;width:100%}
+/* INSIGHT BOX */
+.ins{border-radius:var(--border-radius-md);padding:8px 10px;font-size:11px;line-height:1.6;margin-bottom:6px;border-left:3px solid}
+.ins.red{background:#FCEBEB;border-color:#C0392B;color:#791F1F}
+.ins.green{background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.ins.amber{background:#FAEEDA;border-color:#BA7517;color:#633806}
+.ins.blue{background:#E6F1FB;border-color:#185FA5;color:#0C447C}
+.ins.teal{background:#E1F5EE;border-color:#0F6E56;color:#085041}
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{padding:5px 7px;font-size:10px;font-weight:500;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);text-align:left;white-space:nowrap}
+.tbl td{padding:4px 7px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);white-space:nowrap}
+.tbl tr:last-child td{border:none}
+.badge{display:inline-block;padding:1px 6px;border-radius:8px;font-size:10px;font-weight:500}
+.bhi{background:#EAF3DE;color:#3B6D11}.bmid{background:#FAEEDA;color:#854F0B}.blo{background:#FCEBEB;color:#A32D2D}
+/* BAR INLINE */
+.btrack{display:inline-block;width:70px;height:7px;background:var(--color-background-secondary);border-radius:3px;vertical-align:middle;margin-left:4px}
+.bfill{height:100%;border-radius:3px}
+/* HEAT CELL */
+.heat0{background:#FCEBEB;color:#A32D2D}
+.heat1{background:#FDF5E6;color:#854F0B}
+.heat2{background:#EAF3DE;color:#3B6D11}
+.heat3{background:#E6F1FB;color:#0C447C}
+/* Toggle metric */
+.mtabs{display:flex;gap:3px;margin-bottom:8px;flex-wrap:wrap}
+.mtab{padding:3px 8px;font-size:11px;border:0.5px solid var(--color-border-secondary);border-radius:4px;cursor:pointer;background:transparent;color:var(--color-text-secondary)}
+.mtab.on{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500}
+</style>
+
+<div class="db">
+
+<!-- TOP FILTERS -->
+<div class="topbar">
+  <label>Sucursal:</label>
+  <select id="fSuc" onchange="refresh()">
+    <option value="all">Todas</option>
+    <option value="Houston">Houston</option>
+    <option value="Orange County">Orange County</option>
+  </select>
+  <div class="sep"></div>
+  <label>Período:</label>
+  <select id="fPeriod" onchange="refresh()">
+    <option value="all">Todo (2023–2026)</option>
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+    <option value="2026">2026 (parcial)</option>
+  </select>
+  <div class="sep"></div>
+  <label>Vista:</label>
+  <select id="fView" onchange="refresh()">
+    <option value="pvr">PVR (primeras visitas)</option>
+    <option value="tal">TAL — Lead/PVR %</option>
+    <option value="ret">Retención %</option>
+    <option value="leads">Leads</option>
+  </select>
+</div>
+
+<!-- NAV TABS -->
+<div class="navtabs">
+  <button class="ntab on" onclick="showTab('tendencia',this)">Tendencia</button>
+  <button class="ntab" onclick="showTab('campanas',this)">Campañas</button>
+  <button class="ntab" onclick="showTab('medios',this)">Medios</button>
+  <button class="ntab" onclick="showTab('landing',this)">Landings</button>
+  <button class="ntab" onclick="showTab('geo',this)">Geo / ZIP</button>
+  <button class="ntab" onclick="showTab('insights',this)">Insights</button>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpis" id="kpiRow"></div>
+
+<!-- ===== TAB: TENDENCIA ===== -->
+<div id="tab-tendencia" class="panel on">
+  <div class="g2">
+    <div class="card">
+      <h3>PVR por mes y sucursal</h3>
+      <div class="cw" style="height:210px"><canvas id="cTend" role="img" aria-label="PVR mensual por sucursal"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>TAL — Tasa lead→PVR (%) por sucursal</h3>
+      <div class="cw" style="height:210px"><canvas id="cTAL" role="img" aria-label="Tasa conversión mensual"></canvas></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Retención PVR→Compra (%) por sucursal</h3>
+      <div class="cw" style="height:180px"><canvas id="cRet" role="img" aria-label="Tasa retención mensual"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Leads mensuales por sucursal</h3>
+      <div class="cw" style="height:180px"><canvas id="cLeads" role="img" aria-label="Leads mensuales"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: CAMPAÑAS ===== -->
+<div id="tab-campanas" class="panel">
+  <div class="g2">
+    <div class="card">
+      <h3>PVR mensual por campaña</h3>
+      <div class="mtabs" id="campMetricTabs">
+        <button class="mtab on" onclick="setCampMetric('pvr',this)">PVR</button>
+        <button class="mtab" onclick="setCampMetric('tal',this)">TAL %</button>
+        <button class="mtab" onclick="setCampMetric('leads',this)">Leads</button>
+      </div>
+      <div class="cw" style="height:220px"><canvas id="cCampTrend" role="img" aria-label="Tendencia campaña"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Desempeño por campaña y sucursal</h3>
+      <div style="overflow-x:auto;max-height:280px;overflow-y:auto">
+        <table class="tbl" id="tCamp">
+          <thead><tr><th>Campaña</th><th>Sucursal</th><th>Leads</th><th>PVR</th><th>TAL%</th><th>Ret%</th><th>Compras</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: MEDIOS ===== -->
+<div id="tab-medios" class="panel">
+  <div class="g2">
+    <div class="card">
+      <h3>TAL % por medio — tendencia mensual</h3>
+      <div class="mtabs" id="medMetricTabs">
+        <button class="mtab on" onclick="setMedMetric('tal',this)">TAL %</button>
+        <button class="mtab" onclick="setMedMetric('pvr',this)">PVR</button>
+        <button class="mtab" onclick="setMedMetric('leads',this)">Leads</button>
+      </div>
+      <div class="cw" style="height:220px"><canvas id="cMedTrend" role="img" aria-label="Tendencia por medio"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Ranking de medios por eficiencia</h3>
+      <div style="overflow-x:auto;max-height:280px;overflow-y:auto">
+        <table class="tbl" id="tMedios">
+          <thead><tr><th>Medio</th><th>Sucursal</th><th>Leads</th><th>PVR</th><th>TAL%</th><th>Ret%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: LANDINGS ===== -->
+<div id="tab-landing" class="panel">
+  <div class="g2">
+    <div class="card">
+      <h3>Top landings por PVR</h3>
+      <div id="landBars" style="display:flex;flex-direction:column;gap:5px;max-height:260px;overflow-y:auto"></div>
+    </div>
+    <div class="card">
+      <h3>Landings alta retención (&gt;20% Compra/PVR)</h3>
+      <div style="overflow-x:auto;max-height:260px;overflow-y:auto">
+        <table class="tbl" id="tLanding">
+          <thead><tr><th>Landing</th><th>Suc</th><th>Leads</th><th>PVR</th><th>TAL%</th><th>Ret%</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: GEO/ZIP ===== -->
+<div id="tab-geo" class="panel">
+  <div class="card" style="margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <h3 style="margin:0">Filtrar geo:</h3>
+      <select id="geoSuc" onchange="renderGeo()" style="font-size:11px;padding:2px 5px">
+        <option value="all">Ambas sucursales</option>
+        <option value="Houston">Houston</option>
+        <option value="Orange County">Orange County</option>
+      </select>
+      <select id="geoEst" onchange="renderGeo()" style="font-size:11px;padding:2px 5px">
+        <option value="all">Todos los estados</option>
+        <option value="Texas">Texas</option>
+        <option value="California">California</option>
+      </select>
+      <select id="geoClus" onchange="renderGeo()" style="font-size:11px;padding:2px 5px">
+        <option value="all">Todos los clusters</option>
+        <option value="5">Cluster 5 (mayor ingreso)</option>
+        <option value="4">Cluster 4</option>
+        <option value="3">Cluster 3</option>
+        <option value="2">Cluster 2</option>
+        <option value="1">Cluster 1</option>
+      </select>
+      <select id="geoOrd" onchange="renderGeo()" style="font-size:11px;padding:2px 5px">
+        <option value="pvr">Ord. por PVR</option>
+        <option value="ret">Ord. por Retención</option>
+        <option value="compras">Ord. por Compras</option>
+      </select>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Mapa de calor — Cluster vs Sucursal</h3>
+      <div id="heatClus"></div>
+    </div>
+    <div class="card">
+      <h3>Retención % por cluster</h3>
+      <div class="cw" style="height:180px"><canvas id="cClus" role="img" aria-label="Retención por cluster"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Top ZIPs — detalle completo</h3>
+    <div style="overflow-x:auto;max-height:280px;overflow-y:auto">
+      <table class="tbl" id="tZip">
+        <thead><tr><th>ZIP</th><th>Ciudad</th><th>Estado</th><th>Cluster</th><th>Sucursal</th><th>Leads</th><th>PVR</th><th>TAL%</th><th>Compras</th><th>Retención%</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: INSIGHTS ===== -->
+<div id="tab-insights" class="panel">
+  <div class="g2">
+    <div class="card">
+      <h3>Diagnóstico — ¿por qué cae el PVR?</h3>
+      <div class="ins red">▼ <strong>Houston: colapso desde dic 2025.</strong> TAL cayó de 7% (ago 2024) a 1.3% (mar 2026). La causa: leads de paid_us cayeron 57% y su conversión bajó de 3.7% a 1.4%. Houston pierde el doble que OC.</div>
+      <div class="ins amber">◈ <strong>paid_us: volumen sin calidad.</strong> 77,751 leads históricos, TAL 2.3%. Desde jun 2025 la TAL cayó de 4% a 1.4%. Las audiencias están quemadas o los creativos ya no resuenan.</div>
+      <div class="ins red">▼ <strong>Facebook: mínimo histórico.</strong> TAL pasó de 2.6% (2023) a 0.4% en mar 2026. 1,107 leads ese mes pero solo 4 PVRs. Costo por PVR astronómico.</div>
+      <div class="ins green">▲ <strong>Organic aguanta el tipo.</strong> TAL estable en 15–25%. En los peores meses (oct–dic 2025) sigue generando 20–40 PVRs. Es el canal más resiliente del portafolio.</div>
+    </div>
+    <div class="card">
+      <h3>Oportunidades de inversión</h3>
+      <div class="ins teal">★ <strong>Contact Center: 57% TAL, 23% retención.</strong> Con solo 30 leads/mes genera 16 PVRs. Si se escala a 150 leads/mes → ~86 PVRs adicionales. Mejor ROI del portafolio.</div>
+      <div class="ins green">▲ <strong>Orange County más resiliente.</strong> TAL de OC en mar 2026: 4.1% vs 1.3% de Houston. Mismo canal, misma campaña — pero OC convierte 3x más. Revisar agentes/doctores Houston.</div>
+      <div class="ins blue">◈ <strong>Web/direct: 21% TAL.</strong> Pacientes que llegan solas al sitio convierten 10x más que paid. SEO y contenido médico son palanca clave para 2025-2026.</div>
+      <div class="ins teal">★ <strong>TikTok OC: 18% TAL.</strong> Orange County en TikTok convierte al doble que Houston (8.5%). Audiencia joven en edad fértil — presupuesto subutilizado.</div>
+      <div class="ins amber">◈ <strong>Katy TX (77449/77433): 41-43% retención.</strong> Cluster 4-5. Cada paciente que llega tiene alta probabilidad de comprar. Foco de inversión geo específica.</div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <h3>Buyer Persona — retención</h3>
+      <div class="cw" style="height:160px"><canvas id="cBuyer" role="img" aria-label="Retención por buyer persona"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>TAL % por campaña (total)</h3>
+      <div class="cw" style="height:160px"><canvas id="cCampTAL" role="img" aria-label="TAL por campaña"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Estados — retención %</h3>
+      <div class="cw" style="height:160px"><canvas id="cStates" role="img" aria-label="Retención por estado"></canvas></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /db -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const SUC_MONTHLY = [{"YearMonth":"2023-01","Sucursal":"Houston","Leads":1315,"PVR":98,"Compras":6,"TAL":7.45,"Retencion":6.12},{"YearMonth":"2023-01","Sucursal":"Orange County","Leads":973,"PVR":59,"Compras":9,"TAL":6.06,"Retencion":15.25},{"YearMonth":"2023-02","Sucursal":"Houston","Leads":1024,"PVR":60,"Compras":5,"TAL":5.86,"Retencion":8.33},{"YearMonth":"2023-02","Sucursal":"Orange County","Leads":868,"PVR":47,"Compras":2,"TAL":5.41,"Retencion":4.26},{"YearMonth":"2023-03","Sucursal":"Houston","Leads":914,"PVR":75,"Compras":16,"TAL":8.21,"Retencion":21.33},{"YearMonth":"2023-03","Sucursal":"Orange County","Leads":762,"PVR":56,"Compras":7,"TAL":7.35,"Retencion":12.5},{"YearMonth":"2023-04","Sucursal":"Houston","Leads":906,"PVR":65,"Compras":9,"TAL":7.17,"Retencion":13.85},{"YearMonth":"2023-04","Sucursal":"Orange County","Leads":507,"PVR":45,"Compras":9,"TAL":8.88,"Retencion":20.0},{"YearMonth":"2023-05","Sucursal":"Houston","Leads":1181,"PVR":68,"Compras":16,"TAL":5.76,"Retencion":23.53},{"YearMonth":"2023-05","Sucursal":"Orange County","Leads":635,"PVR":56,"Compras":6,"TAL":8.82,"Retencion":10.71},{"YearMonth":"2023-06","Sucursal":"Houston","Leads":1595,"PVR":88,"Compras":14,"TAL":5.52,"Retencion":15.91},{"YearMonth":"2023-06","Sucursal":"Orange County","Leads":594,"PVR":41,"Compras":8,"TAL":6.9,"Retencion":19.51},{"YearMonth":"2023-07","Sucursal":"Houston","Leads":1939,"PVR":95,"Compras":13,"TAL":4.9,"Retencion":13.68},{"YearMonth":"2023-07","Sucursal":"Orange County","Leads":773,"PVR":52,"Compras":5,"TAL":6.73,"Retencion":9.62},{"YearMonth":"2023-08","Sucursal":"Houston","Leads":2136,"PVR":86,"Compras":8,"TAL":4.03,"Retencion":9.3},{"YearMonth":"2023-08","Sucursal":"Orange County","Leads":1012,"PVR":63,"Compras":13,"TAL":6.23,"Retencion":20.63},{"YearMonth":"2023-09","Sucursal":"Houston","Leads":2198,"PVR":95,"Compras":7,"TAL":4.32,"Retencion":7.37},{"YearMonth":"2023-09","Sucursal":"Orange County","Leads":933,"PVR":75,"Compras":14,"TAL":8.04,"Retencion":18.67},{"YearMonth":"2023-10","Sucursal":"Houston","Leads":2933,"PVR":115,"Compras":8,"TAL":3.92,"Retencion":6.96},{"YearMonth":"2023-10","Sucursal":"Orange County","Leads":955,"PVR":58,"Compras":0,"TAL":6.07,"Retencion":0},{"YearMonth":"2023-11","Sucursal":"Houston","Leads":2264,"PVR":82,"Compras":14,"TAL":3.62,"Retencion":17.07},{"YearMonth":"2023-11","Sucursal":"Orange County","Leads":852,"PVR":55,"Compras":11,"TAL":6.46,"Retencion":20.0},{"YearMonth":"2023-12","Sucursal":"Houston","Leads":2248,"PVR":62,"Compras":17,"TAL":2.76,"Retencion":27.42},{"YearMonth":"2023-12","Sucursal":"Orange County","Leads":1031,"PVR":28,"Compras":3,"TAL":2.72,"Retencion":10.71},{"YearMonth":"2024-01","Sucursal":"Houston","Leads":1872,"PVR":71,"Compras":17,"TAL":3.79,"Retencion":23.94},{"YearMonth":"2024-01","Sucursal":"Orange County","Leads":1424,"PVR":77,"Compras":18,"TAL":5.41,"Retencion":23.38},{"YearMonth":"2024-02","Sucursal":"Houston","Leads":1955,"PVR":57,"Compras":13,"TAL":2.92,"Retencion":22.81},{"YearMonth":"2024-02","Sucursal":"Orange County","Leads":1783,"PVR":68,"Compras":7,"TAL":3.81,"Retencion":10.29},{"YearMonth":"2024-03","Sucursal":"Houston","Leads":2092,"PVR":60,"Compras":14,"TAL":2.87,"Retencion":23.33},{"YearMonth":"2024-03","Sucursal":"Orange County","Leads":1500,"PVR":65,"Compras":12,"TAL":4.33,"Retencion":18.46},{"YearMonth":"2024-04","Sucursal":"Houston","Leads":1648,"PVR":68,"Compras":14,"TAL":4.13,"Retencion":20.59},{"YearMonth":"2024-04","Sucursal":"Orange County","Leads":1261,"PVR":80,"Compras":17,"TAL":6.34,"Retencion":21.25},{"YearMonth":"2024-05","Sucursal":"Houston","Leads":1761,"PVR":66,"Compras":17,"TAL":3.75,"Retencion":25.76},{"YearMonth":"2024-05","Sucursal":"Orange County","Leads":1203,"PVR":59,"Compras":16,"TAL":4.9,"Retencion":27.12},{"YearMonth":"2024-06","Sucursal":"Houston","Leads":2167,"PVR":92,"Compras":11,"TAL":4.25,"Retencion":11.96},{"YearMonth":"2024-06","Sucursal":"Orange County","Leads":2038,"PVR":97,"Compras":19,"TAL":4.76,"Retencion":19.59},{"YearMonth":"2024-07","Sucursal":"Houston","Leads":1873,"PVR":96,"Compras":21,"TAL":5.13,"Retencion":21.88},{"YearMonth":"2024-07","Sucursal":"Orange County","Leads":1727,"PVR":108,"Compras":14,"TAL":6.25,"Retencion":12.96},{"YearMonth":"2024-08","Sucursal":"Houston","Leads":1545,"PVR":107,"Compras":21,"TAL":6.93,"Retencion":19.63},{"YearMonth":"2024-08","Sucursal":"Orange County","Leads":1410,"PVR":107,"Compras":14,"TAL":7.59,"Retencion":13.08},{"YearMonth":"2024-09","Sucursal":"Houston","Leads":1421,"PVR":74,"Compras":15,"TAL":5.21,"Retencion":20.27},{"YearMonth":"2024-09","Sucursal":"Orange County","Leads":1160,"PVR":83,"Compras":27,"TAL":7.16,"Retencion":32.53},{"YearMonth":"2024-10","Sucursal":"Houston","Leads":1206,"PVR":64,"Compras":15,"TAL":5.31,"Retencion":23.44},{"YearMonth":"2024-10","Sucursal":"Orange County","Leads":1309,"PVR":52,"Compras":9,"TAL":3.97,"Retencion":17.31},{"YearMonth":"2024-11","Sucursal":"Houston","Leads":1428,"PVR":57,"Compras":15,"TAL":3.99,"Retencion":26.32},{"YearMonth":"2024-11","Sucursal":"Orange County","Leads":1292,"PVR":72,"Compras":17,"TAL":5.57,"Retencion":23.61},{"YearMonth":"2024-12","Sucursal":"Houston","Leads":1379,"PVR":57,"Compras":11,"TAL":4.13,"Retencion":19.3},{"YearMonth":"2024-12","Sucursal":"Orange County","Leads":1049,"PVR":61,"Compras":13,"TAL":5.82,"Retencion":21.31},{"YearMonth":"2025-01","Sucursal":"Houston","Leads":1491,"PVR":106,"Compras":20,"TAL":7.11,"Retencion":18.87},{"YearMonth":"2025-01","Sucursal":"Orange County","Leads":1166,"PVR":78,"Compras":21,"TAL":6.69,"Retencion":26.92},{"YearMonth":"2025-02","Sucursal":"Houston","Leads":1239,"PVR":79,"Compras":12,"TAL":6.38,"Retencion":15.19},{"YearMonth":"2025-02","Sucursal":"Orange County","Leads":1018,"PVR":82,"Compras":15,"TAL":8.06,"Retencion":18.29},{"YearMonth":"2025-03","Sucursal":"Houston","Leads":1294,"PVR":62,"Compras":18,"TAL":4.79,"Retencion":29.03},{"YearMonth":"2025-03","Sucursal":"Orange County","Leads":1225,"PVR":63,"Compras":10,"TAL":5.14,"Retencion":15.87},{"YearMonth":"2025-04","Sucursal":"Houston","Leads":1140,"PVR":56,"Compras":11,"TAL":4.91,"Retencion":19.64},{"YearMonth":"2025-04","Sucursal":"Orange County","Leads":1305,"PVR":84,"Compras":19,"TAL":6.44,"Retencion":22.62},{"YearMonth":"2025-05","Sucursal":"Houston","Leads":1217,"PVR":44,"Compras":8,"TAL":3.62,"Retencion":18.18},{"YearMonth":"2025-05","Sucursal":"Orange County","Leads":1108,"PVR":63,"Compras":17,"TAL":5.69,"Retencion":26.98},{"YearMonth":"2025-06","Sucursal":"Houston","Leads":1134,"PVR":59,"Compras":12,"TAL":5.2,"Retencion":20.34},{"YearMonth":"2025-06","Sucursal":"Orange County","Leads":925,"PVR":73,"Compras":9,"TAL":7.89,"Retencion":12.33},{"YearMonth":"2025-07","Sucursal":"Houston","Leads":1078,"PVR":47,"Compras":10,"TAL":4.36,"Retencion":21.28},{"YearMonth":"2025-07","Sucursal":"Orange County","Leads":830,"PVR":67,"Compras":18,"TAL":8.07,"Retencion":26.87},{"YearMonth":"2025-08","Sucursal":"Houston","Leads":885,"PVR":49,"Compras":17,"TAL":5.54,"Retencion":34.69},{"YearMonth":"2025-08","Sucursal":"Orange County","Leads":825,"PVR":49,"Compras":7,"TAL":5.94,"Retencion":14.29},{"YearMonth":"2025-09","Sucursal":"Houston","Leads":933,"PVR":50,"Compras":11,"TAL":5.36,"Retencion":22.0},{"YearMonth":"2025-09","Sucursal":"Orange County","Leads":803,"PVR":57,"Compras":11,"TAL":7.1,"Retencion":19.3},{"YearMonth":"2025-10","Sucursal":"Houston","Leads":738,"PVR":31,"Compras":8,"TAL":4.2,"Retencion":25.81},{"YearMonth":"2025-10","Sucursal":"Orange County","Leads":697,"PVR":58,"Compras":10,"TAL":8.32,"Retencion":17.24},{"YearMonth":"2025-11","Sucursal":"Houston","Leads":813,"PVR":22,"Compras":3,"TAL":2.71,"Retencion":13.64},{"YearMonth":"2025-11","Sucursal":"Orange County","Leads":615,"PVR":28,"Compras":5,"TAL":4.55,"Retencion":17.86},{"YearMonth":"2025-12","Sucursal":"Houston","Leads":826,"PVR":19,"Compras":6,"TAL":2.3,"Retencion":31.58},{"YearMonth":"2025-12","Sucursal":"Orange County","Leads":559,"PVR":39,"Compras":7,"TAL":6.98,"Retencion":17.95},{"YearMonth":"2026-01","Sucursal":"Houston","Leads":1118,"PVR":47,"Compras":8,"TAL":4.2,"Retencion":17.02},{"YearMonth":"2026-01","Sucursal":"Orange County","Leads":766,"PVR":48,"Compras":12,"TAL":6.27,"Retencion":25.0},{"YearMonth":"2026-02","Sucursal":"Houston","Leads":930,"PVR":17,"Compras":3,"TAL":1.83,"Retencion":17.65},{"YearMonth":"2026-02","Sucursal":"Orange County","Leads":703,"PVR":46,"Compras":6,"TAL":6.54,"Retencion":13.04},{"YearMonth":"2026-03","Sucursal":"Houston","Leads":1272,"PVR":17,"Compras":3,"TAL":1.34,"Retencion":17.65},{"YearMonth":"2026-03","Sucursal":"Orange County","Leads":493,"PVR":20,"Compras":4,"TAL":4.06,"Retencion":20.0}];
+
+const CAMP_SUC=[{c:"contact_center",s:"Houston",L:382,P:218,V:50,TAL:57.07,R:22.94},{c:"contact_center",s:"Orange County",L:287,P:153,V:24,TAL:53.31,R:15.69},{c:"organic",s:"Houston",L:5645,P:1100,V:263,TAL:19.49,R:23.91},{c:"organic",s:"Orange County",L:4193,P:1088,V:232,TAL:25.95,R:21.32},{c:"paid_us",s:"Houston",L:45858,P:1038,V:120,TAL:2.26,R:11.56},{c:"paid_us",s:"Orange County",L:31893,P:963,V:139,TAL:3.02,R:14.43},{c:"paid",s:"Houston",L:5522,P:130,V:18,TAL:2.35,R:13.85},{c:"paid",s:"Orange County",L:2925,P:120,V:23,TAL:4.1,R:19.17},{c:"support",s:"Houston",L:48,P:21,V:1,TAL:43.75,R:4.76},{c:"support",s:"Orange County",L:21,P:13,V:2,TAL:61.9,R:15.38}];
+
+const MED_SUC=[{m:"contact_center",s:"Houston",L:382,P:218,V:50,TAL:57.07,R:22.94},{m:"contact_center",s:"Orange County",L:287,P:153,V:24,TAL:53.31,R:15.69},{m:"web",s:"Houston",L:4539,P:970,V:242,TAL:21.37,R:24.95},{m:"web",s:"Orange County",L:3335,P:935,V:202,TAL:28.04,R:21.6},{m:"google",s:"Houston",L:104,P:18,V:7,TAL:17.31,R:38.89},{m:"google",s:"Orange County",L:112,P:23,V:4,TAL:20.54,R:17.39},{m:"tiktok",s:"Houston",L:623,P:53,V:3,TAL:8.51,R:5.66},{m:"tiktok",s:"Orange County",L:278,P:50,V:8,TAL:17.99,R:16.0},{m:"instagram",s:"Houston",L:670,P:51,V:9,TAL:7.61,R:17.65},{m:"instagram",s:"Orange County",L:735,P:83,V:19,TAL:11.29,R:22.89},{m:"google_search",s:"Houston",L:23951,P:648,V:92,TAL:2.71,R:14.2},{m:"google_search",s:"Orange County",L:17098,P:576,V:105,TAL:3.37,R:18.23},{m:"facebook",s:"Houston",L:25378,P:498,V:41,TAL:1.96,R:8.23},{m:"facebook",s:"Orange County",L:16080,P:479,V:63,TAL:2.98,R:13.15},{m:"pmaxia",s:"Houston",L:1058,P:16,V:4,TAL:1.51,R:25.0},{m:"pmaxia",s:"Orange County",L:1530,P:38,V:2,TAL:2.48,R:5.26},{m:"pmax",s:"Houston",L:601,P:4,V:0,TAL:0.67,R:0},{m:"pmax",s:"Orange County",L:445,P:20,V:1,TAL:4.49,R:5.0}];
+
+const CAMP_TREND=[{"YearMonth":"2023-01","c":"organic","L":238,"P":74,"TAL":31.09},{"YearMonth":"2023-01","c":"paid_us","L":2357,"P":70,"TAL":2.97},{"YearMonth":"2023-02","c":"organic","L":194,"P":39,"TAL":20.1},{"YearMonth":"2023-02","c":"paid_us","L":1918,"P":59,"TAL":3.08},{"YearMonth":"2023-03","c":"organic","L":246,"P":75,"TAL":30.49},{"YearMonth":"2023-03","c":"paid_us","L":1923,"P":56,"TAL":2.91},{"YearMonth":"2023-04","c":"organic","L":299,"P":70,"TAL":23.41},{"YearMonth":"2023-04","c":"paid_us","L":1948,"P":39,"TAL":2.0},{"YearMonth":"2023-05","c":"organic","L":244,"P":67,"TAL":27.46},{"YearMonth":"2023-05","c":"paid_us","L":2197,"P":56,"TAL":2.55},{"YearMonth":"2023-06","c":"organic","L":218,"P":47,"TAL":21.56},{"YearMonth":"2023-06","c":"paid_us","L":2452,"P":78,"TAL":3.18},{"YearMonth":"2023-07","c":"organic","L":246,"P":62,"TAL":25.2},{"YearMonth":"2023-07","c":"paid_us","L":2953,"P":86,"TAL":2.91},{"YearMonth":"2023-08","c":"organic","L":170,"P":56,"TAL":32.94},{"YearMonth":"2023-08","c":"paid_us","L":2910,"P":89,"TAL":3.06},{"YearMonth":"2023-09","c":"organic","L":189,"P":54,"TAL":28.57},{"YearMonth":"2023-09","c":"paid_us","L":2849,"P":108,"TAL":3.79},{"YearMonth":"2023-10","c":"contact_center","L":29,"P":19,"TAL":65.52},{"YearMonth":"2023-10","c":"organic","L":207,"P":59,"TAL":28.5},{"YearMonth":"2023-10","c":"paid_us","L":3557,"P":91,"TAL":2.56},{"YearMonth":"2023-11","c":"contact_center","L":18,"P":11,"TAL":61.11},{"YearMonth":"2023-11","c":"organic","L":188,"P":54,"TAL":28.72},{"YearMonth":"2023-11","c":"paid_us","L":2846,"P":70,"TAL":2.46},{"YearMonth":"2023-12","c":"contact_center","L":12,"P":7,"TAL":58.33},{"YearMonth":"2023-12","c":"organic","L":180,"P":41,"TAL":22.78},{"YearMonth":"2023-12","c":"paid_us","L":2952,"P":40,"TAL":1.36},{"YearMonth":"2024-01","c":"contact_center","L":32,"P":19,"TAL":59.38},{"YearMonth":"2024-01","c":"organic","L":146,"P":62,"TAL":42.47},{"YearMonth":"2024-01","c":"paid","L":190,"P":19,"TAL":10.0},{"YearMonth":"2024-01","c":"paid_us","L":2923,"P":47,"TAL":1.61},{"YearMonth":"2024-02","c":"contact_center","L":23,"P":16,"TAL":69.57},{"YearMonth":"2024-02","c":"organic","L":184,"P":47,"TAL":25.54},{"YearMonth":"2024-02","c":"paid","L":306,"P":23,"TAL":7.52},{"YearMonth":"2024-02","c":"paid_us","L":3207,"P":37,"TAL":1.15},{"YearMonth":"2024-03","c":"contact_center","L":19,"P":10,"TAL":52.63},{"YearMonth":"2024-03","c":"organic","L":201,"P":39,"TAL":19.4},{"YearMonth":"2024-03","c":"paid","L":444,"P":12,"TAL":2.7},{"YearMonth":"2024-03","c":"paid_us","L":2919,"P":62,"TAL":2.12},{"YearMonth":"2024-04","c":"contact_center","L":36,"P":15,"TAL":41.67},{"YearMonth":"2024-04","c":"organic","L":278,"P":61,"TAL":21.94},{"YearMonth":"2024-05","c":"contact_center","L":43,"P":25,"TAL":58.14},{"YearMonth":"2024-05","c":"organic","L":295,"P":56,"TAL":18.98},{"YearMonth":"2024-05","c":"paid_us","L":2086,"P":29,"TAL":1.39},{"YearMonth":"2024-06","c":"contact_center","L":22,"P":16,"TAL":72.73},{"YearMonth":"2024-06","c":"organic","L":573,"P":86,"TAL":15.01},{"YearMonth":"2024-06","c":"paid_us","L":2283,"P":44,"TAL":1.93},{"YearMonth":"2024-07","c":"contact_center","L":24,"P":17,"TAL":70.83},{"YearMonth":"2024-07","c":"organic","L":504,"P":74,"TAL":14.68},{"YearMonth":"2024-07","c":"paid_us","L":2018,"P":64,"TAL":3.17},{"YearMonth":"2024-08","c":"contact_center","L":24,"P":11,"TAL":45.83},{"YearMonth":"2024-08","c":"organic","L":446,"P":104,"TAL":23.32},{"YearMonth":"2024-08","c":"paid_us","L":2056,"P":75,"TAL":3.65},{"YearMonth":"2024-09","c":"contact_center","L":13,"P":9,"TAL":69.23},{"YearMonth":"2024-09","c":"organic","L":348,"P":69,"TAL":19.83},{"YearMonth":"2024-09","c":"paid_us","L":1888,"P":60,"TAL":3.18},{"YearMonth":"2024-10","c":"contact_center","L":24,"P":17,"TAL":70.83},{"YearMonth":"2024-10","c":"organic","L":199,"P":54,"TAL":27.14},{"YearMonth":"2024-10","c":"paid_us","L":1938,"P":37,"TAL":1.91},{"YearMonth":"2024-11","c":"contact_center","L":19,"P":11,"TAL":57.89},{"YearMonth":"2024-11","c":"organic","L":237,"P":52,"TAL":21.94},{"YearMonth":"2024-11","c":"paid_us","L":2019,"P":54,"TAL":2.67},{"YearMonth":"2024-12","c":"contact_center","L":16,"P":11,"TAL":68.75},{"YearMonth":"2024-12","c":"organic","L":323,"P":55,"TAL":17.03},{"YearMonth":"2024-12","c":"paid_us","L":1699,"P":43,"TAL":2.53},{"YearMonth":"2025-01","c":"contact_center","L":30,"P":16,"TAL":53.33},{"YearMonth":"2025-01","c":"organic","L":428,"P":76,"TAL":17.76},{"YearMonth":"2025-01","c":"paid_us","L":1934,"P":78,"TAL":4.03},{"YearMonth":"2025-02","c":"contact_center","L":21,"P":15,"TAL":71.43},{"YearMonth":"2025-02","c":"organic","L":366,"P":69,"TAL":18.85},{"YearMonth":"2025-02","c":"paid_us","L":1693,"P":73,"TAL":4.31},{"YearMonth":"2025-03","c":"contact_center","L":35,"P":17,"TAL":48.57},{"YearMonth":"2025-03","c":"organic","L":365,"P":55,"TAL":15.07},{"YearMonth":"2025-03","c":"paid_us","L":1968,"P":46,"TAL":2.34},{"YearMonth":"2025-04","c":"contact_center","L":28,"P":18,"TAL":64.29},{"YearMonth":"2025-04","c":"organic","L":275,"P":69,"TAL":25.09},{"YearMonth":"2025-04","c":"paid_us","L":2153,"P":47,"TAL":2.18},{"YearMonth":"2025-05","c":"contact_center","L":17,"P":12,"TAL":70.59},{"YearMonth":"2025-05","c":"organic","L":329,"P":55,"TAL":16.72},{"YearMonth":"2025-05","c":"paid_us","L":1846,"P":30,"TAL":1.63},{"YearMonth":"2025-06","c":"contact_center","L":18,"P":13,"TAL":72.22},{"YearMonth":"2025-06","c":"organic","L":343,"P":84,"TAL":24.49},{"YearMonth":"2025-06","c":"paid_us","L":1543,"P":28,"TAL":1.81},{"YearMonth":"2025-07","c":"contact_center","L":16,"P":8,"TAL":50.0},{"YearMonth":"2025-07","c":"organic","L":340,"P":74,"TAL":21.76},{"YearMonth":"2025-07","c":"paid_us","L":1428,"P":25,"TAL":1.75},{"YearMonth":"2025-08","c":"contact_center","L":19,"P":9,"TAL":47.37},{"YearMonth":"2025-08","c":"organic","L":230,"P":51,"TAL":22.17},{"YearMonth":"2025-08","c":"paid_us","L":1360,"P":35,"TAL":2.57},{"YearMonth":"2025-09","c":"contact_center","L":21,"P":10,"TAL":47.62},{"YearMonth":"2025-09","c":"organic","L":206,"P":48,"TAL":23.3},{"YearMonth":"2025-09","c":"paid_us","L":1389,"P":41,"TAL":2.95},{"YearMonth":"2025-10","c":"contact_center","L":36,"P":13,"TAL":36.11},{"YearMonth":"2025-10","c":"organic","L":210,"P":41,"TAL":19.52},{"YearMonth":"2025-10","c":"paid_us","L":1032,"P":31,"TAL":3.0},{"YearMonth":"2025-11","c":"contact_center","L":10,"P":3,"TAL":30.0},{"YearMonth":"2025-11","c":"organic","L":119,"P":21,"TAL":17.65},{"YearMonth":"2025-11","c":"paid_us","L":1274,"P":20,"TAL":1.57},{"YearMonth":"2025-12","c":"contact_center","L":15,"P":5,"TAL":33.33},{"YearMonth":"2025-12","c":"organic","L":169,"P":25,"TAL":14.79},{"YearMonth":"2025-12","c":"paid_us","L":1181,"P":27,"TAL":2.29},{"YearMonth":"2026-01","c":"contact_center","L":19,"P":11,"TAL":57.89},{"YearMonth":"2026-01","c":"organic","L":183,"P":40,"TAL":21.86},{"YearMonth":"2026-01","c":"paid_us","L":1583,"P":42,"TAL":2.65},{"YearMonth":"2026-02","c":"contact_center","L":10,"P":3,"TAL":30.0},{"YearMonth":"2026-02","c":"organic","L":82,"P":21,"TAL":25.61},{"YearMonth":"2026-02","c":"paid_us","L":1514,"P":37,"TAL":2.44},{"YearMonth":"2026-03","c":"contact_center","L":14,"P":4,"TAL":28.57},{"YearMonth":"2026-03","c":"organic","L":194,"P":17,"TAL":8.76},{"YearMonth":"2026-03","c":"paid_us","L":940,"P":13,"TAL":1.38}];
+
+const MED_TREND=[{"YearMonth":"2023-01","m":"facebook","P":57,"TAL":2.62},{"YearMonth":"2023-01","m":"google_search","P":18,"TAL":6.57},{"YearMonth":"2023-01","m":"web","P":70,"TAL":33.82},{"YearMonth":"2023-02","m":"facebook","P":45,"TAL":2.51},{"YearMonth":"2023-02","m":"google_search","P":15,"TAL":8.62},{"YearMonth":"2023-02","m":"web","P":36,"TAL":21.3},{"YearMonth":"2023-03","m":"facebook","P":43,"TAL":2.43},{"YearMonth":"2023-03","m":"google_search","P":14,"TAL":6.83},{"YearMonth":"2023-03","m":"web","P":74,"TAL":33.04},{"YearMonth":"2023-04","m":"facebook","P":31,"TAL":1.72},{"YearMonth":"2023-04","m":"google_search","P":9,"TAL":4.19},{"YearMonth":"2023-04","m":"web","P":63,"TAL":23.6},{"YearMonth":"2023-05","m":"facebook","P":24,"TAL":1.33},{"YearMonth":"2023-05","m":"google_search","P":32,"TAL":7.36},{"YearMonth":"2023-05","m":"web","P":63,"TAL":29.58},{"YearMonth":"2023-06","m":"facebook","P":35,"TAL":2.15},{"YearMonth":"2023-06","m":"google_search","P":45,"TAL":5.34},{"YearMonth":"2023-06","m":"web","P":44,"TAL":21.78},{"YearMonth":"2023-07","m":"facebook","P":28,"TAL":1.75},{"YearMonth":"2023-07","m":"google_search","P":55,"TAL":4.54},{"YearMonth":"2023-07","m":"web","P":59,"TAL":26.22},{"YearMonth":"2023-08","m":"facebook","P":27,"TAL":1.79},{"YearMonth":"2023-08","m":"google_search","P":57,"TAL":4.41},{"YearMonth":"2023-08","m":"web","P":52,"TAL":34.21},{"YearMonth":"2023-09","m":"facebook","P":46,"TAL":2.64},{"YearMonth":"2023-09","m":"google_search","P":63,"TAL":5.34},{"YearMonth":"2023-09","m":"web","P":52,"TAL":30.77},{"YearMonth":"2023-10","m":"contact_center","P":19,"TAL":65.52},{"YearMonth":"2023-10","m":"facebook","P":53,"TAL":2.05},{"YearMonth":"2023-10","m":"google_search","P":40,"TAL":3.81},{"YearMonth":"2023-10","m":"web","P":53,"TAL":28.19},{"YearMonth":"2023-11","m":"contact_center","P":11,"TAL":61.11},{"YearMonth":"2023-11","m":"facebook","P":25,"TAL":1.55},{"YearMonth":"2023-11","m":"google_search","P":46,"TAL":3.61},{"YearMonth":"2023-11","m":"web","P":51,"TAL":30.18},{"YearMonth":"2023-12","m":"contact_center","P":7,"TAL":58.33},{"YearMonth":"2023-12","m":"facebook","P":14,"TAL":0.88},{"YearMonth":"2023-12","m":"google_search","P":27,"TAL":1.81},{"YearMonth":"2023-12","m":"web","P":39,"TAL":23.64},{"YearMonth":"2024-01","m":"contact_center","P":19,"TAL":59.38},{"YearMonth":"2024-01","m":"facebook","P":40,"TAL":2.64},{"YearMonth":"2024-01","m":"google_search","P":29,"TAL":1.81},{"YearMonth":"2024-01","m":"web","P":54,"TAL":43.2},{"YearMonth":"2024-02","m":"contact_center","P":16,"TAL":69.57},{"YearMonth":"2024-02","m":"facebook","P":37,"TAL":2.29},{"YearMonth":"2024-02","m":"google_search","P":24,"TAL":1.26},{"YearMonth":"2024-02","m":"web","P":46,"TAL":30.87},{"YearMonth":"2024-03","m":"contact_center","P":10,"TAL":52.63},{"YearMonth":"2024-03","m":"facebook","P":30,"TAL":1.91},{"YearMonth":"2024-03","m":"google_search","P":45,"TAL":2.5},{"YearMonth":"2024-03","m":"web","P":33,"TAL":19.88},{"YearMonth":"2024-04","m":"contact_center","P":15,"TAL":41.67},{"YearMonth":"2024-04","m":"facebook","P":30,"TAL":3.27},{"YearMonth":"2024-04","m":"google_search","P":38,"TAL":2.29},{"YearMonth":"2024-04","m":"web","P":51,"TAL":20.82},{"YearMonth":"2024-05","m":"contact_center","P":25,"TAL":58.14},{"YearMonth":"2024-05","m":"facebook","P":13,"TAL":1.44},{"YearMonth":"2024-05","m":"google_search","P":31,"TAL":1.81},{"YearMonth":"2024-05","m":"web","P":32,"TAL":17.58},{"YearMonth":"2024-06","m":"contact_center","P":16,"TAL":72.73},{"YearMonth":"2024-06","m":"facebook","P":60,"TAL":3.23},{"YearMonth":"2024-06","m":"google_search","P":25,"TAL":1.44},{"YearMonth":"2024-06","m":"web","P":52,"TAL":17.87},{"YearMonth":"2024-07","m":"contact_center","P":17,"TAL":70.83},{"YearMonth":"2024-07","m":"facebook","P":62,"TAL":4.49},{"YearMonth":"2024-07","m":"google_search","P":53,"TAL":3.14},{"YearMonth":"2024-07","m":"web","P":50,"TAL":16.08},{"YearMonth":"2024-08","m":"contact_center","P":11,"TAL":45.83},{"YearMonth":"2024-08","m":"facebook","P":45,"TAL":5.73},{"YearMonth":"2024-08","m":"google_search","P":46,"TAL":2.82},{"YearMonth":"2024-08","m":"web","P":92,"TAL":24.73},{"YearMonth":"2024-09","m":"contact_center","P":9,"TAL":69.23},{"YearMonth":"2024-09","m":"facebook","P":33,"TAL":5.48},{"YearMonth":"2024-09","m":"google_search","P":34,"TAL":2.31},{"YearMonth":"2024-09","m":"web","P":63,"TAL":21.58},{"YearMonth":"2024-10","m":"contact_center","P":17,"TAL":70.83},{"YearMonth":"2024-10","m":"facebook","P":12,"TAL":1.76},{"YearMonth":"2024-10","m":"google_search","P":27,"TAL":2.08},{"YearMonth":"2024-10","m":"web","P":49,"TAL":27.84},{"YearMonth":"2024-11","m":"contact_center","P":11,"TAL":57.89},{"YearMonth":"2024-11","m":"facebook","P":21,"TAL":1.99},{"YearMonth":"2024-11","m":"google_search","P":38,"TAL":3.56},{"YearMonth":"2024-11","m":"web","P":45,"TAL":23.08},{"YearMonth":"2024-12","m":"contact_center","P":11,"TAL":68.75},{"YearMonth":"2024-12","m":"facebook","P":24,"TAL":2.66},{"YearMonth":"2024-12","m":"google_search","P":23,"TAL":2.48},{"YearMonth":"2024-12","m":"web","P":49,"TAL":17.69},{"YearMonth":"2025-01","m":"contact_center","P":16,"TAL":53.33},{"YearMonth":"2025-01","m":"facebook","P":38,"TAL":5.2},{"YearMonth":"2025-01","m":"google_search","P":40,"TAL":3.61},{"YearMonth":"2025-01","m":"web","P":63,"TAL":17.5},{"YearMonth":"2025-02","m":"contact_center","P":15,"TAL":71.43},{"YearMonth":"2025-02","m":"facebook","P":14,"TAL":3.15},{"YearMonth":"2025-02","m":"google_search","P":45,"TAL":4.26},{"YearMonth":"2025-02","m":"web","P":62,"TAL":21.16},{"YearMonth":"2025-03","m":"contact_center","P":17,"TAL":48.57},{"YearMonth":"2025-03","m":"facebook","P":11,"TAL":2.22},{"YearMonth":"2025-03","m":"google_search","P":34,"TAL":2.89},{"YearMonth":"2025-03","m":"web","P":52,"TAL":16.35},{"YearMonth":"2025-04","m":"contact_center","P":18,"TAL":64.29},{"YearMonth":"2025-04","m":"facebook","P":12,"TAL":2.8},{"YearMonth":"2025-04","m":"google_search","P":31,"TAL":2.17},{"YearMonth":"2025-04","m":"web","P":59,"TAL":25.99},{"YearMonth":"2025-05","m":"contact_center","P":12,"TAL":70.59},{"YearMonth":"2025-05","m":"facebook","P":7,"TAL":1.38},{"YearMonth":"2025-05","m":"google_search","P":27,"TAL":2.07},{"YearMonth":"2025-05","m":"web","P":49,"TAL":17.19},{"YearMonth":"2025-06","m":"contact_center","P":13,"TAL":72.22},{"YearMonth":"2025-06","m":"facebook","P":8,"TAL":1.46},{"YearMonth":"2025-06","m":"google_search","P":25,"TAL":2.43},{"YearMonth":"2025-06","m":"web","P":76,"TAL":26.76},{"YearMonth":"2025-07","m":"contact_center","P":8,"TAL":50.0},{"YearMonth":"2025-07","m":"facebook","P":7,"TAL":1.38},{"YearMonth":"2025-07","m":"google_search","P":19,"TAL":1.9},{"YearMonth":"2025-07","m":"web","P":63,"TAL":22.18},{"YearMonth":"2025-08","m":"contact_center","P":9,"TAL":47.37},{"YearMonth":"2025-08","m":"facebook","P":8,"TAL":1.44},{"YearMonth":"2025-08","m":"google_search","P":27,"TAL":3.38},{"YearMonth":"2025-08","m":"web","P":48,"TAL":24.62},{"YearMonth":"2025-09","m":"contact_center","P":10,"TAL":47.62},{"YearMonth":"2025-09","m":"facebook","P":8,"TAL":1.32},{"YearMonth":"2025-09","m":"google_search","P":29,"TAL":3.65},{"YearMonth":"2025-09","m":"web","P":38,"TAL":25.0},{"YearMonth":"2025-10","m":"contact_center","P":13,"TAL":36.11},{"YearMonth":"2025-10","m":"facebook","P":4,"TAL":0.75},{"YearMonth":"2025-10","m":"google_search","P":23,"TAL":4.24},{"YearMonth":"2025-10","m":"web","P":32,"TAL":20.38},{"YearMonth":"2025-11","m":"contact_center","P":3,"TAL":30.0},{"YearMonth":"2025-11","m":"facebook","P":6,"TAL":1.2},{"YearMonth":"2025-11","m":"google_search","P":12,"TAL":1.75},{"YearMonth":"2025-11","m":"web","P":20,"TAL":19.61},{"YearMonth":"2025-12","m":"contact_center","P":5,"TAL":33.33},{"YearMonth":"2025-12","m":"facebook","P":11,"TAL":2.49},{"YearMonth":"2025-12","m":"google_search","P":15,"TAL":2.27},{"YearMonth":"2025-12","m":"web","P":15,"TAL":13.16},{"YearMonth":"2026-01","m":"contact_center","P":11,"TAL":57.89},{"YearMonth":"2026-01","m":"facebook","P":11,"TAL":1.43},{"YearMonth":"2026-01","m":"google_search","P":28,"TAL":3.95},{"YearMonth":"2026-01","m":"web","P":34,"TAL":23.29},{"YearMonth":"2026-02","m":"contact_center","P":3,"TAL":30.0},{"YearMonth":"2026-02","m":"facebook","P":8,"TAL":1.4},{"YearMonth":"2026-02","m":"google_search","P":28,"TAL":4.24},{"YearMonth":"2026-02","m":"web","P":20,"TAL":32.26},{"YearMonth":"2026-03","m":"contact_center","P":4,"TAL":28.57},{"YearMonth":"2026-03","m":"facebook","P":4,"TAL":0.36},{"YearMonth":"2026-03","m":"google_search","P":10,"TAL":2.88},{"YearMonth":"2026-03","m":"web","P":15,"TAL":14.02}];
+
+const LAND_SUC=[{l:"web_top_menu",s:"OC",L:486,P:168,R:24.4,TAL:34.57},{l:"web_home_cover",s:"OC",L:591,P:154,R:24.68,TAL:26.06},{l:"web_home_cover",s:"HOU",L:831,P:169,R:24.26,TAL:20.34},{l:"web_top_menu",s:"HOU",L:530,P:132,R:25.76,TAL:24.91},{l:"web_cover_prices",s:"HOU",L:698,P:140,R:20.71,TAL:20.06},{l:"web_cover_prices",s:"OC",L:453,P:105,R:21.9,TAL:23.18},{l:"web_bottom_menu_en",s:"HOU",L:238,P:78,R:28.21,TAL:32.77},{l:"web_bottom_menu_en",s:"OC",L:187,P:71,R:19.72,TAL:37.97},{l:"web_initial_prog_en",s:"OC",L:197,P:68,R:17.65,TAL:34.52},{l:"web_portada_costos",s:"HOU",L:445,P:84,R:22.62,TAL:18.88},{l:"agenda",s:"OC",L:385,P:79,R:25.32,TAL:20.52},{l:"lp",s:"OC",L:505,P:79,R:24.05,TAL:15.64},{l:"web_top_menu_en",s:"HOU",L:122,P:50,R:28.0,TAL:40.98},{l:"web_programa_inicial",s:"OC",L:135,P:59,R:22.03,TAL:43.7},{l:"adv",s:"OC",L:4025,P:88,R:19.32,TAL:2.19},{l:"adv",s:"HOU",L:4622,P:80,R:20.0,TAL:1.73},{l:"web_portada_costos",s:"OC",L:289,P:63,R:19.05,TAL:21.8},{l:"directo_fertility",s:"HOU",L:894,P:67,R:10.45,TAL:7.49},{l:"web_costos",s:"OC",L:201,P:42,R:30.95,TAL:20.9},{l:"web_costos",s:"HOU",L:259,P:44,R:22.73,TAL:16.99}];
+
+const ZIP_DET=[{zip:77493,t:"Katy",e:"TX",cl:5,s:"HOU",L:27,P:27,V:4,R:14.81},{zip:77449,t:"Katy",e:"TX",cl:4,s:"HOU",L:22,P:22,V:9,R:40.91},{zip:77433,t:"Cypress",e:"TX",cl:5,s:"HOU",L:21,P:21,V:9,R:42.86},{zip:77379,t:"Spring",e:"TX",cl:5,s:"HOU",L:21,P:21,V:6,R:28.57},{zip:77327,t:"Cleveland",e:"TX",cl:2,s:"HOU",L:20,P:20,V:4,R:20.0},{zip:77084,t:"Houston",e:"TX",cl:3,s:"HOU",L:17,P:17,V:7,R:41.18},{zip:77090,t:"Houston",e:"TX",cl:2,s:"HOU",L:17,P:17,V:3,R:17.65},{zip:77406,t:"Richmond",e:"TX",cl:5,s:"HOU",L:17,P:17,V:6,R:35.29},{zip:77044,t:"Houston",e:"TX",cl:4,s:"HOU",L:16,P:16,V:6,R:37.5},{zip:77373,t:"Spring",e:"TX",cl:4,s:"HOU",L:13,P:13,V:7,R:53.85},{zip:92335,t:"Fontana",e:"CA",cl:3,s:"OC",L:14,P:14,V:2,R:14.29},{zip:92407,t:"San Bernardino",e:"CA",cl:4,s:"OC",L:14,P:14,V:5,R:35.71},{zip:92530,t:"Lake Elsinore",e:"CA",cl:4,s:"OC",L:14,P:14,V:5,R:35.71},{zip:91342,t:"Sylmar",e:"CA",cl:4,s:"OC",L:14,P:14,V:4,R:28.57},{zip:91767,t:"Pomona",e:"CA",cl:4,s:"OC",L:12,P:12,V:5,R:41.67},{zip:90280,t:"South Gate",e:"CA",cl:3,s:"OC",L:13,P:13,V:2,R:15.38},{zip:92807,t:"Anaheim",e:"CA",cl:5,s:"OC",L:11,P:11,V:3,R:27.27},{zip:91730,t:"Rancho Cucamonga",e:"CA",cl:4,s:"OC",L:11,P:11,V:3,R:27.27},{zip:77584,t:"Pearland",e:"TX",cl:5,s:"HOU",L:14,P:14,V:4,R:28.57},{zip:77396,t:"Humble",e:"TX",cl:4,s:"HOU",L:12,P:12,V:5,R:41.67}];
+
+const BUYER=[{bp:"Esperanza",P:2035,V:393,R:19.31},{bp:"Nancy",P:740,V:123,R:16.62},{bp:"Ingrid",P:445,V:44,R:9.89},{bp:"Eva",P:280,V:51,R:18.21},{bp:"Edith",P:221,V:33,R:14.93},{bp:"Ingrid - Salp.",P:133,V:17,R:12.78},{bp:"Gaby A.",P:46,V:10,R:21.74},{bp:"Eva - Homo.",P:45,V:4,R:8.89}];
+
+const STATES=[{e:"Oklahoma",R:25.0},{e:"New Mexico",R:33.33},{e:"Missouri",R:33.33},{e:"New York",R:22.22},{e:"Colorado",R:22.22},{e:"California",R:19.06},{e:"Texas",R:19.05},{e:"Ohio",R:20.0},{e:"Wisconsin",R:20.0},{e:"Florida",R:14.41},{e:"Nevada",R:12.36},{e:"Georgia",R:9.21}];
+
+const CLUS_SUC=[{cl:"1",s:"Houston",P:37,V:6,R:16.22},{cl:"1",s:"OC",P:1,V:0,R:0},{cl:"2",s:"Houston",P:657,V:94,R:14.31},{cl:"2",s:"OC",P:243,V:34,R:13.99},{cl:"3",s:"Houston",P:612,V:103,R:16.83},{cl:"3",s:"OC",P:540,V:89,R:16.48},{cl:"4",s:"Houston",P:536,V:112,R:20.9},{cl:"4",s:"OC",P:712,V:141,R:19.8},{cl:"5",s:"Houston",P:585,V:113,R:19.32},{cl:"5",s:"OC",P:838,V:162,R:19.33}];
+
+// ============================================================
+// STATE
+// ============================================================
+let activeTab = 'tendencia';
+let campMetric = 'pvr';
+let medMetric = 'tal';
+const charts = {};
+
+function gc(id) {
+  if(charts[id]){ charts[id].destroy(); delete charts[id]; }
+  return document.getElementById(id).getContext('2d');
+}
+function colors(){ return matchMedia('(prefers-color-scheme:dark)').matches?{grid:'rgba(255,255,255,.07)',text:'#999'}:{grid:'rgba(0,0,0,.06)',text:'#666'}}
+function filt(data){ 
+  const s=document.getElementById('fSuc').value, p=document.getElementById('fPeriod').value;
+  return data.filter(d=>{
+    const ym=d.YearMonth||'';
+    const suc=d.Sucursal||d.s||'';
+    if(s!=='all'&&suc!==s)return false;
+    if(p!=='all'&&!ym.startsWith(p))return false;
+    return true;
+  });
+}
+function fmt(n){return isNaN(n)?'—':parseFloat(n).toFixed(1)}
+function badgeCls(v){return v>=15?'bhi':v>=5?'bmid':'blo'}
+
+// ============================================================
+// KPI ROW
+// ============================================================
+function renderKPIs(){
+  const d=filt(SUC_MONTHLY);
+  const totLeads=d.reduce((a,r)=>a+r.Leads,0);
+  const totPVR=d.reduce((a,r)=>a+r.PVR,0);
+  const totComp=d.reduce((a,r)=>a+r.Compras,0);
+  const avgTAL=totLeads?+(totPVR/totLeads*100).toFixed(1):0;
+  const avgRet=totPVR?+(totComp/totPVR*100).toFixed(1):0;
+  document.getElementById('kpiRow').innerHTML=`
+    <div class="kpi blue"><div class="kl">Total Leads</div><div class="kv">${totLeads.toLocaleString()}</div></div>
+    <div class="kpi teal"><div class="kl">PVR (primeras visitas)</div><div class="kv">${totPVR.toLocaleString()}</div></div>
+    <div class="kpi amber"><div class="kl">TAL — Lead→PVR</div><div class="kv">${avgTAL}%</div></div>
+    <div class="kpi green"><div class="kl">Retención PVR→Compra</div><div class="kv">${avgRet}%</div></div>
+    <div class="kpi red"><div class="kl">Compras tratamiento</div><div class="kv">${totComp.toLocaleString()}</div></div>`;
+}
+
+// ============================================================
+// TAB: TENDENCIA
+// ============================================================
+function renderTendencia(){
+  const s=document.getElementById('fSuc').value, p=document.getElementById('fPeriod').value;
+  const c=colors();
+  const baseCfg={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,padding:8,color:c.text}}},scales:{x:{ticks:{color:c.text,maxRotation:45,autoSkip:true,maxTicksLimit:14,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid},beginAtZero:true}}};
+
+  const succs = s==='all'?['Houston','Orange County']:[s];
+  const months=[...new Set(SUC_MONTHLY.filter(d=>p==='all'||d.YearMonth.startsWith(p)).map(d=>d.YearMonth))].sort();
+  const col={'Houston':'#0B6E7A','Orange County':'#185FA5'};
+
+  const mk=(metric)=>succs.map(suc=>({
+    label:suc, borderWidth:2, pointRadius:2, fill:false, tension:0.3,
+    borderColor:col[suc], backgroundColor:col[suc]+'22',
+    data:months.map(m=>{const r=SUC_MONTHLY.find(d=>d.YearMonth===m&&d.Sucursal===suc);return r?r[metric]:null})
+  }));
+
+  charts['cTend']=new Chart(gc('cTend'),{type:'line',data:{labels:months,datasets:mk('PVR')},options:{...baseCfg,plugins:{...baseCfg.plugins}}});
+  charts['cTAL']=new Chart(gc('cTAL'),{type:'line',data:{labels:months,datasets:mk('TAL')},options:{...baseCfg}});
+  charts['cRet']=new Chart(gc('cRet'),{type:'line',data:{labels:months,datasets:mk('Retencion')},options:{...baseCfg}});
+  charts['cLeads']=new Chart(gc('cLeads'),{type:'bar',data:{labels:months,datasets:succs.map(suc=>({label:suc,backgroundColor:col[suc]+'99',data:months.map(m=>{const r=SUC_MONTHLY.find(d=>d.YearMonth===m&&d.Sucursal===suc);return r?r.Leads:0})}))},options:{...baseCfg,scales:{...baseCfg.scales,x:{...baseCfg.scales.x,stacked:true},y:{...baseCfg.scales.y,stacked:true}}}});
+}
+
+// ============================================================
+// TAB: CAMPAÑAS
+// ============================================================
+function renderCampanas(){
+  const s=document.getElementById('fSuc').value, p=document.getElementById('fPeriod').value;
+  const c=colors();
+  const months=[...new Set(CAMP_TREND.filter(d=>p==='all'||d.YearMonth.startsWith(p)).map(d=>d.YearMonth))].sort();
+  const camps=['organic','paid_us','contact_center','paid'];
+  const campCol={'organic':'#1A7A4A','paid_us':'#185FA5','contact_center':'#BA7517','paid':'#993C1D'};
+  
+  charts['cCampTrend']=new Chart(gc('cCampTrend'),{
+    type:'line',
+    data:{labels:months,datasets:camps.map(camp=>({
+      label:camp, borderWidth:2, pointRadius:1.5, tension:0.3, fill:false,
+      borderColor:campCol[camp], backgroundColor:campCol[camp]+'22',
+      data:months.map(m=>{const r=CAMP_TREND.find(d=>d.YearMonth===m&&d.c===camp);return r?r[campMetric==='pvr'?'P':campMetric==='leads'?'L':'TAL']:null})
+    }))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,padding:6,color:c.text}}},scales:{x:{ticks:{color:c.text,maxRotation:45,autoSkip:true,maxTicksLimit:14,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid},beginAtZero:true}}}
+  });
+
+  // Table
+  const data=CAMP_SUC.filter(d=>s==='all'||d.s===s).sort((a,b)=>b.P-a.P);
+  const tbody=document.querySelector('#tCamp tbody');
+  tbody.innerHTML=data.map(d=>`<tr><td><b>${d.c}</b></td><td>${d.s}</td><td>${d.L.toLocaleString()}</td><td>${d.P}</td><td><span class="badge ${badgeCls(d.TAL)}">${fmt(d.TAL)}%</span></td><td><span class="badge ${badgeCls(d.R)}">${fmt(d.R)}%</span></td><td>${d.V}</td></tr>`).join('');
+}
+
+// ============================================================
+// TAB: MEDIOS
+// ============================================================
+function renderMedios(){
+  const s=document.getElementById('fSuc').value, p=document.getElementById('fPeriod').value;
+  const c=colors();
+  const months=[...new Set(MED_TREND.filter(d=>p==='all'||d.YearMonth.startsWith(p)).map(d=>d.YearMonth))].sort();
+  const meds=['web','google_search','facebook','contact_center'];
+  const medCol={'web':'#0B6E7A','google_search':'#185FA5','facebook':'#993C1D','contact_center':'#BA7517'};
+  
+  charts['cMedTrend']=new Chart(gc('cMedTrend'),{
+    type:'line',
+    data:{labels:months,datasets:meds.map(med=>({
+      label:med,borderWidth:2,pointRadius:1.5,tension:0.3,fill:false,
+      borderColor:medCol[med],backgroundColor:medCol[med]+'22',
+      data:months.map(m=>{const r=MED_TREND.find(d=>d.YearMonth===m&&d.m===med);return r?r[medMetric==='pvr'?'P':medMetric==='leads'?'L':'TAL']:null})
+    }))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,padding:6,color:c.text}}},scales:{x:{ticks:{color:c.text,maxRotation:45,autoSkip:true,maxTicksLimit:14,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid},beginAtZero:true}}}
+  });
+
+  const data=MED_SUC.filter(d=>s==='all'||d.s===s).sort((a,b)=>b.TAL-a.TAL);
+  const tbody=document.querySelector('#tMedios tbody');
+  tbody.innerHTML=data.map(d=>`<tr><td><b>${d.m}</b></td><td>${d.s}</td><td>${d.L.toLocaleString()}</td><td>${d.P}</td><td><span class="badge ${badgeCls(d.TAL)}">${fmt(d.TAL)}%</span></td><td><span class="badge ${badgeCls(d.R)}">${fmt(d.R)}%</span></td></tr>`).join('');
+}
+
+// ============================================================
+// TAB: LANDING
+// ============================================================
+function renderLanding(){
+  const s=document.getElementById('fSuc').value;
+  const data=LAND_SUC.filter(d=>s==='all'||d.s===(s==='Houston'?'HOU':'OC')).sort((a,b)=>b.P-a.P);
+  const maxP=Math.max(...data.map(d=>d.P));
+
+  document.getElementById('landBars').innerHTML=data.slice(0,15).map(d=>`
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px">
+      <span style="width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--color-text-secondary);text-align:right;flex-shrink:0">${d.l}</span>
+      <div class="btrack" style="width:120px"><div class="bfill" style="width:${Math.round(d.P/maxP*100)}%;background:#0B6E7A"></div></div>
+      <span style="width:24px;font-weight:500;color:var(--color-text-primary)">${d.P}</span>
+      <span class="badge ${badgeCls(d.TAL)}" style="flex-shrink:0">${fmt(d.TAL)}%</span>
+      <span style="color:var(--color-text-tertiary);font-size:10px">${d.s}</span>
+    </div>`).join('');
+
+  const high=data.filter(d=>d.R>=20).sort((a,b)=>b.R-a.R);
+  const tbody=document.querySelector('#tLanding tbody');
+  tbody.innerHTML=high.map(d=>`<tr><td>${d.l}</td><td>${d.s}</td><td>${d.L}</td><td>${d.P}</td><td><span class="badge ${badgeCls(d.TAL)}">${fmt(d.TAL)}%</span></td><td><span class="badge bhi">${fmt(d.R)}%</span></td></tr>`).join('');
+}
+
+// ============================================================
+// TAB: GEO
+// ============================================================
+function renderGeo(){
+  const gSuc=document.getElementById('geoSuc').value;
+  const gEst=document.getElementById('geoEst').value;
+  const gCl=document.getElementById('geoClus').value;
+  const gOrd=document.getElementById('geoOrd').value;
+  const c=colors();
+
+  // Heatmap cluster vs sucursal
+  const clusData=CLUS_SUC.filter(d=>gSuc==='all'||(gSuc==='Houston'?d.s==='Houston':d.s==='OC'));
+  const clusterNums=['2','3','4','5'];
+  const sNames=gSuc==='all'?['Houston','OC']:[gSuc==='Houston'?'Houston':'OC'];
+  document.getElementById('heatClus').innerHTML=`
+    <table class="tbl" style="margin-top:4px">
+      <thead><tr><th>Cluster</th>${sNames.map(s=>`<th>${s}</th>`).join('')}<th>Significado</th></tr></thead>
+      <tbody>${clusterNums.map(cl=>{
+        const row=sNames.map(s=>{const d=CLUS_SUC.find(r=>r.cl===cl&&r.s===s);
+          if(!d)return '<td>—</td>';
+          const hc=d.R>=20?'heat3':d.R>=16?'heat2':d.R>=12?'heat1':'heat0';
+          return `<td class="${hc}" style="font-weight:500">${d.P} PVR<br><small>${fmt(d.R)}% ret.</small></td>`;
+        }).join('');
+        const sig=['','','Nivel bajo ingreso','Ingreso medio bajo','Ingreso medio','Ingreso medio alto','Ingreso alto'][parseInt(cl)];
+        return `<tr><td><b>C${cl}</b></td>${row}<td style="font-size:10px;color:var(--color-text-secondary)">${sig}</td></tr>`;
+      }).join('')}</tbody>
+    </table>`;
+
+  // Cluster retention chart
+  const clusLabels=clusterNums.map(c=>'Cluster '+c);
+  const houData=clusterNums.map(cl=>{const d=CLUS_SUC.find(r=>r.cl===cl&&r.s==='Houston');return d?d.R:0});
+  const ocData=clusterNums.map(cl=>{const d=CLUS_SUC.find(r=>r.cl===cl&&r.s==='OC');return d?d.R:0});
+  charts['cClus']=new Chart(gc('cClus'),{
+    type:'bar',
+    data:{labels:clusLabels,datasets:[
+      {label:'Houston',data:houData,backgroundColor:'#0B6E7A99',borderColor:'#0B6E7A',borderWidth:1},
+      {label:'Orange County',data:ocData,backgroundColor:'#185FA599',borderColor:'#185FA5',borderWidth:1}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:10},boxWidth:10,color:c.text}}},scales:{x:{ticks:{color:c.text,font:{size:9}},grid:{display:false}},y:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid},beginAtZero:true,title:{display:true,text:'Retención %',color:c.text,font:{size:9}}}}}
+  });
+
+  // ZIP table
+  let zData=ZIP_DET.filter(d=>{
+    if(gSuc!=='all'&&d.s!==(gSuc==='Houston'?'HOU':'OC'))return false;
+    if(gEst!=='all'&&d.e!==(gEst==='Texas'?'TX':'CA'))return false;
+    if(gCl!=='all'&&String(d.cl)!==gCl)return false;
+    return true;
+  });
+  zData=zData.sort((a,b)=>gOrd==='ret'?b.R-a.R:gOrd==='compras'?b.V-a.V:b.P-a.P);
+  const tbody=document.querySelector('#tZip tbody');
+  tbody.innerHTML=zData.map(d=>`<tr>
+    <td style="font-family:var(--font-mono);font-size:11px">${d.zip}</td>
+    <td>${d.t}</td><td>${d.e}</td>
+    <td><span class="badge ${d.cl>=4?'bhi':d.cl>=3?'bmid':'blo'}">C${d.cl}</span></td>
+    <td>${d.s}</td><td>${d.L}</td><td><b>${d.P}</b></td>
+    <td>100%</td><td>${d.V}</td>
+    <td><span class="badge ${d.R>=30?'bhi':d.R>=15?'bmid':'blo'}">${fmt(d.R)}%</span></td>
+  </tr>`).join('');
+}
+
+// ============================================================
+// TAB: INSIGHTS
+// ============================================================
+function renderInsights(){
+  const c=colors();
+  // Buyer persona
+  charts['cBuyer']=new Chart(gc('cBuyer'),{
+    type:'bar',data:{labels:BUYER.map(d=>d.bp),datasets:[{label:'Retención %',data:BUYER.map(d=>d.R),backgroundColor:BUYER.map(d=>d.R>=20?'#1A7A4A99':d.R>=15?'#BA751799':'#C0392B99'),borderWidth:0}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:8}},grid:{display:false}}}}
+  });
+  // Camp TAL
+  const campS=[{c:'contact_center',v:57},{c:'support',v:44},{c:'organic',v:22},{c:'paid',v:3},{c:'paid_us',v:2.4}];
+  charts['cCampTAL']=new Chart(gc('cCampTAL'),{
+    type:'bar',data:{labels:campS.map(d=>d.c),datasets:[{data:campS.map(d=>d.v),backgroundColor:campS.map(d=>d.v>=20?'#0B6E7A99':d.v>=5?'#BA751799':'#C0392B99'),borderWidth:0}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:9}},grid:{display:false}}}}
+  });
+  // States retention
+  const top8=STATES.slice(0,8);
+  charts['cStates']=new Chart(gc('cStates'),{
+    type:'bar',data:{labels:top8.map(d=>d.e),datasets:[{data:top8.map(d=>d.R),backgroundColor:top8.map(d=>d.R>=25?'#1A7A4A99':d.R>=15?'#0B6E7A99':'#BA751799'),borderWidth:0}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:c.text,font:{size:9}},grid:{color:c.grid}},y:{ticks:{color:c.text,font:{size:8}},grid:{display:false}}}}
+  });
+}
+
+// ============================================================
+// CONTROLS
+// ============================================================
+function showTab(name, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  btn.classList.add('on');
+  activeTab=name;
+  renderTab(name);
+}
+function renderTab(name){
+  if(name==='tendencia') renderTendencia();
+  else if(name==='campanas') renderCampanas();
+  else if(name==='medios') renderMedios();
+  else if(name==='landing') renderLanding();
+  else if(name==='geo') renderGeo();
+  else if(name==='insights') renderInsights();
+}
+function refresh(){ renderKPIs(); renderTab(activeTab); }
+function setCampMetric(m,btn){ campMetric=m; document.querySelectorAll('#campMetricTabs .mtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); renderCampanas(); }
+function setMedMetric(m,btn){ medMetric=m; document.querySelectorAll('#medMetricTabs .mtab').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); renderMedios(); }
+
+renderKPIs();
+renderTendencia();
+</script>

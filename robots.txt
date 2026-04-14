@@ -1,0 +1,3 @@
+# Bloquear todo el sitio
+User-agent: *
+Disallow: /

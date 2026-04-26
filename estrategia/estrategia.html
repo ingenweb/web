@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingenes — Las 8 Estrategias + 4 Momentos = #1 del Mundo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#080E1C; --navy:#0B1629; --card:#0D1B35; --card2:#0F2248;
+  --gold:#C9922A; --gold-lt:#E8B84B;
+  --teal:#0D9488; --teal-lt:#2DD4BF;
+  --white:#F0F4FF; --muted:#5A7BA0; --border:rgba(255,255,255,.06);
+  --cg:#14B8A6; --cf:#8B5CF6;
+  --cm1:#3B6FD4; --cm2:#0D9488; --cm3:#D97706; --cm4:#16A34A;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 40% at 10% 20%,rgba(13,148,136,.06),transparent 70%),
+  radial-gradient(ellipse 50% 35% at 90% 70%,rgba(201,146,42,.05),transparent 70%),
+  radial-gradient(ellipse 40% 40% at 50% 50%,rgba(139,92,246,.03),transparent 70%);}
+.page{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:0 52px 100px;}
+
+/* HERO */
+.hero{padding:64px 0 52px;text-align:center;position:relative;}
+.hero::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.hero-eyebrow{font-size:9px;letter-spacing:5px;font-weight:600;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(38px,5vw,70px);font-weight:900;line-height:1.0;margin-bottom:14px;}
+.hero-title em{color:var(--gold-lt);font-style:italic;}
+.hero-sub{font-size:16px;color:var(--muted);line-height:1.65;max-width:640px;margin:0 auto 28px;}
+/* Vision band inside hero */
+.vision-band{display:inline-flex;align-items:center;gap:16px;padding:14px 24px;border:1px solid rgba(201,146,42,.22);border-radius:8px;background:rgba(201,146,42,.06);}
+.vb-star{font-size:20px;}
+.vb-text{font-size:13px;line-height:1.5;}
+.vb-text strong{color:var(--gold-lt);}
+.vb-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold-lt);margin-left:8px;}
+.vb-lbl{font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+
+/* SECTION TITLE */
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.sec-num{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;line-height:1;opacity:.13;}
+.sec-label{font-size:9px;letter-spacing:4px;font-weight:700;text-transform:uppercase;}
+.sec-name{font-size:19px;font-weight:600;color:var(--white);}
+
+/* STRATEGIES */
+.strategies-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:44px;}
+.strategy-group{border-radius:12px;overflow:hidden;}
+.sg-header{padding:18px 24px;display:flex;align-items:center;gap:12px;}
+.sg-icon{width:36px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.sg-label{font-size:9px;letter-spacing:3px;font-weight:700;text-transform:uppercase;margin-bottom:2px;}
+.sg-count{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;}
+.sg-growth .sg-header{background:rgba(20,184,166,.11);border-bottom:1px solid rgba(20,184,166,.14);}
+.sg-growth .sg-icon{background:rgba(20,184,166,.18);}
+.sg-growth .sg-label,.sg-growth .sg-count{color:var(--teal-lt);}
+.sg-fort .sg-header{background:rgba(139,92,246,.09);border-bottom:1px solid rgba(139,92,246,.13);}
+.sg-fort .sg-icon{background:rgba(139,92,246,.16);}
+.sg-fort .sg-label,.sg-fort .sg-count{color:#A78BFA;}
+.sg-cards{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;}
+.sg-card{padding:18px 22px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:start;transition:background .18s;cursor:default;}
+.sg-card:last-child{border-bottom:none;}
+.sg-card:hover{background:rgba(255,255,255,.022);}
+.sg-card-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;line-height:1.1;margin-top:2px;}
+.sg-growth .sg-card-num{color:rgba(45,212,191,.38);}
+.sg-fort .sg-card-num{color:rgba(167,139,250,.38);}
+.sg-card-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;line-height:1.3;}
+.sg-card-owners{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+.owner-tag{font-size:9px;font-weight:600;letter-spacing:.4px;padding:2px 7px;border-radius:3px;display:inline-block;}
+.sg-growth .owner-tag{background:rgba(20,184,166,.11);color:var(--teal-lt);}
+.sg-fort .owner-tag{background:rgba(139,92,246,.11);color:#A78BFA;}
+.sg-card-desc{font-size:11px;line-height:1.65;color:var(--muted);}
+.sg-card-desc strong{color:rgba(255,255,255,.7);}
+.sg-card-kpi{margin-top:7px;font-size:10px;font-weight:600;color:var(--gold-lt);}
+
+/* CONNECTOR */
+.connector{margin:44px 0;position:relative;display:flex;align-items:center;justify-content:center;}
+.connector::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),rgba(201,146,42,.28),var(--border),transparent);}
+.connector-core{position:relative;z-index:1;background:var(--ink);padding:0 24px;text-align:center;}
+.connector-symbol{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;background:linear-gradient(135deg,var(--teal-lt),var(--gold-lt),#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.connector-label{font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+
+/* MOMENTS */
+.moments-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:44px;}
+.moment-card{border-radius:12px;overflow:hidden;transition:transform .22s ease;}
+.moment-card:hover{transform:translateY(-3px);}
+.mc-header{padding:22px 20px 16px;position:relative;overflow:hidden;}
+.mc-header::after{content:'';position:absolute;top:-28px;right:-28px;width:90px;height:90px;border-radius:50%;opacity:.08;}
+.mc-m1 .mc-header{background:linear-gradient(135deg,#1B3A6B,#0F2248);border-bottom:1px solid rgba(59,111,212,.28);}
+.mc-m1 .mc-header::after{background:#3B6FD4;}
+.mc-m2 .mc-header{background:linear-gradient(135deg,#0a2e2b,#0D1B35);border-bottom:1px solid rgba(13,148,136,.32);}
+.mc-m2 .mc-header::after{background:var(--teal);}
+.mc-m3 .mc-header{background:linear-gradient(135deg,#2d1e0a,#0D1B35);border-bottom:1px solid rgba(217,119,6,.32);}
+.mc-m3 .mc-header::after{background:#D97706;}
+.mc-m4 .mc-header{background:linear-gradient(135deg,#0a2018,#0D1B35);border-bottom:1px solid rgba(22,163,74,.28);}
+.mc-m4 .mc-header::after{background:#16A34A;}
+.mc-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;line-height:1;margin-bottom:3px;}
+.mc-m1 .mc-num{color:#5B8BE8;} .mc-m2 .mc-num{color:var(--teal-lt);} .mc-m3 .mc-num{color:#FCD34D;} .mc-m4 .mc-num{color:#4ADE80;}
+.mc-phase{font-size:8px;letter-spacing:3px;font-weight:700;text-transform:uppercase;margin-bottom:5px;opacity:.58;}
+.mc-name{font-size:15px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.mc-owner{font-size:10px;color:var(--muted);}
+.mc-body{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:16px 18px;}
+.mc-mission{font-size:11px;line-height:1.65;color:rgba(255,255,255,.58);margin-bottom:13px;padding-bottom:13px;border-bottom:1px solid var(--border);}
+.mc-mission strong{color:var(--white);}
+.mc-mission em{color:var(--gold-lt);font-style:italic;}
+.mc-strategies{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.mc-strat-tag{display:flex;align-items:center;gap:7px;padding:4px 9px;border-radius:3px;font-size:9.5px;font-weight:500;}
+.mst-g{background:rgba(20,184,166,.09);color:var(--teal-lt);border:1px solid rgba(20,184,166,.18);}
+.mst-f{background:rgba(139,92,246,.09);color:#A78BFA;border:1px solid rgba(139,92,246,.16);}
+.mst-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.mc-kpis{display:flex;flex-direction:column;gap:4px;}
+.mc-kpi-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
+.mc-kpi-label{color:var(--muted);} .mc-kpi-val{font-weight:700;color:var(--gold-lt);}
+
+/* HANDOFF MINI BAND */
+.handoff-mini{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 0;position:relative;}
+.handoff-mini::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,146,42,.2),transparent);}
+.hm-ball{font-size:20px;z-index:1;background:var(--ink);padding:0 8px;animation:bounce2 2s ease-in-out infinite;}
+@keyframes bounce2{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.hm-label{font-size:9px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;z-index:1;background:var(--ink);padding:0 8px;}
+
+/* CONVERGENCE */
+.convergence{margin-top:44px;padding:44px;border-radius:14px;background:linear-gradient(135deg,rgba(15,34,72,.8),rgba(10,18,32,.9));border:1px solid rgba(201,146,42,.18);position:relative;overflow:hidden;}
+.convergence::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--teal-lt),var(--gold),transparent);}
+.convergence::after{content:'⭐';position:absolute;right:44px;top:44px;font-size:180px;line-height:1;opacity:.022;}
+.conv-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:44px;align-items:center;}
+.conv-section-title{font-size:9px;letter-spacing:4px;font-weight:700;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.conv-list{display:flex;flex-direction:column;gap:9px;}
+.conv-item{display:flex;align-items:flex-start;gap:11px;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.62);}
+.conv-item::before{content:'';width:2px;min-width:2px;height:17px;border-radius:1px;margin-top:2px;flex-shrink:0;}
+.conv-item.growth::before{background:var(--teal-lt);}
+.conv-item.fort::before{background:#A78BFA;}
+.conv-item strong{color:var(--white);}
+.conv-center{text-align:center;position:relative;z-index:1;}
+.conv-star-wrap{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(201,146,42,.14),rgba(201,146,42,.03));border:1px solid rgba(201,146,42,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;}
+.conv-star-wrap::before{content:'';position:absolute;inset:-11px;border-radius:50%;border:1px solid rgba(201,146,42,.08);}
+.conv-num{font-family:'Playfair Display',serif;font-size:68px;font-weight:900;line-height:1;color:var(--gold-lt);}
+.conv-label{font-size:8.5px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:700;}
+.conv-desc{font-size:12px;line-height:1.65;color:var(--muted);max-width:200px;margin:0 auto;}
+.conv-desc strong{color:var(--white);}
+
+/* PROOF METRICS */
+.proof-metrics{margin-top:44px;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.pm-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:16px 14px;text-align:center;transition:border-color .18s;}
+.pm-card:hover{border-color:rgba(201,146,42,.22);}
+.pm-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:3px;line-height:1;}
+.pm-label{font-size:9px;color:var(--muted);line-height:1.4;}
+.pm-source{font-size:7.5px;letter-spacing:1px;text-transform:uppercase;margin-top:5px;font-weight:600;}
+.pm-g{color:var(--teal-lt);} .pm-f{color:#A78BFA;} .pm-m{color:var(--gold-lt);}
+.pm-g-bg{border-top:2px solid var(--teal);}
+.pm-f-bg{border-top:2px solid #8B5CF6;}
+.pm-m-bg{border-top:2px solid var(--gold);}
+
+/* DECLARATION */
+.declaration{margin-top:60px;text-align:center;padding:60px 44px;border-top:1px solid var(--border);}
+.decl-quote{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,40px);font-weight:400;color:rgba(255,255,255,.82);line-height:1.4;max-width:820px;margin:0 auto 14px;}
+.decl-quote em{color:var(--gold-lt);font-style:italic;}
+.decl-sub{font-size:12px;color:var(--muted);letter-spacing:.5px;}
+.star-dec{font-size:32px;margin-bottom:20px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.fade{animation:fadeIn .7s ease both;}
+
+@media(max-width:1100px){.page{padding:0 28px 80px;}.strategies-wrap{grid-template-columns:1fr;}.moments-grid{grid-template-columns:repeat(2,1fr);}.proof-metrics{grid-template-columns:repeat(3,1fr);}.conv-grid{grid-template-columns:1fr;}.conv-center{order:-1;}}
+@media(max-width:600px){.moments-grid{grid-template-columns:1fr;}.proof-metrics{grid-template-columns:repeat(2,1fr);}}
+.back-home{position:fixed;top:20px;left:20px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(13,27,53,.92);border:1px solid rgba(201,146,42,.35);border-radius:8px;color:#E8B84B;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(10px);transition:all .2s ease;}
+.back-home:hover{background:rgba(201,146,42,.15);border-color:#E8B84B;transform:translateX(-2px);}
+.back-home svg{width:13px;height:13px;}
+@media(max-width:600px){.back-home{top:12px;left:12px;padding:8px 12px;font-size:10px;}}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-home" aria-label="Volver al inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Inicio</a>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero fade">
+  <div class="hero-eyebrow">Ingenes · Arquitectura Estratégica 2026 – 2030</div>
+  <h1 class="hero-title">Las <em>8 Estrategias</em><br>+ Los 4 Momentos<br>= <em>#1 del Mundo</em></h1>
+  <p class="hero-sub">Cómo las 4 de Crecimiento, las 4 de Fortalecimiento y los 4 Momentos del Journey convergen en el propósito de Bajando Estrellas del Cielo.</p>
+  <div class="vision-band">
+    <div class="vb-star">⭐</div>
+    <div class="vb-text"><strong>Bajando Estrellas del Cielo</strong><br>Propósito · Programa BEC · Visión 2030</div>
+    <div style="border-left:1px solid rgba(201,146,42,.3);padding-left:16px;margin-left:4px;">
+      <div class="vb-num">300K</div>
+      <div class="vb-lbl">Estrellas · 2030</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BLOQUE I: LAS 8 ESTRATEGIAS ═══ -->
+<div class="sec-title fade">
+  <div class="sec-num" style="color:var(--teal-lt)">I</div>
+  <div>
+    <div class="sec-label" style="color:var(--teal-lt)">Las 8 Estrategias</div>
+    <div class="sec-name">4 de Crecimiento + 4 de Fortalecimiento</div>
+  </div>
+</div>
+
+<div class="strategies-wrap fade">
+
+  <!-- CRECIMIENTO -->
+  <div class="strategy-group sg-growth">
+    <div class="sg-header">
+      <div class="sg-icon">🚀</div>
+      <div>
+        <div class="sg-label">Estrategias de Crecimiento</div>
+        <div class="sg-count">4</div>
+      </div>
+      <div style="margin-left:auto;font-size:10px;color:var(--muted);text-align:right;">Se ejecutan en<br><strong style="color:var(--teal-lt)">M1 · M2 · M3</strong></div>
+    </div>
+    <div class="sg-cards">
+
+      <div class="sg-card">
+        <div class="sg-card-num">1</div>
+        <div>
+          <div class="sg-card-title">Triple Medicina — Diferenciador Único Mundial</div>
+          <div class="sg-card-owners"><span class="owner-tag">Dr. Camargo · CMO</span><span class="owner-tag">Innovación Clínica</span></div>
+          <div class="sg-card-desc">Reproductiva + Regenerativa (OVAGEN, ENDOGEN, IVF MORE, BIOCELK) + Metabólica (Optimize Your Cycle™). La única institución que integra los tres pilares. Categoría propia: <strong>"Optimize Before You Cycle"</strong>. Publicaciones en ESHRE y ASRM como motor de posicionamiento global. El argumento científico que vende solo.</div>
+          <div class="sg-card-kpi">→ Categoría propia · Moat científico · Publicaciones peer-reviewed</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">2</div>
+        <div>
+          <div class="sg-card-title">User Personas Amplias — 12+ UPs, TAM Expandido</div>
+          <div class="sg-card-owners"><span class="owner-tag">Marketing</span><span class="owner-tag">Producto</span><span class="owner-tag">Canales</span></div>
+          <div class="sg-card-desc">Ensanchamiento del TAM con personalización por perfil clínico, emocional y geográfico. Prioridad: <strong>Infertilidad (UP2), IVF MORE (UP4), Subrogación (UP3 INT)</strong>. Nuevos: ROPA, Preservación, Check-up, BIOCELK. Scoring dinámico v2.0: cada lead clasificado desde el primer clic. LTV medido por UP = Facturación UP ÷ Programas vendidos UP.</div>
+          <div class="sg-card-kpi">→ 12+ UPs · Score 0–60 pts · LTV por UP · Fact/BEC +30%</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">3</div>
+        <div>
+          <div class="sg-card-title">Canales Integrados — Motor de Demanda Multicanal</div>
+          <div class="sg-card-owners"><span class="owner-tag">Juan (C1)</span><span class="owner-tag">Sandra (C2+C3)</span><span class="owner-tag">Rubén (C4)</span><span class="owner-tag">Daniel (Eficiencia Mktg)</span></div>
+          <div class="sg-card-desc"><strong>Canal 1:</strong> Digital directo. Podcasts "Ingenes Sin Filtro" (ES) + "Fertility Destination" (EN). First-movers mundiales. 40/40/20.<br><strong>Canal 2:</strong> B2B — corporativos, aseguradoras, wellness, Carrot Fertility.<br><strong>Canal 3:</strong> Red médica — Primer Ginecólogo Afiliado LATAM.<br><strong>Canal 4:</strong> LTV — upselling, cross-selling ético, repeat, referidos.</div>
+          <div class="sg-card-kpi">→ OLE 8%→30% NAL · 19%→50% INT · Fact/BEC +30%</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">4</div>
+        <div>
+          <div class="sg-card-title">Expansión Internacional 5x — De 800 a 4,000 Pacientes/Año</div>
+          <div class="sg-card-owners"><span class="owner-tag">Sandra (INT)</span><span class="owner-tag">IP Coordinators</span><span class="owner-tag">Branches OC+Houston</span></div>
+          <div class="sg-card-desc">México como hub de fertilidad mundial. Destino como upgrade — no como descuento. JCI, IP Coordinators bilingüe, paquetes all-inclusive. Grecia cerrada (may 2025), Georgia en riesgo: el vacío competitivo global llega a México. Meta: 50%+ de PVRs internacionales sobre el total. Retención post-PVR INT ya es 30% vs 17% nacional.</div>
+          <div class="sg-card-kpi">→ 800→4,000 INT/año · $35.7M USD · PVRs INT 50% del total</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FORTALECIMIENTO -->
+  <div class="strategy-group sg-fort">
+    <div class="sg-header">
+      <div class="sg-icon">🏛️</div>
+      <div>
+        <div class="sg-label">Estrategias de Fortalecimiento</div>
+        <div class="sg-count">4</div>
+      </div>
+      <div style="margin-left:auto;font-size:10px;color:var(--muted);text-align:right;">Operan en<br><strong style="color:#A78BFA">todos los Momentos</strong></div>
+    </div>
+    <div class="sg-cards">
+
+      <div class="sg-card">
+        <div class="sg-card-num">5</div>
+        <div>
+          <div class="sg-card-title">Margen — Todo Crecimiento con Rentabilidad Protegida</div>
+          <div class="sg-card-owners"><span class="owner-tag">BFS · Surrogacy Business</span><span class="owner-tag">Competitividad</span><span class="owner-tag">Daniel Smeke (efic. mktg)</span><span class="owner-tag">Daniel Martínez (contab.)</span></div>
+          <div class="sg-card-desc"><strong>BFS:</strong> Rentabilidad, pricing, BEC como modelo de negocio, control Surrogacy Business, inventarios, suministros, control regulatorio y presupuestal.<br><strong>Competitividad:</strong> Control de servicios, presupuestos, costos directos e indirectos.<br><strong>Daniel Smeke:</strong> Eficiencia del gasto de marketing — OLE, CAC, costo por PVR.<br><strong>Daniel Martínez:</strong> Contabilidad, tesorería y cumplimiento fiscal.<br>Meta: margen de <strong>1X a 1.6X</strong> (+60% sobre base actual).</div>
+          <div class="sg-card-kpi">→ Margen 1X → 1.6X · BEC como moat · Pricing premium</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">6</div>
+        <div>
+          <div class="sg-card-title">Ubuntu / Cultura — "Yo soy porque nosotros somos"</div>
+          <div class="sg-card-owners"><span class="owner-tag">Lorena López · RH</span><span class="owner-tag">Chief Culture Officer</span></div>
+          <div class="sg-card-desc">Sin cultura, la estrategia es PowerPoint. Ubuntu es el sistema operativo invisible que hace que los 4 Momentos funcionen sin fricciones y que la pelota nunca caiga. <strong>"Yo soy porque nosotros somos"</strong> — todos construyen el #1 mundial, no cada quien su silo. La cultura es el diferenciador que ningún competidor puede copiar ni replicar.</div>
+          <div class="sg-card-kpi">→ eNPS >70 · Rotación &lt;8% · Ubuntu como ventaja inimitable</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">7</div>
+        <div>
+          <div class="sg-card-title">Procesos + Tech — El Ecosistema Conectado</div>
+          <div class="sg-card-owners"><span class="owner-tag">PEC + TI</span><span class="owner-tag">TechnoFuze</span></div>
+          <div class="sg-card-desc">Umbrella → HubSpot desde el primer contacto. InFunnel: contactación en todos los Momentos. InConcert: call center operativo. FileMaker + IM + Agenda Sintonizada: clínico-administrativo. RS → Intelisis (ERP): piso y finanzas. BigQuery: atribución OLE. <strong>Sin Zapier ni Make.</strong> Todo fluye por un ecosistema integrado nativo.</div>
+          <div class="sg-card-kpi">→ 0 cajas negras · Control Tower 22 sedes · OLE real en BigQuery</div>
+        </div>
+      </div>
+
+      <div class="sg-card">
+        <div class="sg-card-num">8</div>
+        <div>
+          <div class="sg-card-title">Experiencia del Paciente — La Promesa de Bajar la Estrella</div>
+          <div class="sg-card-owners"><span class="owner-tag">Nicolás · PEC</span><span class="owner-tag">Dir. Médico</span></div>
+          <div class="sg-card-desc">NPS medido independientemente en cada hito — no por las PBBs. Time-to-Start &lt;21 días. Journey predecible en 24 sedes. <strong>Disminuir quejas e insatisfacciones. Generar efecto WOW</strong>, especialmente con pacientes internacionales. Hacer que más pacientes lleguen recomendadas — el referido es el KPI de calidad más honesto. 0 cajas negras. Paid but Not Started: SLA &lt;7 días con causa raíz.</div>
+          <div class="sg-card-kpi">→ NPS independiente &gt;85 · Reembolsos &lt;2% · Referidos como KPI</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end strategies-wrap -->
+
+<!-- CONNECTOR -->
+<div class="connector fade">
+  <div class="connector-core">
+    <div class="connector-symbol">+</div>
+    <div class="connector-label">Los 4 Momentos del Journey del Paciente</div>
+  </div>
+</div>
+
+<!-- ═══ BLOQUE II: LOS 4 MOMENTOS ═══ -->
+<div class="sec-title fade">
+  <div class="sec-num" style="color:var(--gold-lt)">II</div>
+  <div>
+    <div class="sec-label" style="color:var(--gold-lt)">Los 4 Momentos</div>
+    <div class="sec-name">Misión de cada Momento + la pelota que no puede caer</div>
+  </div>
+</div>
+
+<div class="moments-grid fade">
+
+  <!-- M1 -->
+  <div class="moment-card mc-m1">
+    <div class="mc-header">
+      <div class="mc-num">M1</div>
+      <div class="mc-phase">Awareness</div>
+      <div class="mc-name">Atracción</div>
+      <div class="mc-owner">Juan (C1) · Sandra (C2+C3)</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-mission"><strong>Misión:</strong> Convertir desconocidos en leads con UP declarada y score ≥40. Dos podcasts first-movers: <em>Ingenes Sin Filtro</em> (ES) + <em>Fertility Destination</em> (EN). Motor educativo 1→12 piezas. OLE como métrica norte — no CPL.</div>
+      <div class="mc-strategies">
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E1 · Triple Medicina como contenido diferenciador</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E2 · Quiz asigna UP desde el primer clic</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E3 · Canales 1+2+3 activos simultáneamente</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E4 · Fertility Destination · SEO EN · Branches USA</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F7 · Umbrella → HubSpot · ManyChat · Meta API</div>
+      </div>
+      <div class="mc-kpis">
+        <div class="mc-kpi-row"><span class="mc-kpi-label">OLE Nacional</span><span class="mc-kpi-val">8% → 30%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">OLE Internacional</span><span class="mc-kpi-val">19% → 50%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">Lead → PVR</span><span class="mc-kpi-val">5-10% → 30%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M2 -->
+  <div class="moment-card mc-m2">
+    <div class="mc-header">
+      <div class="mc-num">M2</div>
+      <div class="mc-phase">Nurturing</div>
+      <div class="mc-name">Preparación</div>
+      <div class="mc-owner">Daniel Smeke · Dir. Contactación</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-mission"><strong>Misión:</strong> El Fertility 101 vive aquí. El paciente llega al PVR con su diagnóstico pre-entendido y <em>habiendo comprendido el modelo BEC</em>. 180 días si es necesario. No nutrir — preparar. El médico en M3 personaliza, no educa desde cero.</div>
+      <div class="mc-strategies">
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E1 · Fertility 101 + Triple Medicina explicada por etapas</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E2 · Lead magnets y secuencia personalizada por UP</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E4 · Ruta INT: legal + logística + turismo médico</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F6 · Ubuntu: coordinadoras con propósito</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F7 · HubSpot orquesta · InFunnel contactación · 8 triggers</div>
+      </div>
+      <div class="mc-kpis">
+        <div class="mc-kpi-row"><span class="mc-kpi-label">TAL Lead→PVR</span><span class="mc-kpi-val">10% → 30%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">Show-rate PVR</span><span class="mc-kpi-val">65% → 85%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">BEC pre-entendido</span><span class="mc-kpi-val">0% → 90%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M3 -->
+  <div class="moment-card mc-m3">
+    <div class="mc-header">
+      <div class="mc-num">M3</div>
+      <div class="mc-phase">Conversión</div>
+      <div class="mc-name">Cierre</div>
+      <div class="mc-owner">Rubén Vallejo · Dir. Comercial CRO</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-mission"><strong>Misión:</strong> El PVR es el acto más empático. El médico entrega el diagnóstico con profundidad y calidez — <em>"en MI caso"</em>. La educación continúa, ahora personalizada. El BEC se presenta como compromiso compartido de bajar la estrella. La EPV existe porque la digestión toma tiempo.</div>
+      <div class="mc-strategies">
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E1 · IM: médico prescribe → PBB presenta. Fact/BEC +30%</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E2 · Metodología distinta por UP · Microsite JWT</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E3 · Canal 4: upselling clínico · Formas de pago</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E4 · INT: upgrade · Pago USD · All-inclusive</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F5 · BEC como modelo · Comisiones normalizadas</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F7 · Microsite JWT · Calendly EPV · Gong analytics</div>
+      </div>
+      <div class="mc-kpis">
+        <div class="mc-kpi-row"><span class="mc-kpi-label">PVR → Venta</span><span class="mc-kpi-val">20% → 35%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">Fact/BEC</span><span class="mc-kpi-val">+30%</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">EPV en &lt;48h</span><span class="mc-kpi-val">20% → 50%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M4 -->
+  <div class="moment-card mc-m4">
+    <div class="mc-header">
+      <div class="mc-num">M4</div>
+      <div class="mc-phase">Experiencia</div>
+      <div class="mc-name">La Promesa</div>
+      <div class="mc-owner">Nicolás · PEC + Dir. Médico</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-mission"><strong>Misión:</strong> Cumplir la promesa con excelencia. Visibilidad total del journey. NPS medido de forma <em>independiente</em> en cada hito. Disminuir quejas. Generar efecto WOW. Hacer que más pacientes lleguen recomendadas — el referido es el KPI de calidad que nadie puede manipular.</div>
+      <div class="mc-strategies">
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E1 · Triple Medicina vivida en tiempo real</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E2 · Journey por UP · Patient Navigator · 0 cajas negras</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E3 · Canal 4: 2do bebé · Referidos · LTV extendido</div>
+        <div class="mc-strat-tag mst-g"><div class="mst-dot" style="background:var(--teal-lt)"></div>E4 · JCI · IP Coordinators · Efecto WOW internacional</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F6 · Ubuntu: el equipo que acompaña con propósito</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F7 · Control Tower · FM · RS · Intelisis</div>
+        <div class="mc-strat-tag mst-f"><div class="mst-dot" style="background:#A78BFA"></div>F8 · THIS IS M4. Experiencia del Paciente.</div>
+      </div>
+      <div class="mc-kpis">
+        <div class="mc-kpi-row"><span class="mc-kpi-label">NPS (independiente)</span><span class="mc-kpi-val">>85</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">Time-to-Start</span><span class="mc-kpi-val">&lt;21 días</span></div>
+        <div class="mc-kpi-row"><span class="mc-kpi-label">Reembolsos</span><span class="mc-kpi-val">&lt;2%</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end moments-grid -->
+
+<!-- HANDOFF VISUAL STRIP -->
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:44px;" class="fade">
+  <div style="background:rgba(201,146,42,.06);border:1px solid rgba(201,146,42,.18);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+    <span style="font-size:22px;">🏀</span>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--gold-lt);margin-bottom:3px;">HANDOFF M1 → M2</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.5;">Juan/Sandra → Daniel. Lead con UP + score ≥40. <strong style="color:rgba(255,255,255,.7)">SLA &lt;2h.</strong> Si cae: el lead se enfría.</div>
+    </div>
+  </div>
+  <div style="background:rgba(201,146,42,.06);border:1px solid rgba(201,146,42,.18);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+    <span style="font-size:22px;">🏀</span>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--gold-lt);margin-bottom:3px;">HANDOFF M2 → M3</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.5;">Daniel → Rubén + Médico. Paciente con Fertility 101 + BEC pre-entendido. <strong style="color:rgba(255,255,255,.7)">SLA brief &lt;24h.</strong></div>
+    </div>
+  </div>
+  <div style="background:rgba(201,146,42,.06);border:1px solid rgba(201,146,42,.18);border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+    <span style="font-size:22px;">🏀</span>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--gold-lt);margin-bottom:3px;">HANDOFF M3 → M4</div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.5;">Rubén → Nicolás. BEC firmado. NHC en FM. EANES activos. <strong style="color:rgba(255,255,255,.7)">Time-to-Start &lt;7d.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BLOQUE III: CONVERGENCIA ═══ -->
+<div class="sec-title fade">
+  <div class="sec-num" style="color:var(--gold-lt)">III</div>
+  <div>
+    <div class="sec-label" style="color:var(--gold-lt)">La Convergencia</div>
+    <div class="sec-name">Por qué las 8 estrategias + 4 Momentos = #1 del Mundo</div>
+  </div>
+</div>
+
+<div class="convergence fade">
+  <div class="conv-grid">
+    <div>
+      <div class="conv-section-title">Las 4 de Crecimiento aportan…</div>
+      <div class="conv-list">
+        <div class="conv-item growth"><strong>Una categoría científica inimitable</strong> — Triple Medicina + Optimize Your Cycle™. Nadie en el mundo la puede replicar. El moat más defensible del sector.</div>
+        <div class="conv-item growth"><strong>Un mercado 5x más grande</strong> — 12+ UPs + Expansión INT llevan de 800 a 4,000 pacientes INT/año. El TAM deja de ser solo México.</div>
+        <div class="conv-item growth"><strong>4 fuentes de demanda activas</strong> — Digital, B2B, Red Médica, LTV. Dos podcasts first-movers mundiales. Ningún competidor tiene este nivel de sistematización.</div>
+        <div class="conv-item growth"><strong>México como destino de elección</strong> — Para el INT, Ingenes es el upgrade. Retención post-PVR INT ya 30% vs 17% nacional. Vacío competitivo global disponible.</div>
+      </div>
+    </div>
+    <div class="conv-center">
+      <div class="conv-star-wrap">
+        <div class="conv-num">#1</div>
+        <div class="conv-label">Del Mundo</div>
+      </div>
+      <div class="conv-desc"><strong>Score objetivo: 73/80</strong><br><br>300,000 estrellas bajadas del cielo a 2030. El número que une el propósito con la visión.</div>
+    </div>
+    <div>
+      <div class="conv-section-title">Las 4 de Fortalecimiento garantizan…</div>
+      <div class="conv-list">
+        <div class="conv-item fort"><strong>Que el crecimiento no destruye el margen</strong> — 4 owners, margen 1X→1.6X. BEC como activo de negocio. Daniel Martínez con cumplimiento fiscal sólido.</div>
+        <div class="conv-item fort"><strong>Que la cultura sostiene la estrategia</strong> — "Yo soy porque nosotros somos". Ubuntu hace que la pelota nunca caiga. Sin cultura, los 4 Momentos son intenciones.</div>
+        <div class="conv-item fort"><strong>Que los procesos escalan sin fricciones</strong> — Umbrella→HubSpot→FileMaker→Intelisis. 22 sedes con Control Tower en tiempo real. Sin Zapier, sin Make.</div>
+        <div class="conv-item fort"><strong>Que la promesa siempre se cumple</strong> — NPS independiente. Efecto WOW. Pacientes que recomiendan = el KPI de calidad que nadie puede manipular. M4 con 0 cajas negras.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROOF METRICS -->
+<div class="proof-metrics fade">
+  <div class="pm-card pm-g-bg">
+    <div class="pm-val pm-g">73<span style="font-size:16px">/80</span></div>
+    <div class="pm-label">Score objetivo global vs IVI 64, CCRM 63</div>
+    <div class="pm-source pm-g">Benchmark Mundial</div>
+  </div>
+  <div class="pm-card pm-g-bg">
+    <div class="pm-val pm-g">300K</div>
+    <div class="pm-label">Estrellas bajadas del cielo — Visión 2030</div>
+    <div class="pm-source pm-g">Propósito · BEC</div>
+  </div>
+  <div class="pm-card pm-m-bg">
+    <div class="pm-val pm-m">50%+</div>
+    <div class="pm-label">Pacientes internacionales sobre el total del instituto</div>
+    <div class="pm-source pm-m">Expansión INT · Meta 2028</div>
+  </div>
+  <div class="pm-card pm-m-bg">
+    <div class="pm-val pm-m">+30%</div>
+    <div class="pm-label">Fact/BEC — Facturación por programa vendido</div>
+    <div class="pm-source pm-m">LTV · Canal 4</div>
+  </div>
+  <div class="pm-card pm-f-bg">
+    <div class="pm-val pm-f">1.6X</div>
+    <div class="pm-label">Margen — incremento del 60% sobre base actual</div>
+    <div class="pm-source pm-f">Fortalecimiento Margen</div>
+  </div>
+  <div class="pm-card pm-f-bg">
+    <div class="pm-val pm-f">8+4+4</div>
+    <div class="pm-label">Estrategias crecimiento + fortalecimiento + Momentos</div>
+    <div class="pm-source pm-f">La Arquitectura</div>
+  </div>
+</div>
+
+<!-- DECLARATION -->
+<div class="declaration fade">
+  <div class="star-dec">⭐</div>
+  <div class="decl-quote">"El #1 no se declara. Se construye hasta que el mundo no tiene otra opción que <em>reconocerlo</em>."</div>
+  <div class="decl-sub" style="margin-bottom:8px;">Ingenes · Instituto de Fertilidad #1 del Mundo · Bajando Estrellas del Cielo · 2026 → 2030</div>
+  <div class="decl-sub">"Yo soy porque nosotros somos."</div>
+</div>
+
+</div><!-- page -->
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry,i) => {
+      if(entry.isIntersecting) {
+        entry.target.style.animationDelay = (i*0.07)+'s';
+        entry.target.style.animationPlayState = 'running';
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.05 });
+  document.querySelectorAll('.fade').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>

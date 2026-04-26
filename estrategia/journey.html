@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingenes — Journey del Paciente & Estrategias de Crecimiento</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1629; --navy-mid: #1B3A6B; --navy-card: #0F2044;
+  --gold: #C9922A; --gold-lt: #E8B84B;
+  --teal: #0D9488; --teal-lt: #14B8A6;
+  --red: #C0392B; --green: #16A34A; --purple: #7C3AED;
+  --white: #F7F8FA; --muted: #64748B;
+  --border: rgba(255,255,255,0.07);
+  --m1: #1B3A6B; --m2: #0D9488; --m3: #C9922A; --m4: #16A34A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(circle at 15% 40%,rgba(14,148,136,.04),transparent 55%),
+  radial-gradient(circle at 85% 20%,rgba(201,146,42,.05),transparent 50%),
+  radial-gradient(circle at 55% 80%,rgba(27,58,107,.06),transparent 50%);}
+.wrap{position:relative;z-index:1;max-width:1460px;margin:0 auto;padding:0 48px 100px;}
+
+/* HEADER */
+header{padding:56px 0 44px;border-bottom:1px solid var(--border);margin-bottom:48px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;}
+.header-left{flex:1;}
+.eyebrow{font-size:10px;letter-spacing:4px;font-weight:500;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,56px);font-weight:300;line-height:1.05;}
+h1 strong{font-weight:700;color:var(--gold-lt);}
+.header-right{font-size:11px;color:var(--muted);text-align:right;line-height:1.9;border-left:1px solid var(--border);padding-left:28px;min-width:200px;}
+.header-right span{color:var(--gold);font-weight:600;}
+
+/* PURPOSE BAND */
+.purpose-band{margin-bottom:44px;padding:20px 28px;background:linear-gradient(135deg,rgba(201,146,42,.08),rgba(14,148,136,.05));border:1px solid rgba(201,146,42,.2);border-radius:8px;display:flex;align-items:center;gap:20px;}
+.pb-star{font-size:32px;line-height:1;flex-shrink:0;}
+.pb-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--white);line-height:1.5;}
+.pb-text strong{font-weight:700;color:var(--gold-lt);}
+.pb-meta{margin-left:auto;text-align:right;flex-shrink:0;}
+.pb-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold-lt);line-height:1;}
+.pb-label{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+
+/* LEGEND */
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:44px;padding:16px 24px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;}
+.legend-item{display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:.3px;font-weight:500;}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* GRID */
+.est-header{display:grid;grid-template-columns:190px repeat(4,1fr);gap:7px;margin-bottom:7px;}
+.est-hc{padding:12px 14px;border-radius:5px 5px 0 0;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;text-align:center;}
+.ehc1{background:rgba(14,148,136,.14);color:var(--teal-lt);border:1px solid rgba(14,148,136,.28);border-bottom:none;}
+.ehc2{background:rgba(124,58,237,.11);color:#A78BFA;border:1px solid rgba(124,58,237,.22);border-bottom:none;}
+.ehc3{background:rgba(201,146,42,.11);color:var(--gold-lt);border:1px solid rgba(201,146,42,.22);border-bottom:none;}
+.ehc4{background:rgba(22,163,74,.11);color:#4ADE80;border:1px solid rgba(22,163,74,.22);border-bottom:none;}
+.est-lbl{display:flex;align-items:center;font-size:10px;letter-spacing:1.5px;font-weight:500;color:var(--muted);text-transform:uppercase;}
+.journey-grid{display:grid;grid-template-columns:190px repeat(4,1fr);gap:7px;}
+
+/* MOMENTO LABEL */
+.ml{display:flex;flex-direction:column;justify-content:center;padding:22px 18px;border-radius:8px;position:relative;overflow:hidden;}
+.ml::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;}
+.ml-m1{background:rgba(27,58,107,.35);border:1px solid rgba(27,58,107,.55);}
+.ml-m1::before{background:var(--m1);}
+.ml-m2{background:rgba(13,148,136,.14);border:1px solid rgba(13,148,136,.32);}
+.ml-m2::before{background:var(--m2);}
+.ml-m3{background:rgba(201,146,42,.11);border:1px solid rgba(201,146,42,.28);}
+.ml-m3::before{background:var(--m3);}
+.ml-m4{background:rgba(22,163,74,.11);border:1px solid rgba(22,163,74,.26);}
+.ml-m4::before{background:var(--m4);}
+.m-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;line-height:1;margin-bottom:3px;}
+.m-title{font-size:9px;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-bottom:6px;}
+.m-sub{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:5px;}
+.m-owner{font-size:10px;color:var(--muted);line-height:1.4;}
+.m-kpi{margin-top:9px;padding:5px 9px;background:rgba(0,0,0,.22);border-radius:3px;font-size:9px;color:var(--gold-lt);font-weight:600;}
+
+/* CELLS */
+.sc{padding:18px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02);transition:all .22s ease;position:relative;}
+.sc:hover{background:rgba(255,255,255,.048);border-color:rgba(255,255,255,.1);transform:translateY(-1px);}
+.row-m1 .sc.a{background:rgba(27,58,107,.18);border-color:rgba(27,58,107,.38);}
+.row-m2 .sc.a{background:rgba(13,148,136,.09);border-color:rgba(13,148,136,.28);}
+.row-m3 .sc.a{background:rgba(201,146,42,.07);border-color:rgba(201,146,42,.24);}
+.row-m4 .sc.a{background:rgba(22,163,74,.07);border-color:rgba(22,163,74,.2);}
+.sc.na{opacity:.22;}
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:7.5px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;margin-bottom:9px;}
+.tg{background:rgba(14,148,136,.18);color:var(--teal-lt);}
+.tp{background:rgba(124,58,237,.16);color:#A78BFA;}
+.to{background:rgba(201,146,42,.16);color:var(--gold-lt);}
+.tn{background:rgba(22,163,74,.16);color:#4ADE80;}
+.sc-title{font-size:12px;font-weight:600;line-height:1.3;margin-bottom:7px;color:var(--white);}
+.sc-body{font-size:11px;line-height:1.65;color:rgba(255,255,255,.52);}
+.sc-body strong{color:rgba(255,255,255,.78);}
+.sc-kpi{margin-top:9px;font-size:9.5px;font-weight:600;color:var(--gold-lt);padding-top:9px;border-top:1px solid rgba(255,255,255,.055);}
+.dot{position:absolute;top:13px;right:13px;width:7px;height:7px;border-radius:50%;}
+.dt{background:var(--teal-lt);box-shadow:0 0 7px var(--teal);}
+.dp{background:#A78BFA;box-shadow:0 0 7px #7C3AED;}
+.do{background:var(--gold-lt);box-shadow:0 0 7px var(--gold);}
+.dn{background:#4ADE80;box-shadow:0 0 7px var(--green);}
+
+/* HANDOFF ROWS */
+.handoff-row{grid-column:1/-1;display:flex;align-items:stretch;gap:7px;margin:2px 0;}
+.hf-spacer{width:190px;flex-shrink:0;}
+.hf-content{flex:1;background:linear-gradient(135deg,rgba(201,146,42,.06),rgba(14,148,136,.04));border:1px solid rgba(201,146,42,.18);border-radius:6px;padding:14px 20px;display:flex;align-items:center;gap:20px;}
+.hf-ball{font-size:26px;flex-shrink:0;animation:bounce 2s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.hf-mid{flex:1;}
+.hf-title{font-size:11px;font-weight:700;color:var(--gold-lt);margin-bottom:4px;letter-spacing:.3px;}
+.hf-sub{font-size:10.5px;color:rgba(255,255,255,.55);line-height:1.55;}
+.hf-sub strong{color:rgba(255,255,255,.8);}
+.hf-arrow{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.hf-from,.hf-to{padding:5px 12px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;}
+.hf-arr{font-size:18px;color:var(--gold);}
+.hf-sla{margin-left:16px;text-align:center;padding:6px 12px;background:rgba(0,0,0,.25);border-radius:4px;flex-shrink:0;}
+.hf-sla-val{font-size:14px;font-weight:700;color:var(--teal-lt);}
+.hf-sla-lbl{font-size:8px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.hf-drop{margin-left:12px;font-size:10px;color:var(--red);border:1px solid rgba(192,57,43,.3);background:rgba(192,57,43,.08);padding:5px 10px;border-radius:4px;flex-shrink:0;max-width:160px;line-height:1.4;}
+
+.gap-row{grid-column:1/-1;height:6px;}
+
+/* TECH LAYER */
+.tech-layer{margin-top:44px;border:1px solid rgba(14,148,136,.2);border-radius:10px;overflow:hidden;}
+.tl-header{background:linear-gradient(135deg,rgba(13,148,136,.14),rgba(27,58,107,.14));padding:16px 24px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.06);}
+.tl-icon{width:34px;height:34px;border-radius:7px;background:rgba(13,148,136,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tl-label{font-size:9px;letter-spacing:3px;font-weight:700;text-transform:uppercase;color:var(--teal-lt);margin-bottom:2px;}
+.tl-title{font-size:15px;font-weight:600;color:var(--white);}
+.tl-body{padding:20px 24px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.sys-node{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:13px 14px;transition:border-color .2s;}
+.sys-node:hover{border-color:rgba(14,148,136,.3);}
+.sys-node.central{border-color:rgba(201,146,42,.28);background:rgba(201,146,42,.05);}
+.sn-name{font-size:11px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.sn-role{font-size:9px;letter-spacing:.5px;color:var(--teal-lt);font-weight:600;text-transform:uppercase;margin-bottom:6px;}
+.sn-desc{font-size:10px;color:rgba(255,255,255,.5);line-height:1.55;}
+.tl-flow{padding:14px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fl-node{padding:4px 10px;border-radius:3px;font-size:9.5px;font-weight:600;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);}
+.fl-arr{color:var(--gold);font-size:14px;}
+.fl-node.umb{background:rgba(201,146,42,.12);border-color:rgba(201,146,42,.3);color:var(--gold-lt);}
+.fl-node.hs{background:rgba(235,93,5,.12);border-color:rgba(235,93,5,.3);color:#FCA572;}
+.fl-node.inc{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.25);color:#93C5FD;}
+.fl-node.inf{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.25);color:#C4B5FD;}
+.fl-node.fm{background:rgba(22,163,74,.1);border-color:rgba(22,163,74,.25);color:#86EFAC;}
+.fl-node.int{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.25);color:#FCA5A5;}
+.fl-node.bq{background:rgba(14,148,136,.1);border-color:rgba(14,148,136,.28);color:var(--teal-lt);}
+
+/* BEC BAND */
+.bec-band{margin-top:44px;padding:26px 32px;background:linear-gradient(135deg,rgba(201,146,42,.07),rgba(14,148,136,.05));border:1px solid rgba(201,146,42,.22);border-radius:10px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;}
+.bec-title-block{}
+.bec-name{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+.bec-full{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--gold-lt);line-height:1.1;}
+.bec-desc{font-size:12px;line-height:1.7;color:rgba(255,255,255,.55);max-width:640px;}
+.bec-stats{display:flex;gap:24px;}
+.bec-stat{text-align:center;}
+.bsv{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:var(--gold-lt);line-height:1;}
+.bsl{font-size:8.5px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+
+/* MISSION */
+.mission{margin-top:44px;padding:28px 32px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:20px;}
+.mi-icon{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--gold);opacity:.6;line-height:1;flex-shrink:0;}
+.mi-text{font-size:15px;line-height:1.75;color:rgba(255,255,255,.7);font-style:italic;}
+.mi-text strong{color:var(--white);font-style:normal;font-weight:600;}
+
+/* STARS */
+.star{position:fixed;width:3px;height:3px;border-radius:50%;background:var(--gold-lt);opacity:.22;animation:twinkle 3s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.12;}50%{opacity:.42;}}
+
+@media(max-width:1100px){.wrap{padding:0 24px 60px;}.journey-grid,.est-header{grid-template-columns:150px repeat(4,1fr);}.tl-body{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:800px){.journey-grid,.est-header{grid-template-columns:1fr;}.bec-band{grid-template-columns:1fr;}.tl-body{grid-template-columns:repeat(2,1fr);}.hf-content{flex-wrap:wrap;}}
+.back-home{position:fixed;top:20px;left:20px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(15,32,68,.92);border:1px solid rgba(201,146,42,.35);border-radius:8px;color:#E8B84B;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;backdrop-filter:blur(10px);transition:all .2s ease;}
+.back-home:hover{background:rgba(201,146,42,.15);border-color:#E8B84B;transform:translateX(-2px);}
+.back-home svg{width:13px;height:13px;}
+@media(max-width:600px){.back-home{top:12px;left:12px;padding:8px 12px;font-size:10px;}}
+</style>
+</head>
+<body>
+<a href="index.html" class="back-home" aria-label="Volver al inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Inicio</a>
+<div class="star" style="top:8%;left:2%;animation-delay:.3s"></div>
+<div class="star" style="top:22%;right:3%;animation-delay:1.1s"></div>
+<div class="star" style="top:48%;left:1%;animation-delay:.7s"></div>
+<div class="star" style="top:70%;right:2%;animation-delay:1.6s"></div>
+<div class="star" style="top:4%;right:12%;animation-delay:2s"></div>
+<div class="star" style="top:85%;left:6%;animation-delay:.5s"></div>
+
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="eyebrow">Ingenes · Estrategia 2026</div>
+    <h1>Journey del Paciente<br><strong>& Estrategias de Crecimiento</strong></h1>
+  </div>
+  <div class="header-right">
+    <span>4 Estrategias de Crecimiento</span><br>
+    activas en M1 · M2 · M3<br><br>
+    <span>BEC</span> · Bajando Estrellas del Cielo<br>
+    Modelo de negocio + Propósito<br><br>
+    Abril 2026
+  </div>
+</header>
+
+<!-- PURPOSE BAND -->
+<div class="purpose-band">
+  <div class="pb-star">⭐</div>
+  <div class="pb-text">
+    Propósito: <strong>Bajar Estrellas del Cielo.</strong><br>
+    Visión 2030: <strong>300,000 estrellas bajadas del cielo.</strong> El número que une el propósito con ser el #1 del mundo.
+  </div>
+  <div class="pb-meta">
+    <div class="pb-num">300K</div>
+    <div class="pb-label">Estrellas · 2030</div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--teal-lt)"></div><span>E1 · Triple Medicina</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#A78BFA"></div><span>E2 · User Personas 12+ UPs</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold-lt)"></div><span>E3 · Canales Integrados 1,2,3,4</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4ADE80"></div><span>E4 · Expansión Internacional 5x</span></div>
+  <div class="legend-item" style="margin-left:auto"><div class="legend-dot" style="background:var(--white);opacity:.3"></div><span style="color:var(--muted)">Activo en Momento</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15)"></div><span style="color:var(--muted)">No aplica</span></div>
+</div>
+
+<!-- HEADERS -->
+<div class="est-header">
+  <div class="est-lbl">Momento</div>
+  <div class="est-hc ehc1">E1 · Triple<br>Medicina</div>
+  <div class="est-hc ehc2">E2 · User<br>Personas</div>
+  <div class="est-hc ehc3">E3 · Canales<br>Integrados</div>
+  <div class="est-hc ehc4">E4 · Expansión<br>Internacional</div>
+</div>
+
+<!-- JOURNEY GRID -->
+<div class="journey-grid">
+
+<!-- ═══ M1 ═══ -->
+<div class="ml ml-m1">
+  <div class="m-num" style="color:#5B8BE8">M1</div>
+  <div class="m-title" style="color:#5B8BE8">AWARENESS</div>
+  <div class="m-sub">Atracción</div>
+  <div class="m-owner">Juan (C1)<br>Sandra (C2+C3)</div>
+  <div class="m-kpi">OLE 8%→30% NAL<br>OLE 19%→50% INT</div>
+</div>
+
+<div class="sc a row-m1"><div class="dot dt"></div>
+  <div class="tag tg">Activo · E1</div>
+  <div class="sc-title">Motor educativo: 2 podcasts first-mover mundiales</div>
+  <div class="sc-body"><strong>Ingenes Sin Filtro</strong> (ES): el único podcast de clínica de fertilidad en español del mundo. 600M hispanohablantes sin nadie que lo haga.<br><strong>Fertility Destination</strong> (EN): posiciona México como hub de fertilidad para el mercado anglosajón.<br>1 episodio ancla → 12 piezas: YouTube, blog ES/EN, Reels, TikTok, email, WA, Shorts. Lead magnets por UP en cada pieza.</div>
+  <div class="sc-kpi">YouTube 8K→50K subs · 200 arts SEO/año · 100K visitas orgánicas/mes</div>
+</div>
+
+<div class="sc a row-m1"><div class="dot dp"></div>
+  <div class="tag tp">Activo · E2</div>
+  <div class="sc-title">12+ UPs: el lead nunca es genérico desde el primer clic</div>
+  <div class="sc-body">Quiz de onboarding asigna UP desde la primera interacción. Score 0–60 pts considera NSE, UP y urgencia biológica. ManyChat asigna up_tentativa por keyword comentada en YouTube/Instagram. Scoring dinámico v2.0. CTA: "<em>Quiero que un especialista revise mi caso</em>"</div>
+  <div class="sc-kpi">UP declarada antes del PVR · Score dinámico v2.0</div>
+</div>
+
+<div class="sc a row-m1"><div class="dot do"></div>
+  <div class="tag to">Activo · E3 — C1+C2+C3</div>
+  <div class="sc-title">40% Meta · 40% Google · 20% Educativo</div>
+  <div class="sc-body"><strong>Canal 1:</strong> Digital directo. Meta Conversions API + Google Enhanced Conversions, cookieless healthcare-compliant.<br><strong>Canal 2:</strong> B2B — corporativos, aseguradoras, wellness partners. Alianza Carrot Fertility.<br><strong>Canal 3:</strong> Red médica. Primer programa Ginecólogo Afiliado en LATAM.</div>
+  <div class="sc-kpi">OLE · CAC/PVR · TAM ampliado</div>
+</div>
+
+<div class="sc a row-m1"><div class="dot dn"></div>
+  <div class="tag tn">Activo · E4</div>
+  <div class="sc-title">Fertility Destination: contenido EN + SEO para 62M hispanos en USA</div>
+  <div class="sc-body">surrogatemexico.com · ivfmore.com/en · Keywords EN: "IVF in Mexico", "egg donation Mexico", "surrogacy Mexico cost".<br>OLE INT 19%→50%. Branches OC y Houston: primer contacto físico en suelo USA. Ninguna clínica americana tiene contenido significativo en español.</div>
+  <div class="sc-kpi">OLE INT 19%→50% · First-mover contenido EN para hispanos</div>
+</div>
+
+<!-- HANDOFF M1→M2 -->
+<div class="handoff-row">
+  <div class="hf-spacer"></div>
+  <div class="hf-content">
+    <div class="hf-ball">🏀</div>
+    <div class="hf-mid">
+      <div class="hf-title">HANDOFF M1 → M2 · La pelota no puede caer</div>
+      <div class="hf-sub">Juan/Sandra entregan a Daniel: <strong>lead con UP declarada, score ≥40, source_original, up_tentativa asignada.</strong> Umbrella → HubSpot automático. El paciente no siente el cambio — su experience es continua y sin fricción.</div>
+    </div>
+    <div class="hf-arrow">
+      <div class="hf-from" style="background:rgba(27,58,107,.4);color:#5B8BE8;border:1px solid rgba(27,58,107,.6);">Juan · Sandra</div>
+      <div class="hf-arr">→</div>
+      <div class="hf-to" style="background:rgba(13,148,136,.2);color:var(--teal-lt);border:1px solid rgba(13,148,136,.4);">Daniel</div>
+    </div>
+    <div class="hf-sla"><div class="hf-sla-val">&lt;2h</div><div class="hf-sla-lbl">SLA Asignación</div></div>
+    <div class="hf-drop">⚠️ Si cae: el lead se enfría, el canal pierde eficiencia, el OLE baja</div>
+  </div>
+</div>
+
+<!-- ═══ M2 ═══ -->
+<div class="ml ml-m2">
+  <div class="m-num" style="color:var(--teal-lt)">M2</div>
+  <div class="m-title" style="color:var(--teal-lt)">NURTURING</div>
+  <div class="m-sub">Preparación</div>
+  <div class="m-owner">Daniel Smeke<br>Dir. Contactación</div>
+  <div class="m-kpi">TAL 10%→30%<br>Show-rate 85%</div>
+</div>
+
+<div class="sc a row-m2"><div class="dot dt"></div>
+  <div class="tag tg">Activo · E1</div>
+  <div class="sc-title">Fertility 101 vive en M2 — el paciente llega preparado al PVR</div>
+  <div class="sc-body">Los 180 días de nurturing entregan el Fertility 101 por etapas: por qué la Medicina Metabólica importa, cómo funciona OVAGEN/ENDOGEN, qué es IVF MORE vs FIV estándar. El paciente comprende su diagnóstico antes de llegar al PVR. <strong>También se prepara para entender el modelo BEC</strong> — qué es la garantía, cómo funciona, por qué existe. El médico en M3 personaliza. No educa desde cero.</div>
+  <div class="sc-kpi">PVR preparado → Show-rate 85% · Brief médico completo</div>
+</div>
+
+<div class="sc a row-m2"><div class="dot dp"></div>
+  <div class="tag tp">Activo · E2</div>
+  <div class="sc-title">180 días · 8 triggers · Lead magnets por UP</div>
+  <div class="sc-body"><strong>UP2 Infertilidad:</strong> "¿Por qué falla la FIV?" + calc. acumulada<br><strong>UP4 MORE:</strong> Protocolo OVAGEN + comparativa FIV std<br><strong>UP3 INT Subrogación:</strong> Guía legal ES+EN + costos MX vs Grecia<br><strong>UP5 Preservación:</strong> "¿Cuántos óvulos necesito?"<br>8 triggers conductuales — ejecutiva actúa antes de que se enfríe.</div>
+  <div class="sc-kpi">Trigger &lt;2h · Secuencia personalizada por UP</div>
+</div>
+
+<div class="sc a row-m2"><div class="dot do"></div>
+  <div class="tag to">Canal 1 · Canal 2</div>
+  <div class="sc-title">Nurturing diferenciado por canal de origen</div>
+  <div class="sc-body">Leads de Canal 2 (corporativos): secuencia con ángulo de beneficio laboral. Leads de Canal 3 (referido médico): brief del médico referente integrado. <strong>HubSpot orquesta toda la secuencia.</strong> InFunnel gestiona la contactación operativa en cada etapa. Sin Zapier ni Make — todo fluye por Umbrella → HubSpot.</div>
+  <div class="sc-kpi">HubSpot como sistema de registro central · InFunnel contactación</div>
+</div>
+
+<div class="sc a row-m2"><div class="dot dn"></div>
+  <div class="tag tn">Activo · E4</div>
+  <div class="sc-title">Preparación del paciente internacional para llegar a México</div>
+  <div class="sc-body">Secuencia EN: proceso legal en México, logística de viaje, alojamiento, coordinadora IP asignada. El paciente llega habiendo "vivido" el proceso digitalmente. Coordinadora de turismo médico activa desde D0. Branches OC+Houston para primer PVR en suelo USA.</div>
+  <div class="sc-kpi">TAL INT 5%→20% · Experiencia pre-llegada</div>
+</div>
+
+<!-- HANDOFF M2→M3 -->
+<div class="handoff-row">
+  <div class="hf-spacer"></div>
+  <div class="hf-content">
+    <div class="hf-ball">🏀</div>
+    <div class="hf-mid">
+      <div class="hf-title">HANDOFF M2 → M3 · La pelota no puede caer</div>
+      <div class="hf-sub">Daniel entrega a Rubén: <strong>paciente con Fertility 101 completado, UP confirmada, diagnóstico pre-entendido, modelo BEC comprendido, cuestionario Tally enviado, brief médico listo.</strong> HubSpot actualiza el deal. Médico asignado recibe el caso preparado. El PVR es personalización — no educación básica.</div>
+    </div>
+    <div class="hf-arrow">
+      <div class="hf-from" style="background:rgba(13,148,136,.2);color:var(--teal-lt);border:1px solid rgba(13,148,136,.35);">Daniel</div>
+      <div class="hf-arr">→</div>
+      <div class="hf-to" style="background:rgba(201,146,42,.18);color:var(--gold-lt);border:1px solid rgba(201,146,42,.35);">Rubén + Médico</div>
+    </div>
+    <div class="hf-sla"><div class="hf-sla-val">&lt;24h</div><div class="hf-sla-lbl">SLA Brief</div></div>
+    <div class="hf-drop">⚠️ Si cae: el médico educa en PVR, la tasa de cierre baja, el LTV/BEC no se explica</div>
+  </div>
+</div>
+
+<!-- ═══ M3 ═══ -->
+<div class="ml ml-m3">
+  <div class="m-num" style="color:var(--gold-lt)">M3</div>
+  <div class="m-title" style="color:var(--gold-lt)">CONVERSIÓN</div>
+  <div class="m-sub">Cierre</div>
+  <div class="m-owner">Rubén Vallejo<br>Dir. Comercial CRO</div>
+  <div class="m-kpi">PVR→Sale 20%→35%<br>Fact/BEC +30%</div>
+</div>
+
+<div class="sc a row-m3"><div class="dot do"></div>
+  <div class="tag tg" style="background:rgba(13,148,136,.18);color:var(--teal-lt)">CRÍTICO · E1</div>
+  <div class="sc-title">El PVR: el acto más empático + el momento culmen educativo</div>
+  <div class="sc-body">El diagnóstico se entrega con <strong>profunda empatía</strong> — el paciente entiende su historia reproductiva, por qué ha pasado lo que ha pasado y cómo Ingenes puede ayudarle. <strong>La educación continúa</strong> — ahora personalizada: "en MI caso". Canal 4: PBB cierra el protocolo recomendado por el médico (IM). <strong>BEC se presenta alineado al propósito del paciente</strong> — compromiso de bajar su estrella. La EPV existe porque la digestión toma tiempo.</div>
+  <div class="sc-kpi">Fact/BEC +30% · Attach rate add-ons &gt;70% · EPV &lt;48h</div>
+</div>
+
+<div class="sc a row-m3"><div class="dot dp"></div>
+  <div class="tag tp">Activo · E2</div>
+  <div class="sc-title">Metodología de venta distinta por UP + Microsite Modo C</div>
+  <div class="sc-body"><strong>UP2 Infertilidad:</strong> SPIN Selling<br><strong>UP4 MORE/fallos:</strong> Challenger Sale<br><strong>UP3 Subrogación:</strong> Trust-Based Selling<br><strong>UP5 Preservación:</strong> Emotional Journey<br>Microsite JWT activo: nombre + Dr. + tratamiento + timeline. CTA: "Apartar mi lugar." Comisiones normalizadas al mes — no concentradas en fin de período.</div>
+  <div class="sc-kpi">Conversión 20%→35% · EPV diseñada para digestión en varias sesiones</div>
+</div>
+
+<div class="sc a row-m3"><div class="dot do"></div>
+  <div class="tag to">Canal 4 · LTV</div>
+  <div class="sc-title">Formas de pago, no descuentos · Canal 4 activo en el PVR</div>
+  <div class="sc-body">El precio se ancla al valor de vida — al propósito de la familia, no al costo del procedimiento. Mensualidades vía financiadora médica. Pago en dólares (INT). <strong>LTV = Facturación ÷ Programas vendidos.</strong> Meta: Fact/BEC +30% vía mix de add-ons clínicamente indicados (OVAGEN $2.5–6k, PGT-A $2–4.5k, Metabólica $1.5–3k). Post-PVR: nurturing 180 días para los que no cierran en el acto.</div>
+  <div class="sc-kpi">Fact/BEC +30% · LTV por UP · Nurturing 180d post-PVR</div>
+</div>
+
+<div class="sc a row-m3"><div class="dot dn"></div>
+  <div class="tag tn">Activo · E4</div>
+  <div class="sc-title">Para el INT: el upgrade, no el descuento</div>
+  <div class="sc-body">El precio no se presenta como ventaja económica. Paquetes all-inclusive: tratamiento + alojamiento + traslados + concierge. Microsite EN con timeline personalizado. Retención post-PVR INT ya es 30% vs 17% nacional. <strong>Meta: PVRs INT → 50% del total del instituto.</strong></div>
+  <div class="sc-kpi">Retención INT 30% · Meta: PVRs INT 50% del total</div>
+</div>
+
+<!-- HANDOFF M3→M4 -->
+<div class="handoff-row">
+  <div class="hf-spacer"></div>
+  <div class="hf-content">
+    <div class="hf-ball">🏀</div>
+    <div class="hf-mid">
+      <div class="hf-title">HANDOFF M3 → M4 · La pelota no puede caer</div>
+      <div class="hf-sub">Rubén entrega a Nicolás: <strong>paciente que pagó, protocolo confirmado en IM, BEC firmado, IP Coordinator asignado (INT). HubSpot → FileMaker crea NHC. Agenda Sintonizada activa EANES del Dr.</strong> El Time-to-Start empieza a correr desde este momento.</div>
+    </div>
+    <div class="hf-arrow">
+      <div class="hf-from" style="background:rgba(201,146,42,.18);color:var(--gold-lt);border:1px solid rgba(201,146,42,.35);">Rubén</div>
+      <div class="hf-arr">→</div>
+      <div class="hf-to" style="background:rgba(22,163,74,.15);color:#4ADE80;border:1px solid rgba(22,163,74,.3);">Nicolás · PEC</div>
+    </div>
+    <div class="hf-sla"><div class="hf-sla-val">&lt;7d</div><div class="hf-sla-lbl">Time-to-Start</div></div>
+    <div class="hf-drop">⚠️ Si cae: reembolso, NPS destruido, la promesa no se cumple</div>
+  </div>
+</div>
+
+<!-- ═══ M4 ═══ -->
+<div class="ml ml-m4">
+  <div class="m-num" style="color:#4ADE80">M4</div>
+  <div class="m-title" style="color:#4ADE80">EXPERIENCIA</div>
+  <div class="m-sub">La Promesa</div>
+  <div class="m-owner">Nicolás · PEC<br>Dir. Médico</div>
+  <div class="m-kpi">NPS independiente<br>Time-to-Start &lt;21d</div>
+</div>
+
+<div class="sc a row-m4"><div class="dot dt"></div>
+  <div class="tag tg">Activo · E1</div>
+  <div class="sc-title">La Triple Medicina se vive en el tratamiento activo</div>
+  <div class="sc-body">El paciente vive en tiempo real lo que comprendió en M2. Cada hito del protocolo es un punto de contacto que refuerza la promesa. Médico + coordinadora de journey alineados al mismo protocolo. <strong>FileMaker como fuente de verdad</strong> — si no está en FM, no ocurrió. Hitos clínicos se envían a HubSpot: pipeline por tratamiento hasta el BB.</div>
+  <div class="sc-kpi">Control Tower 22 sedes · Event-driven comms · Pipeline hasta el BB</div>
+</div>
+
+<div class="sc a row-m4"><div class="dot dp"></div>
+  <div class="tag tp">Activo · E2</div>
+  <div class="sc-title">Journey diferenciado por UP · Efecto WOW · 0 cajas negras</div>
+  <div class="sc-body">El journey de subrogación ≠ preservación ≠ FIV estándar. Patient Navigator activa desde el pago. <strong>Paid but Not Started: SLA &lt;7 días</strong> con escalamiento y causa raíz. NPS medido de forma independiente en cada hito — no por las PBBs. Reducir quejas. Generar efecto WOW. Hacer que más pacientes lleguen recomendadas.</div>
+  <div class="sc-kpi">NPS independiente · Reembolsos &lt;2% · Referidos como KPI de calidad</div>
+</div>
+
+<div class="sc a row-m4"><div class="dot do"></div>
+  <div class="tag to">Canal 4 · LTV extendido</div>
+  <div class="sc-title">M4 cierra el ciclo y abre el siguiente · BEC vivido</div>
+  <div class="sc-body">El paciente que logra su bebé es el mejor activo de Canal 4. Baby shower Ingenes. 2do bebé / hermano. Preservación post-tratamiento. Referido de amiga/familiar. <strong>El BEC como garantía vivida</strong> — no prometida — se convierte en testimonio real. Protocolo Fertility Bridge: follow-up 30/60/90 días post-nacimiento.</div>
+  <div class="sc-kpi">Repeat · Referidos · LTV extendido · BEC = testimonio real</div>
+</div>
+
+<div class="sc a row-m4"><div class="dot dn"></div>
+  <div class="tag tn">Activo · E4</div>
+  <div class="sc-title">JCI · IP Coordinators · Experiencia 5★ · Orgullo de México</div>
+  <div class="sc-body">El paciente INT no vive un tratamiento médico — vive un upgrade que no habría encontrado en ningún otro lugar del mundo. Coordinadora de turismo médico desde D0 hasta el regreso. Control de resultados clínicos en tiempo real. <strong>NPS INT medido independientemente</strong> — mismo estándar que nacional. JCI refuerza confianza del mercado anglosajón.</div>
+  <div class="sc-kpi">JCI · IP Coordinators bilingüe · NPS INT independiente</div>
+</div>
+
+</div><!-- end journey-grid -->
+
+<!-- TECH LAYER -->
+<div class="tech-layer" style="margin-top:48px;">
+  <div class="tl-header">
+    <div class="tl-icon">⚙️</div>
+    <div>
+      <div class="tl-label">Arquitectura Tecnológica</div>
+      <div class="tl-title">El ecosistema que hace funcionar los 4 Momentos — sin Zapier, sin Make</div>
+    </div>
+  </div>
+  <div class="tl-body">
+    <div class="sys-node central">
+      <div class="sn-name">UMBRELLA</div>
+      <div class="sn-role">Puerta de entrada</div>
+      <div class="sn-desc">Recibe TODOS los leads de todos los canales. Scoring inicial, asigna UP, determina source_original, resuelve sucursal. Envía a HubSpot inmediatamente — incluso pre-leads.</div>
+    </div>
+    <div class="sys-node central">
+      <div class="sn-name">HubSpot</div>
+      <div class="sn-role">Sistema de registro central</div>
+      <div class="sn-desc">CRM del journey completo M1→M4. Orquesta nurturing M2, pipeline M3, hitos de tratamiento M4. Todo el viaje del paciente desde D0 hasta el BB vive aquí.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">InFunnel</div>
+      <div class="sn-role">Contactación operativa</div>
+      <div class="sn-desc">Sistema de contactación en los diferentes Momentos. Las coordinadoras ejecutan llamadas, WA y seguimientos desde InFunnel — sincronizado con HubSpot.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">InConcert</div>
+      <div class="sn-role">Call center operativo</div>
+      <div class="sn-desc">Herramienta operativa del call center únicamente. Recibe desde HubSpot cuando el lead está listo (score ≥ umbral o trigger conductual).</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">FileMaker</div>
+      <div class="sn-role">NHC clínico</div>
+      <div class="sn-desc">Expediente clínico del paciente. Se crea al confirmar PVR. Hitos clínicos del tratamiento se envían de vuelta a HubSpot. "Si no está en FM, no ocurrió."</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">Interfaz Médica (IM)</div>
+      <div class="sn-role">Prescripción clínica</div>
+      <div class="sn-desc">El médico "receta" productos en cada cita. La IM alimenta al PBB con la indicación clínica para construir la oferta económica. El upselling es siempre por criterio médico real.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">Agenda Sintonizada</div>
+      <div class="sn-role">EANES · Horarios</div>
+      <div class="sn-desc">Gestiona los Espacios Agendables Netos de médicos y agentes. Daniel llena con PVRs. También integra agendas de seguimiento de tratamientos activos.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">RS · Sistema de Piso</div>
+      <div class="sn-role">Operación en tiempo real</div>
+      <div class="sn-desc">Controla todo lo que llega a piso. Mide tiempos de espera. Garantiza atención debida. Conectado con ERP Intelisis. Es el M4 visible para el paciente en clínica.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">ERP Intelisis</div>
+      <div class="sn-role">Columna financiera</div>
+      <div class="sn-desc">Facturación, inventarios, presupuestos, contabilidad. Recibe desde RS. Es la capa financiera de la estrategia de Margen: BFS + Competitividad + Daniel Martínez.</div>
+    </div>
+    <div class="sys-node">
+      <div class="sn-name">BigQuery</div>
+      <div class="sn-role">Capa de atribución OLE</div>
+      <div class="sn-desc">Recibe eventos de todos los sistemas. Hace el JOIN con source_original de Umbrella. Aquí nace el OLE real. La métrica norte que reemplaza al CPL.</div>
+    </div>
+  </div>
+  <div class="tl-flow">
+    <span style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-right:4px;">FLUJO:</span>
+    <div class="fl-node umb">Umbrella</div><div class="fl-arr">→</div>
+    <div class="fl-node hs">HubSpot</div><div class="fl-arr">↔</div>
+    <div class="fl-node inf">InFunnel</div><div class="fl-arr">↔</div>
+    <div class="fl-node inc">InConcert</div><div class="fl-arr">→</div>
+    <div class="fl-node fm">FileMaker + IM</div><div class="fl-arr">↔</div>
+    <div class="fl-node fm">Agenda Sintonizada</div><div class="fl-arr">→</div>
+    <div class="fl-node int">RS → Intelisis</div><div class="fl-arr">→</div>
+    <div class="fl-node bq">BigQuery (OLE)</div>
+  </div>
+</div>
+
+<!-- BEC BAND -->
+<div class="bec-band">
+  <div class="bec-title-block">
+    <div class="bec-name">B · E · C</div>
+    <div class="bec-full">Bajando Estrellas<br>del Cielo</div>
+  </div>
+  <div>
+    <div class="bec-desc">No es solo el programa de garantía. Es el propósito del instituto convertido en modelo de negocio. El BEC opera en M2 (el paciente aprende qué significa antes del PVR), en M3 (el médico lo presenta con empatía — es el compromiso de no dejar de intentarlo hasta que esa estrella baje) y en M4 (la garantía vivida se convierte en testimonio real). Con tasa acumulada del 96% y 100% de reembolso si no hay bebé, es el argumento de confianza más poderoso del sector. Y para el paciente, es la prueba de que Ingenes comparte su propósito.</div>
+  </div>
+  <div class="bec-stats">
+    <div class="bec-stat"><div class="bsv">96%</div><div class="bsl">Tasa acumulada</div></div>
+    <div class="bec-stat"><div class="bsv">100%</div><div class="bsl">Reembolso si no bebé</div></div>
+    <div class="bec-stat"><div class="bsv">M2·M3·M4</div><div class="bsl">Momentos activos</div></div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div class="mi-icon">★</div>
+  <div class="mi-text">Cada estrategia activa en cada Momento no es casualidad — es un sistema donde <strong>ningún lead se pierde, ningún paciente se siente solo, la pelota pasa perfectamente de mano en mano</strong> y la experiencia es continua e invisible para quien más importa: la familia que quiere bajar su estrella del cielo.</div>
+</div>
+
+</div><!-- wrap -->
+</body>
+</html>

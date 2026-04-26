@@ -1,1305 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua veniam.">
-    <title>Lorem Ipsum Dolor — Sit Amet Consectetur | TuEmpresa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy: #1a3764;
-            --navy-dark: #0f2548;
-            --navy-light: #2b5a99;
-            --blue-bg: #e9f1f8;
-            --blue-bg-light: #f0f6fb;
-            --blue-accent: #5b9bd5;
-            --blue-muted: #8bacc6;
-            --white: #ffffff;
-            --gray-50: #f7f9fb;
-            --gray-100: #eef2f6;
-            --gray-200: #dce3ea;
-            --gray-400: #98a7b5;
-            --gray-600: #5a6d7e;
-            --gray-800: #2c3e50;
-            --text: #1e2d3d;
-            --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
-            --font-sans: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            --max-w: 1200px;
-            --radius-pill: 100px;
-            --radius-sm: 8px;
-            --shadow-soft: 0 2px 16px rgba(26,55,100,0.06);
-            --shadow-card: 0 4px 24px rgba(26,55,100,0.08);
-            --transition: 0.25s ease;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>—</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000;
+    --fg: #fff;
+    --accent: #ff2e2e;
+    --cyan: #00f0ff;
+    --dim: #7a7a7a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--fg); overflow-x: hidden; }
+  body {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 300;
+    cursor: crosshair;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: #000; }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-sans);
-            color: var(--text);
-            background: var(--white);
-            line-height: 1.6;
-            font-size: 15px;
-            -webkit-font-smoothing: antialiased;
-        }
-        img { max-width: 100%; height: auto; display: block; }
-        a { text-decoration: none; color: inherit; }
-        .container { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+  canvas#bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='1'/></svg>");
+  }
 
-        /* ══════════════════════════════════════════
-           HEADER
-           ══════════════════════════════════════════ */
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: var(--white);
-            transition: box-shadow var(--transition);
-        }
-        .site-header.scrolled { box-shadow: 0 1px 12px rgba(26,55,100,0.08); }
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-        }
-        .logo-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo-link img { height: 34px; width: auto; }
-        .logo-text {
-            font-family: var(--font-serif);
-            font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--navy);
-        }
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            list-style: none;
-        }
-        .nav-menu a {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--navy);
-            letter-spacing: 0.01em;
-            transition: color var(--transition);
-        }
-        .nav-menu a:hover { color: var(--blue-accent); }
-        .nav-cta-btn {
-            background: var(--navy);
-            color: var(--white) !important;
-            padding: 8px 22px;
-            border-radius: var(--radius-pill);
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            transition: all var(--transition);
-        }
-        .nav-cta-btn:hover {
-            background: var(--navy-dark);
-            transform: translateY(-1px);
-        }
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            flex-direction: column;
-            gap: 4px;
-            padding: 6px;
-        }
-        .hamburger span {
-            width: 22px; height: 2px;
-            background: var(--navy);
-            border-radius: 2px;
-        }
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      rgba(255,255,255,0.035) 2px,
+      rgba(255,255,255,0.035) 3px
+    );
+  }
 
-        /* ── TICKER ── */
-        .ticker-bar {
-            background: var(--navy);
-            overflow: hidden;
-            height: 36px;
-            display: flex;
-            align-items: center;
-        }
-        .ticker-track {
-            display: flex;
-            white-space: nowrap;
-            animation: ticker 30s linear infinite;
-        }
-        .ticker-track span {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.8);
-            padding: 0 32px;
-        }
-        .ticker-dot {
-            display: inline-block;
-            width: 4px; height: 4px;
-            background: rgba(255,255,255,0.35);
-            border-radius: 50%;
-            vertical-align: middle;
-            margin: 0 16px;
-        }
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+  main { position: relative; z-index: 1; }
 
-        /* ── BREADCRUMBS ── */
-        .breadcrumbs {
-            padding: 10px 0;
-            background: var(--blue-bg-light);
-        }
-        .crumbs {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            list-style: none;
-            font-size: 0.76rem;
-            color: var(--gray-400);
-        }
-        .crumbs a { color: var(--navy-light); }
-        .crumbs a:hover { text-decoration: underline; }
+  section {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    position: relative;
+  }
 
-        /* ── HERO ── */
-        .hero {
-            background: var(--blue-bg);
-            padding: 36px 0 40px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(26,55,100,0.1), transparent);
-        }
-        .hero-inner {
-            display: flex;
-            align-items: center;
-            gap: 48px;
-        }
-        .hero-text { flex: 1; min-width: 0; }
-        .hero-visual {
-            flex: 0 0 340px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .hero-visual-placeholder {
-            width: 300px;
-            height: 220px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
-            border-radius: 16px;
-            border: 1px solid rgba(26,55,100,0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--blue-muted);
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .hero h1 {
-            font-family: var(--font-serif);
-            font-size: clamp(1.7rem, 3.5vw, 2.5rem);
-            font-weight: 700;
-            color: var(--navy);
-            line-height: 1.25;
-            margin-bottom: 10px;
-        }
-        .hero-desc {
-            font-size: 0.92rem;
-            color: var(--gray-600);
-            line-height: 1.65;
-            margin-bottom: 20px;
-            max-width: 480px;
-        }
-        .hero-ctas { display: flex; gap: 10px; }
+  /* --- Hero --- */
+  .hero .stage { will-change: transform, opacity; }
+  .hero h1 {
+    font-size: clamp(3.6rem, 17.5vw, 17rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.86;
+    text-align: center;
+  }
+  .glitch {
+    position: relative;
+    display: inline-block;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .glitch::before {
+    color: var(--accent);
+    transform: translate(var(--gx, 0), var(--gy, 0));
+    mix-blend-mode: screen;
+    clip-path: polygon(0 var(--gc1,0%), 100% var(--gc1,0%), 100% var(--gc2,15%), 0 var(--gc2,15%));
+  }
+  .glitch::after {
+    color: var(--cyan);
+    transform: translate(calc(var(--gx, 0) * -1), calc(var(--gy, 0) * -1));
+    mix-blend-mode: screen;
+    clip-path: polygon(0 var(--gc3,60%), 100% var(--gc3,60%), 100% var(--gc4,80%), 0 var(--gc4,80%));
+  }
+  .hero .sub {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 2.2rem;
+    text-align: center;
+  }
+  .hero .sub::before { content: "〉 "; color: var(--accent); }
 
-        /* ── BUTTONS ── */
-        .btn-pill {
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 12px 24px;
-            border-radius: var(--radius-pill);
-            font-family: var(--font-sans);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all var(--transition);
-            border: 1.5px solid var(--navy);
-            min-width: 180px;
-        }
-        .btn-pill .arrow {
-            font-size: 1rem;
-            transition: transform var(--transition);
-            line-height: 1;
-        }
-        .btn-pill:hover .arrow { transform: translateX(3px); }
-        .btn-solid { background: var(--navy); color: var(--white); border-color: var(--navy); }
-        .btn-solid:hover { background: var(--navy-dark); border-color: var(--navy-dark); }
-        .btn-outline { background: transparent; color: var(--navy); border-color: var(--navy); }
-        .btn-outline:hover { background: var(--navy); color: var(--white); }
+  /* --- Rotor section --- */
+  .rotor-sec { overflow: hidden; }
+  .rotor {
+    font-size: clamp(3rem, 14vw, 14rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    white-space: nowrap;
+    will-change: transform;
+    transform: translate3d(var(--sx, 0), 0, 0) rotate(var(--srot, 0deg));
+  }
+  .rotor em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 700;
+  }
 
-        /* ══════════════════════════════════════════
-           STATS COUNTER (NEW)
-           ══════════════════════════════════════════ */
-        .stats-section {
-            padding: 56px 0;
-            background: var(--navy);
-            position: relative;
-            overflow: hidden;
-        }
-        .stats-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(ellipse at 30% 50%, rgba(91,155,213,0.1) 0%, transparent 60%),
-                        radial-gradient(ellipse at 70% 50%, rgba(91,155,213,0.06) 0%, transparent 60%);
-        }
-        .stats-grid {
-            position: relative;
-            z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-        .stat-item {
-            text-align: center;
-            padding: 20px 12px;
-            position: relative;
-        }
-        .stat-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 20%;
-            height: 60%;
-            width: 1px;
-            background: rgba(255,255,255,0.12);
-        }
-        .stat-number {
-            font-family: var(--font-serif);
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1.1;
-            margin-bottom: 4px;
-        }
-        .stat-number .stat-prefix {
-            font-size: 0.65em;
-            opacity: 0.7;
-            margin-right: 2px;
-        }
-        .stat-number .stat-suffix {
-            font-size: 0.55em;
-            opacity: 0.7;
-            margin-left: 2px;
-        }
-        .stat-label {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.55);
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
+  /* --- Code block section --- */
+  .code-block {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+    line-height: 1.9;
+    max-width: 46rem;
+    padding: 2rem 2.2rem;
+    border-left: 2px solid var(--accent);
+    background: rgba(255,255,255,0.025);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    will-change: transform, opacity;
+  }
+  .code-block .k { color: var(--accent); }
+  .code-block .s { color: #9bd9ff; }
+  .code-block .c { color: var(--dim); }
+  .cursor::after {
+    content: "▌";
+    margin-left: 2px;
+    animation: blink 1s steps(1) infinite;
+    color: var(--accent);
+  }
+  @keyframes blink { 50% { opacity: 0; } }
 
-        /* ── BENEFITS ── */
-        .benefits {
-            padding: 64px 0;
-            background: var(--white);
-        }
-        .section-header {
-            text-align: center;
-            max-width: 540px;
-            margin: 0 auto 44px;
-        }
-        .section-header h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-        .section-header p {
-            color: var(--gray-600);
-            font-size: 0.92rem;
-        }
-        .section-header-light h2 { color: var(--white); }
-        .section-header-light p { color: rgba(255,255,255,0.6); }
+  /* --- Overlays --- */
+  .stripes {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 24px;
+    z-index: 5;
+    background: repeating-linear-gradient(45deg, #ffcc00 0 18px, #000 18px 36px);
+    opacity: 0.92;
+    transform: translateY(100%);
+    transition: transform .55s cubic-bezier(.8,0,.2,1);
+  }
+  .stripes.show { transform: translateY(0); }
 
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .benefit-card {
-            background: var(--blue-bg-light);
-            border-radius: 12px;
-            padding: 28px 24px;
-            border: 1px solid transparent;
-            transition: all var(--transition);
-        }
-        .benefit-card:hover {
-            border-color: rgba(26,55,100,0.1);
-            box-shadow: var(--shadow-card);
-            transform: translateY(-3px);
-        }
-        .benefit-icon {
-            width: 44px; height: 44px;
-            background: var(--navy);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        .benefit-icon svg {
-            width: 22px; height: 22px;
-            stroke: var(--white);
-            fill: none;
-            stroke-width: 1.8;
-        }
-        .benefit-card h3 {
-            font-family: var(--font-serif);
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-        .benefit-card p {
-            font-size: 0.88rem;
-            color: var(--gray-600);
-            line-height: 1.6;
-        }
+  .status {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 5;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+  .status .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: 1px;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: 0.25; } }
 
-        /* ── SOCIAL PROOF ── */
-        .social-proof {
-            padding: 56px 0;
-            background: var(--blue-bg);
-        }
-        .proof-grid {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-        .proof-left {
-            text-align: center;
-            padding: 24px 36px;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-soft);
-        }
-        .proof-avatars {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        .avatar-circle {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            background: var(--navy-light);
-            border: 2.5px solid var(--white);
-            margin-left: -8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.68rem;
-            color: var(--white);
-            font-weight: 700;
-        }
-        .avatar-circle:first-child { margin-left: 0; }
-        .proof-stars { color: #e8b730; font-size: 1rem; letter-spacing: 2px; margin-bottom: 2px; }
-        .proof-count { font-size: 0.78rem; color: var(--gray-400); }
-        .proof-quote {
-            padding-left: 20px;
-            border-left: 3px solid var(--navy);
-        }
-        .proof-quote blockquote {
-            font-family: var(--font-serif);
-            font-size: 1.05rem;
-            font-style: italic;
-            color: var(--navy);
-            line-height: 1.65;
-            margin-bottom: 12px;
-        }
-        .proof-quote cite { font-style: normal; font-size: 0.82rem; color: var(--gray-400); }
-        .proof-quote cite strong { color: var(--navy); }
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 6;
+    width: 0;
+  }
 
-        /* ── CONTENT + FAQ ── */
-        .content-faq {
-            padding: 64px 0;
-            background: var(--white);
-        }
-        .cf-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-        }
-        .content-col h2, .faq-col h2 {
-            font-family: var(--font-serif);
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-bg);
-        }
-        .content-col p {
-            font-size: 0.9rem;
-            color: var(--gray-600);
-            line-height: 1.75;
-            margin-bottom: 12px;
-        }
-        .check-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .check-item { display: flex; align-items: center; gap: 10px; }
-        .check-dot {
-            width: 20px; height: 20px;
-            background: var(--blue-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .check-dot svg { width: 11px; height: 11px; stroke: var(--navy); fill: none; stroke-width: 2.5; }
-        .check-item span { font-size: 0.88rem; color: var(--navy); font-weight: 500; }
-        .faq-item { border-bottom: 1px solid var(--gray-200); }
-        .faq-q {
-            width: 100%; background: none; border: none;
-            padding: 14px 0;
-            display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer;
-            font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600;
-            color: var(--navy); text-align: left;
-            transition: color var(--transition);
-        }
-        .faq-q:hover { color: var(--blue-accent); }
-        .faq-chevron {
-            width: 18px; height: 18px;
-            stroke: var(--gray-400); fill: none; stroke-width: 2;
-            transition: transform var(--transition);
-            flex-shrink: 0;
-        }
-        .faq-item.open .faq-chevron { transform: rotate(180deg); }
-        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-        .faq-item.open .faq-a { max-height: 180px; }
-        .faq-a p { font-size: 0.86rem; color: var(--gray-600); line-height: 1.7; padding-bottom: 14px; }
+  .side-ticks {
+    position: fixed;
+    left: 16px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    mix-blend-mode: difference;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
 
-        /* ══════════════════════════════════════════
-           CERTIFICATIONS (NEW)
-           ══════════════════════════════════════════ */
-        .certifications {
-            padding: 64px 0;
-            background: var(--blue-bg-light);
-        }
-        .certs-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-        .cert-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 32px 20px;
-            text-align: center;
-            border: 1px solid var(--gray-200);
-            transition: all var(--transition);
-        }
-        .cert-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-card);
-            border-color: transparent;
-        }
-        .cert-icon-wrap {
-            width: 64px; height: 64px;
-            margin: 0 auto 16px;
-            background: var(--blue-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .cert-icon-wrap svg {
-            width: 28px; height: 28px;
-            stroke: var(--navy);
-            fill: none;
-            stroke-width: 1.6;
-        }
-        .cert-card h3 {
-            font-family: var(--font-serif);
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 6px;
-        }
-        .cert-card p {
-            font-size: 0.8rem;
-            color: var(--gray-400);
-            line-height: 1.5;
-        }
-
-        /* ══════════════════════════════════════════
-           TIMELINE (NEW)
-           ══════════════════════════════════════════ */
-        .timeline-section {
-            padding: 64px 0 72px;
-            background: var(--navy);
-            position: relative;
-            overflow: hidden;
-        }
-        .timeline-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(ellipse at 50% 100%, rgba(91,155,213,0.08) 0%, transparent 60%);
-        }
-        .timeline-section .section-header { position: relative; z-index: 2; }
-
-        .timeline-wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            overflow-x: auto;
-            padding-bottom: 12px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .timeline-wrapper::-webkit-scrollbar { height: 4px; }
-        .timeline-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
-        .timeline-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
-
-        .timeline-track {
-            display: flex;
-            align-items: flex-start;
-            min-width: max-content;
-            padding: 0 20px;
-            position: relative;
-        }
-        .timeline-line {
-            position: absolute;
-            top: 28px;
-            left: 60px;
-            right: 60px;
-            height: 2px;
-            background: rgba(255,255,255,0.15);
-            z-index: 0;
-        }
-        .timeline-line-fill {
-            height: 100%;
-            width: 0;
-            background: var(--blue-accent);
-            border-radius: 1px;
-            transition: width 1.5s ease 0.3s;
-        }
-        .timeline-section.active .timeline-line-fill { width: 100%; }
-
-        .tl-step {
-            flex: 0 0 160px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        .tl-dot-wrap {
-            width: 56px; height: 56px;
-            border-radius: 50%;
-            background: var(--navy-dark);
-            border: 2px solid rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-            transition: all 0.5s ease;
-        }
-        .timeline-section.active .tl-dot-wrap {
-            border-color: var(--blue-accent);
-            background: rgba(91,155,213,0.12);
-        }
-        .tl-dot-wrap .tl-day {
-            font-family: var(--font-serif);
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--white);
-        }
-        .tl-label {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--white);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-        .tl-desc {
-            font-size: 0.76rem;
-            color: rgba(255,255,255,0.5);
-            line-height: 1.5;
-            max-width: 130px;
-        }
-
-        /* ══════════════════════════════════════════
-           DIFFERENTIATORS (NEW)
-           ══════════════════════════════════════════ */
-        .differentiators {
-            padding: 72px 0;
-            background: var(--white);
-        }
-        .diff-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 56px;
-            align-items: start;
-        }
-        .diff-content h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 16px;
-            line-height: 1.3;
-        }
-        .diff-content > p {
-            font-size: 0.92rem;
-            color: var(--gray-600);
-            line-height: 1.75;
-            margin-bottom: 12px;
-        }
-        .diff-items {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .diff-item {
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
-        }
-        .diff-num {
-            flex-shrink: 0;
-            width: 36px; height: 36px;
-            background: var(--blue-bg);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-serif);
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--navy);
-        }
-        .diff-item h4 {
-            font-family: var(--font-serif);
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 4px;
-        }
-        .diff-item p {
-            font-size: 0.86rem;
-            color: var(--gray-600);
-            line-height: 1.65;
-        }
-
-        /* ── FINAL CTA ── */
-        .final-cta {
-            padding: 56px 0;
-            background: var(--navy);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .final-cta::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(ellipse at center, rgba(91,155,213,0.08) 0%, transparent 70%);
-        }
-        .final-cta-inner { position: relative; z-index: 2; }
-        .final-cta h2 {
-            font-family: var(--font-serif);
-            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-            color: var(--white);
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .final-cta p { color: rgba(255,255,255,0.55); font-size: 0.88rem; margin-bottom: 24px; }
-        .final-cta .btn-pill {
-            border-color: var(--white);
-            color: var(--white);
-            background: transparent;
-            min-width: 220px;
-            justify-content: center;
-        }
-        .final-cta .btn-pill:hover { background: var(--white); color: var(--navy); }
-
-        /* ── SCHEMA BAR ── */
-        .schema-bar { background: var(--navy-dark); padding: 14px 0; text-align: center; }
-        .schema-tags { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .schema-label { font-size: 0.7rem; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; }
-        .schema-tag { padding: 3px 12px; border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-pill); font-size: 0.7rem; color: rgba(255,255,255,0.5); }
-
-        /* ── FOOTER ── */
-        .site-footer { background: #0b1c30; padding: 44px 0 28px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 32px; }
-        .footer-brand img { height: 30px; margin-bottom: 12px; }
-        .footer-brand p { color: rgba(255,255,255,0.4); font-size: 0.82rem; line-height: 1.6; }
-        .footer-col h4 { font-family: var(--font-serif); font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 14px; }
-        .footer-col ul { list-style: none; }
-        .footer-col li { margin-bottom: 8px; }
-        .footer-col a { font-size: 0.8rem; color: rgba(255,255,255,0.4); transition: color var(--transition); }
-        .footer-col a:hover { color: rgba(255,255,255,0.8); }
-        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px; display: flex; justify-content: space-between; }
-        .footer-bottom p { font-size: 0.74rem; color: rgba(255,255,255,0.25); }
-
-        /* ══════════════════════════════════════════
-           RESPONSIVE
-           ══════════════════════════════════════════ */
-        @media (max-width: 900px) {
-            .hero-inner { flex-direction: column; gap: 24px; }
-            .hero-visual { flex: none; width: 100%; }
-            .hero-visual-placeholder { width: 100%; height: 160px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .stat-item:nth-child(2)::after { display: none; }
-            .benefits-grid { grid-template-columns: 1fr; }
-            .cf-grid { grid-template-columns: 1fr; }
-            .proof-grid { grid-template-columns: 1fr; }
-            .certs-grid { grid-template-columns: repeat(2, 1fr); }
-            .diff-layout { grid-template-columns: 1fr; gap: 36px; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 640px) {
-            .nav-menu { display: none; }
-            .hamburger { display: flex; }
-            .hero { padding: 28px 0 32px; }
-            .hero h1 { font-size: 1.5rem; }
-            .hero-ctas { flex-direction: column; }
-            .btn-pill { width: 100%; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-            .stat-item::after { display: none !important; }
-            .certs-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-            .footer-bottom { flex-direction: column; gap: 8px; }
-        }
-    </style>
-
-    <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "Lorem Ipsum Dolor",
-        "description": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.",
-        "brand": { "@type": "Brand", "name": "TuEmpresa" },
-        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "200" }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            { "@type": "Question", "name": "¿Lorem ipsum dolor sit amet?", "acceptedAnswer": { "@type": "Answer", "text": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore." } },
-            { "@type": "Question", "name": "¿Ut enim ad minim veniam?", "acceptedAnswer": { "@type": "Answer", "text": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo." } },
-            { "@type": "Question", "name": "¿Duis aute irure dolor?", "acceptedAnswer": { "@type": "Answer", "text": "In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla." } },
-            { "@type": "Question", "name": "¿Excepteur sint occaecat?", "acceptedAnswer": { "@type": "Answer", "text": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim." } }
-        ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://www.tuempresa.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Lorem", "item": "https://www.tuempresa.com/lorem/" },
-            { "@type": "ListItem", "position": 3, "name": "Ipsum Dolor", "item": "https://www.tuempresa.com/lorem/ipsum-dolor/" }
-        ]
-    }
-    </script>
+  @media (prefers-reduced-motion: reduce) {
+    .glitch::before, .glitch::after { display: none; }
+    .rotor { transform: none; }
+    .cursor::after { animation: none; }
+  }
+  @media (max-width: 640px) {
+    .status { font-size: 9px; padding: 10px 14px; }
+    .side-ticks { display: none; }
+  }
+</style>
 </head>
 <body>
 
-    <!-- ══════ HEADER ══════ -->
-    <header class="site-header" id="siteHeader">
-        <div class="container">
-            <nav class="nav-bar">
-                <a href="#" class="logo-link">
-                    <img src="https://ingenes.com/wp-content/uploads/2023/08/favicon-sin-fondo.png" alt="Logo" />
-                    <span class="logo-text">TuEmpresa</span>
-                </a>
-                <ul class="nav-menu">
-                    <li><a href="#">Lorem Ipsum</a></li>
-                    <li><a href="#">Dolor Sit</a></li>
-                    <li><a href="#">Amet Elit</a></li>
-                    <li><a href="#">Tempor</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#" class="nav-cta-btn">AGENDA</a></li>
-                </ul>
-                <button class="hamburger" aria-label="Menú">
-                    <span></span><span></span><span></span>
-                </button>
-            </nav>
-        </div>
-    </header>
+<canvas id="bg"></canvas>
+<div class="noise"></div>
+<div class="scanlines"></div>
+<div class="progress" id="prog"></div>
 
-    <!-- ══════ TICKER ══════ -->
-    <div class="ticker-bar">
-        <div class="ticker-track">
-            <span>Lorem Ipsum Dolor Sit Amet</span><span class="ticker-dot"></span>
-            <span>Consectetur Adipiscing Elit Eiusmod</span><span class="ticker-dot"></span>
-            <span>Ut Enim Ad Minim Veniam Nostrud</span><span class="ticker-dot"></span>
-            <span>Duis Aute Irure Dolor Reprehenderit</span><span class="ticker-dot"></span>
-            <span>Lorem Ipsum Dolor Sit Amet</span><span class="ticker-dot"></span>
-            <span>Consectetur Adipiscing Elit Eiusmod</span><span class="ticker-dot"></span>
-            <span>Ut Enim Ad Minim Veniam Nostrud</span><span class="ticker-dot"></span>
-            <span>Duis Aute Irure Dolor Reprehenderit</span><span class="ticker-dot"></span>
-        </div>
+<header class="status">
+  <span><span class="dot"></span>STATUS · TEST_SERVER_01</span>
+  <span id="time">--:--:--</span>
+</header>
+
+<aside class="side-ticks">[ SANDBOX · NO_INDEX · NO_FOLLOW ]</aside>
+
+<main>
+  <section class="hero">
+    <div class="stage">
+      <h1>
+        <span class="glitch" data-text="NO HAY">NO HAY</span><br>
+        <span class="glitch" data-text="NADA ACÁ">NADA ACÁ</span>
+      </h1>
+      <p class="sub">scrolleá igual, si querés</p>
     </div>
+  </section>
 
-    <!-- ══════ BREADCRUMBS ══════ -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <ol class="crumbs">
-                <li><a href="#">Ipsum</a></li>
-                <li>›</li>
-                <li><a href="#">Dolor</a></li>
-                <li>›</li>
-                <li>Sit Amet Consectetur</li>
-            </ol>
-        </div>
+  <section class="rotor-sec">
+    <div class="rotor" id="rot">servidor de <em>prueba</em> — servidor de <em>prueba</em> —</div>
+  </section>
+
+  <section>
+    <div class="code-block" id="code">
+      <div><span class="c">// si llegaste acá por un link, volvé por donde viniste</span></div>
+      <div><span class="k">status</span>: <span class="s">"nothing to see here"</span>,</div>
+      <div><span class="k">purpose</span>: <span class="s">"sandbox privado"</span>,</div>
+      <div><span class="k">indexed</span>: <span class="s">false</span>,</div>
+      <div><span class="k">robots</span>: <span class="s">"noindex, nofollow"</span>,</div>
+      <div><span class="k">message</span>: <span class="s">"esto es un servidor de prueba"</span><span class="cursor"></span></div>
     </div>
+  </section>
+</main>
 
-    <!-- ══════ HERO ══════ -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-inner">
-                <div class="hero-text">
-                    <h1>Lorem Ipsum Dolor<br>Sit Amet Consectetur</h1>
-                    <p class="hero-desc">Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.</p>
-                    <div class="hero-ctas">
-                        <a href="#" class="btn-pill btn-solid">Lorem Ipsum <span class="arrow">→</span></a>
-                        <a href="#" class="btn-pill btn-outline">Dolor Sit Amet <span class="arrow">→</span></a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="hero-visual-placeholder">[ Imagen ]</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="stripes" id="stripes"></div>
 
-    <!-- ══════ STATS COUNTER (NEW — between hero & benefits) ══════ -->
-    <section class="stats-section" id="statsSection">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item reveal">
-                    <div class="stat-number"><span class="stat-prefix">+</span><span class="counter" data-target="75000">0</span></div>
-                    <div class="stat-label">Lorem Ipsum</div>
-                </div>
-                <div class="stat-item reveal">
-                    <div class="stat-number"><span class="counter" data-target="96">0</span><span class="stat-suffix">%</span></div>
-                    <div class="stat-label">Dolor Sit Amet</div>
-                </div>
-                <div class="stat-item reveal">
-                    <div class="stat-number"><span class="stat-prefix">+</span><span class="counter" data-target="20">0</span></div>
-                    <div class="stat-label">Consectetur Elit</div>
-                </div>
-                <div class="stat-item reveal">
-                    <div class="stat-number"><span class="counter" data-target="150">0</span><span class="stat-suffix">+</span></div>
-                    <div class="stat-label">Eiusmod Tempor</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+(() => {
+  const cvs = document.getElementById('bg');
+  const ctx = cvs.getContext('2d', { alpha: true });
+  let W = 0, H = 0;
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const mouse = { x: 0, y: 0, tx: -9999, ty: -9999 };
+  let scrollY = 0, maxScroll = 1;
 
-    <!-- ══════ BENEFITS ══════ -->
-    <section class="benefits">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Lorem Ipsum Dolor Sit</h2>
-                <p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-            <div class="benefits-grid">
-                <div class="benefit-card reveal">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Ipsum Dolor Amet</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore magna.</p>
-                </div>
-                <div class="benefit-card reveal">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    </div>
-                    <h3>Eiusmod Tempor</h3>
-                    <p>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
-                </div>
-                <div class="benefit-card reveal">
-                    <div class="benefit-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Consectetur Elit</h3>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cvs.width = W * DPR;
+    cvs.height = H * DPR;
+    cvs.style.width = W + 'px';
+    cvs.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    maxScroll = Math.max(1, document.documentElement.scrollHeight - H);
+  }
+  window.addEventListener('resize', resize);
+  resize();
 
-    <!-- ══════ SOCIAL PROOF ══════ -->
-    <section class="social-proof">
-        <div class="container">
-            <div class="proof-grid reveal">
-                <div class="proof-left">
-                    <div class="proof-avatars">
-                        <div class="avatar-circle">LI</div>
-                        <div class="avatar-circle" style="background:#5b9bd5;">DA</div>
-                        <div class="avatar-circle">SM</div>
-                        <div class="avatar-circle" style="background:#8bacc6;">+</div>
-                    </div>
-                    <div class="proof-stars">★★★★★</div>
-                    <div class="proof-count">+200 lorem ipsum</div>
-                </div>
-                <div class="proof-quote">
-                    <blockquote>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore — dolor magna aliqua veniam."</blockquote>
-                    <cite><strong>Lorem I.</strong> · Ipsum dolor · Sit amet</cite>
-                </div>
-            </div>
-        </div>
-    </section>
+  window.addEventListener('pointermove', e => {
+    mouse.tx = e.clientX; mouse.ty = e.clientY;
+  });
+  window.addEventListener('pointerleave', () => {
+    mouse.tx = -9999; mouse.ty = -9999;
+  });
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
 
-    <!-- ══════ CONTENT + FAQ ══════ -->
-    <section class="content-faq">
-        <div class="container">
-            <div class="cf-grid">
-                <div class="content-col reveal">
-                    <h2>¿Lorem ipsum dolor sit amet?</h2>
-                    <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-                    <div class="check-list">
-                        <div class="check-item">
-                            <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <span>Lorem ipsum dolor sit amet consectetur</span>
-                        </div>
-                        <div class="check-item">
-                            <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <span>Sed do eiusmod tempor incididunt labore</span>
-                        </div>
-                        <div class="check-item">
-                            <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <span>Ut enim ad minim veniam nostrud exercitation</span>
-                        </div>
-                        <div class="check-item">
-                            <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-                            <span>Excepteur sint occaecat cupidatat proident</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-col reveal">
-                    <h2>Dolor Sit Amet</h2>
-                    <div class="faq-item open">
-                        <button class="faq-q" onclick="toggleFaq(this)">¿Lorem ipsum dolor sit amet?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-                        <div class="faq-a"><p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-q" onclick="toggleFaq(this)">¿Ut enim ad minim veniam?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-                        <div class="faq-a"><p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute.</p></div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-q" onclick="toggleFaq(this)">¿Duis aute irure dolor?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-                        <div class="faq-a"><p>In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint.</p></div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-q" onclick="toggleFaq(this)">¿Excepteur sint occaecat?<svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-                        <div class="faq-a"><p>Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum sed ut.</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  const SPACING = 44;
+  let t = 0;
+  function draw() {
+    t += 0.009;
+    mouse.x += (mouse.tx - mouse.x) * 0.08;
+    mouse.y += (mouse.ty - mouse.y) * 0.08;
 
-    <!-- ══════ CERTIFICATIONS & AWARDS (NEW) ══════ -->
-    <section class="certifications">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>Lorem Ipsum Adipiscing</h2>
-                <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim.</p>
-            </div>
-            <div class="certs-grid">
-                <div class="cert-card reveal">
-                    <div class="cert-icon-wrap">
-                        <svg viewBox="0 0 24 24"><path d="M12 15l-2 5 2-1.5L14 20l-2-5z"/><circle cx="12" cy="9" r="6"/></svg>
-                    </div>
-                    <h3>Ipsum Dolor Amet</h3>
-                    <p>Consectetur adipiscing elit sed do eiusmod tempor</p>
-                </div>
-                <div class="cert-card reveal">
-                    <div class="cert-icon-wrap">
-                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                    <h3>Eiusmod Tempor</h3>
-                    <p>Ut enim ad minim veniam quis nostrud exercitation</p>
-                </div>
-                <div class="cert-card reveal">
-                    <div class="cert-icon-wrap">
-                        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    </div>
-                    <h3>Veniam Nostrud</h3>
-                    <p>Duis aute irure dolor in reprehenderit voluptate</p>
-                </div>
-                <div class="cert-card reveal">
-                    <div class="cert-icon-wrap">
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                    </div>
-                    <h3>Ullamco Laboris</h3>
-                    <p>Excepteur sint occaecat cupidatat non proident sunt</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    const sp = scrollY / maxScroll;
 
-    <!-- ══════ TIMELINE — Days in Mexico (NEW) ══════ -->
-    <section class="timeline-section" id="timelineSection">
-        <div class="container">
-            <div class="section-header section-header-light reveal">
-                <h2>Lorem Ipsum Dolor Sit Amet</h2>
-                <p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.</p>
-            </div>
-            <div class="timeline-wrapper">
-                <div class="timeline-track">
-                    <div class="timeline-line"><div class="timeline-line-fill"></div></div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">1</span></div>
-                        <div class="tl-label">Ipsum</div>
-                        <div class="tl-desc">Lorem ipsum dolor sit amet consectetur</div>
-                    </div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">2</span></div>
-                        <div class="tl-label">Dolor</div>
-                        <div class="tl-desc">Sed do eiusmod tempor incididunt labore</div>
-                    </div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">3‑5</span></div>
-                        <div class="tl-label">Sit Amet</div>
-                        <div class="tl-desc">Ut enim ad minim veniam quis nostrud</div>
-                    </div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">6‑8</span></div>
-                        <div class="tl-label">Consectetur</div>
-                        <div class="tl-desc">Duis aute irure dolor in reprehenderit</div>
-                    </div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">9‑12</span></div>
-                        <div class="tl-label">Adipiscing</div>
-                        <div class="tl-desc">Excepteur sint occaecat cupidatat non proident</div>
-                    </div>
-                    <div class="tl-step">
-                        <div class="tl-dot-wrap"><span class="tl-day">13+</span></div>
-                        <div class="tl-label">Eiusmod</div>
-                        <div class="tl-desc">Sunt in culpa qui officia deserunt mollit</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    ctx.clearRect(0, 0, W, H);
 
-    <!-- ══════ DIFFERENTIATORS (NEW) ══════ -->
-    <section class="differentiators">
-        <div class="container">
-            <div class="diff-layout">
-                <div class="diff-content reveal">
-                    <h2>Lorem Ipsum Dolor Sit Amet Consectetur</h2>
-                    <p>Adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                </div>
-                <div class="diff-items reveal">
-                    <div class="diff-item">
-                        <div class="diff-num">01</div>
-                        <div>
-                            <h4>Ipsum dolor sit amet</h4>
-                            <p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua veniam.</p>
-                        </div>
-                    </div>
-                    <div class="diff-item">
-                        <div class="diff-num">02</div>
-                        <div>
-                            <h4>Eiusmod tempor incididunt</h4>
-                            <p>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex commodo.</p>
-                        </div>
-                    </div>
-                    <div class="diff-item">
-                        <div class="diff-num">03</div>
-                        <div>
-                            <h4>Duis aute irure dolor</h4>
-                            <p>In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint.</p>
-                        </div>
-                    </div>
-                    <div class="diff-item">
-                        <div class="diff-num">04</div>
-                        <div>
-                            <h4>Excepteur sint occaecat</h4>
-                            <p>Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum sed perspiciatis.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    const gx = mouse.x < -1000 ? W/2 : mouse.x;
+    const gy = mouse.y < -1000 ? H/2 : mouse.y;
+    const grd = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(W,H) * 0.75);
+    grd.addColorStop(0, `rgba(255,46,46,${0.20 * (1 - sp * 0.4)})`);
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, W, H);
 
-    <!-- ══════ FINAL CTA ══════ -->
-    <section class="final-cta">
-        <div class="container">
-            <div class="final-cta-inner reveal">
-                <h2>¿Lorem ipsum dolor sit amet?</h2>
-                <p>Consectetur adipiscing · Eiusmod tempor incididunt</p>
-                <a href="#" class="btn-pill">Lorem Ipsum Dolor <span class="arrow">→</span></a>
-            </div>
-        </div>
-    </section>
+    const cols = Math.ceil(W / SPACING) + 2;
+    const rows = Math.ceil(H / SPACING) + 2;
+    const ox = (W - cols * SPACING) / 2;
+    const oy = (H - rows * SPACING) / 2;
 
-    <!-- ══════ SCHEMA BAR ══════ -->
-    <div class="schema-bar">
-        <div class="container">
-            <div class="schema-tags">
-                <span class="schema-label">Schema.org</span>
-                <span class="schema-tag">Product</span>
-                <span class="schema-tag">FAQPage</span>
-                <span class="schema-tag">Review</span>
-                <span class="schema-tag">BreadcrumbList</span>
-            </div>
-        </div>
-    </div>
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = ox + i * SPACING;
+        const y = oy + j * SPACING;
+        const dx = x - gx;
+        const dy = y - gy;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        const wave = Math.sin(i * 0.35 + j * 0.28 + t + sp * 12) * (3 + sp * 22);
+        const push = Math.max(0, 140 - d) / 140;
+        const r = 1 + push * 3.2 + sp * 0.6;
+        const alpha = 0.14 + push * 0.7 + sp * 0.25;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${Math.min(1, alpha)})`;
+        ctx.arc(x + wave, y + wave * 0.5, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
 
-    <!-- ══════ FOOTER ══════ -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <img src="https://ingenes.com/wp-content/uploads/2023/08/favicon-sin-fondo.png" alt="Logo" />
-                    <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Lorem</h4>
-                    <ul>
-                        <li><a href="#">Ipsum Dolor</a></li>
-                        <li><a href="#">Sit Amet</a></li>
-                        <li><a href="#">Consectetur</a></li>
-                        <li><a href="#">Adipiscing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Dolor</h4>
-                    <ul>
-                        <li><a href="#">Eiusmod Tempor</a></li>
-                        <li><a href="#">Incididunt</a></li>
-                        <li><a href="#">Ut Labore</a></li>
-                        <li><a href="#">Magna Aliqua</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Amet</h4>
-                    <ul>
-                        <li><a href="#">Veniam Nostrud</a></li>
-                        <li><a href="#">Exercitation</a></li>
-                        <li><a href="#">Ullamco Laboris</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 TuEmpresa. Lorem ipsum dolor sit amet.</p>
-                <p>Consectetur adipiscing elit</p>
-            </div>
-        </div>
-    </footer>
+  const glitches = document.querySelectorAll('.glitch');
+  function tickGlitch() {
+    glitches.forEach(el => {
+      if (Math.random() < 0.18) {
+        el.style.setProperty('--gx', (Math.random() * 12 - 6) + 'px');
+        el.style.setProperty('--gy', (Math.random() * 6 - 3) + 'px');
+        el.style.setProperty('--gc1', Math.random() * 40 + '%');
+        el.style.setProperty('--gc2', (Math.random() * 30 + 10) + '%');
+        el.style.setProperty('--gc3', (Math.random() * 30 + 50) + '%');
+        el.style.setProperty('--gc4', (Math.random() * 30 + 70) + '%');
+      } else {
+        el.style.setProperty('--gx', '0px');
+        el.style.setProperty('--gy', '0px');
+      }
+    });
+    setTimeout(tickGlitch, 55 + Math.random() * 150);
+  }
+  tickGlitch();
 
-    <!-- ══════ JAVASCRIPT ══════ -->
-    <script>
-        // Sticky header
-        window.addEventListener('scroll', () => {
-            document.getElementById('siteHeader').classList.toggle('scrolled', scrollY > 10);
-        });
+  const rot = document.getElementById('rot');
+  const rotSec = document.querySelector('.rotor-sec');
+  const prog = document.getElementById('prog');
+  const stripes = document.getElementById('stripes');
+  const hero = document.querySelector('.hero .stage');
+  const code = document.getElementById('code');
 
-        // FAQ accordion
-        function toggleFaq(btn) {
-            const item = btn.parentElement;
-            const open = item.classList.contains('open');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-            if (!open) item.classList.add('open');
-        }
+  function onScroll() {
+    const sp = window.scrollY / maxScroll;
+    prog.style.width = (sp * 100) + '%';
 
-        // Scroll reveal
-        const revealObs = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+    const heroSp = Math.min(1, window.scrollY / window.innerHeight);
+    hero.style.opacity = 1 - heroSp * 0.95;
+    hero.style.transform = `translate3d(0, ${heroSp * -120}px, 0) scale(${1 - heroSp * 0.12})`;
 
-        // ── ANIMATED COUNTERS ──
-        function animateCounter(el) {
-            const target = parseInt(el.getAttribute('data-target'));
-            const duration = 2000;
-            const startTime = performance.now();
+    const rect = rotSec.getBoundingClientRect();
+    const rotProg = (window.innerHeight * 0.5 - (rect.top + rect.height * 0.5)) / (rect.height * 0.9);
+    const clamped = Math.max(-1.1, Math.min(1.1, rotProg));
+    rot.style.setProperty('--sx', (clamped * -55) + 'vw');
+    rot.style.setProperty('--srot', (clamped * 5) + 'deg');
 
-            function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+    const codeRect = code.getBoundingClientRect();
+    const codeEntry = Math.max(0, Math.min(1, (window.innerHeight - codeRect.top) / (window.innerHeight * 0.8)));
+    code.style.opacity = codeEntry;
+    code.style.transform = `translate3d(0, ${(1 - codeEntry) * 40}px, 0)`;
 
-            function update(now) {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = easeOutCubic(progress);
-                const current = Math.round(eased * target);
+    stripes.classList.toggle('show', sp > 0.72);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    onScroll();
+  });
+  onScroll();
 
-                el.textContent = current.toLocaleString('es-MX');
-
-                if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        const counterObs = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counters = entry.target.querySelectorAll('.counter');
-                    counters.forEach((c, i) => {
-                        setTimeout(() => animateCounter(c), i * 150);
-                    });
-                    counterObs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        counterObs.observe(document.getElementById('statsSection'));
-
-        // ── TIMELINE ACTIVATION ──
-        const tlObs = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    tlObs.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-        tlObs.observe(document.getElementById('timelineSection'));
-    </script>
+  const timeEl = document.getElementById('time');
+  function tick() {
+    const d = new Date();
+    timeEl.textContent = [d.getHours(), d.getMinutes(), d.getSeconds()]
+      .map(n => String(n).padStart(2, '0')).join(':');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 </body>
 </html>

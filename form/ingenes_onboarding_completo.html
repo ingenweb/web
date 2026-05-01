@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ingenes — Tu caso, nuestro compromiso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1F3864; --navy2:#142548; --navy3:#2a4a7f;
+  --gold:#C9A84C; --goldl:#e8c97a; --goldp:#FFF8E8;
+  --white:#FFFFFF; --off:#F7F9FC;
+  --td:#1a2a45; --tm:#4a5a7a; --tl:#8a9ab8;
+  --teal:#0F6E56; --tealL:#E8F6F2;
+  --coral:#E8734A; --coralL:#FDF0EB;
+  --purple:#4A3589; --purpleL:#F0EDFB;
+  --green:#1E6E42; --greenL:#D5F0E0;
+  --red:#C0392B; --redL:#FDECEC;
+  --brd:rgba(31,56,100,.10); --brdA:rgba(31,56,100,.30);
+  --sc:0 2px 16px rgba(31,56,100,.07),0 1px 4px rgba(31,56,100,.04);
+  --sh:0 8px 32px rgba(31,56,100,.13),0 2px 8px rgba(31,56,100,.06);
+  --sa:0 12px 40px rgba(31,56,100,.18),0 4px 12px rgba(31,56,100,.09);
+  --r:16px; --rs:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--td);min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+.hdr{background:var(--navy);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.18)}
+.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--white);letter-spacing:.02em}
+.hdr-logo-i{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hdr-prog{display:flex;align-items:center;gap:10px}
+.hdr-step{font-size:11.5px;color:rgba(255,255,255,.5);letter-spacing:.02em}
+.prog-bar{width:110px;height:3.5px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.hdr-back{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:99px;transition:all .18s;font-family:'DM Sans',sans-serif}
+.hdr-back:hover{background:rgba(255,255,255,.1);color:var(--white)}
+.hdr-back.hidden{visibility:hidden}
+
+/* SCREEN CONTAINER */
+.screens{position:relative;min-height:calc(100vh - 60px)}
+.screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
+.screen.active{display:flex;animation:slideIn .32s cubic-bezier(.4,0,.2,1)}
+.screen.out{animation:slideOut .28s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-24px)}}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,var(--navy2) 0%,var(--navy) 55%,#2a4a7f 100%);padding:44px 22px 36px;text-align:center;position:relative;overflow:hidden;flex-shrink:0}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 80%,rgba(201,168,76,.10) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 80% 20%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.35);border-radius:99px;padding:4px 13px;font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--goldl);margin-bottom:16px}
+.hero-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.hero-t{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5vw,34px);font-weight:400;color:var(--white);line-height:1.3;max-width:540px;margin:0 auto 10px}
+.hero-t em{color:var(--goldl);font-style:italic;font-weight:300}
+.hero-s{font-size:13px;color:rgba(255,255,255,.55);font-weight:400}
+
+/* MAIN CONTENT */
+.main{max-width:820px;margin:0 auto;padding:28px 18px 100px;width:100%}
+
+/* GROUPS */
+.grp{margin-bottom:32px}
+.grp-hdr{display:flex;align-items:center;gap:9px;margin-bottom:13px}
+.grp-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.g1 .grp-ico{background:linear-gradient(135deg,#EEF4FF,#D6E4F7)}
+.g2 .grp-ico{background:linear-gradient(135deg,#E8F6F2,#C8EDE4)}
+.g3 .grp-ico{background:linear-gradient(135deg,#F0EDFB,#DDD8F8)}
+.grp-line{flex:1;height:1px;background:var(--brd)}
+.grp-lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.g1 .grp-lbl{color:var(--navy3)}
+.g2 .grp-lbl{color:var(--teal)}
+.g3 .grp-lbl{color:var(--purple)}
+
+/* CARDS GRID */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:11px}
+@media(max-width:480px){.cg{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:16px 16px 14px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden;display:flex;flex-direction:column;gap:9px;box-shadow:var(--sc);-webkit-tap-highlight-color:transparent;user-select:none}
+.card:hover{transform:translateY(-2px) scale(1.01);box-shadow:var(--sh);border-color:var(--brdA)}
+.card:active{transform:scale(.99)}
+.card-chk{position:absolute;top:11px;right:11px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--brd);background:var(--white);display:flex;align-items:center;justify-content:center;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.card-chk svg{opacity:0;transform:scale(.3);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.card.sel .card-chk svg{opacity:1;transform:scale(1)}
+.g1 .card.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.g1 .card.sel .card-chk{background:var(--navy);border-color:var(--navy)}
+.g2 .card.sel{border-color:var(--teal);background:linear-gradient(145deg,var(--tealL),var(--white))}
+.g2 .card.sel .card-chk{background:var(--teal);border-color:var(--teal)}
+.g3 .card.sel{border-color:var(--purple);background:linear-gradient(145deg,var(--purpleL),var(--white))}
+.g3 .card.sel .card-chk{background:var(--purple);border-color:var(--purple)}
+.card-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;transition:transform .22s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
+.g1 .card-ico{background:#EEF4FF}
+.g2 .card-ico{background:var(--tealL)}
+.g3 .card-ico{background:var(--purpleL)}
+.card:hover .card-ico,.card.sel .card-ico{transform:scale(1.08)}
+.card-txt{font-size:13px;font-weight:500;line-height:1.45;color:var(--td);padding-right:26px;transition:color .18s}
+.g1 .card.sel .card-txt{color:var(--navy)}
+.g2 .card.sel .card-txt{color:var(--teal)}
+.g3 .card.sel .card-txt{color:var(--purple)}
+
+/* REGEN SPECIAL */
+.card-regen{border-style:dashed;border-color:rgba(74,53,137,.25);background:linear-gradient(145deg,rgba(240,237,251,.5),var(--white))}
+.card-regen.rhl{border-style:solid;border-color:var(--purple);animation:rpulse .5s ease}
+@keyframes rpulse{0%{box-shadow:0 0 0 0 rgba(74,53,137,.25)}50%{box-shadow:0 0 0 8px rgba(74,53,137,.05)}100%{box-shadow:var(--sh)}}
+.badge-comp{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#F0EDFB,#E4DFFA);border:1px solid rgba(74,53,137,.20);border-radius:99px;padding:2px 9px;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--purple);width:fit-content}
+.badge-comp::before{content:'✦';font-size:7px}
+.regen-hint{display:none;font-size:11px;color:var(--purple);font-weight:500;line-height:1.4;padding:7px 9px;background:rgba(74,53,137,.07);border-radius:8px;margin-top:1px}
+.regen-hint.vis{display:block;animation:fadeUp .3s ease}
+
+/* SINGLE CHOICE OPTIONS */
+.opts{display:flex;flex-direction:column;gap:11px;max-width:520px;margin:0 auto}
+.opt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:18px 20px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:14px;box-shadow:var(--sc);-webkit-tap-highlight-color:transparent}
+.opt:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--brdA)}
+.opt-ico{font-size:26px;flex-shrink:0;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--off)}
+.opt-body{flex:1}
+.opt-title{font-size:14px;font-weight:600;color:var(--td);line-height:1.3}
+.opt-sub{font-size:12px;color:var(--tm);margin-top:3px;line-height:1.4}
+
+/* GRID OPTS (for family config, branches) */
+.gopts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px;max-width:520px;margin:0 auto}
+.gopt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:18px 14px;cursor:pointer;text-align:center;transition:all .22s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--sc);-webkit-tap-highlight-color:transparent}
+.gopt:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--brdA)}
+.gopt.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.gopt-ico{font-size:28px;margin-bottom:8px}
+.gopt-lbl{font-size:13px;font-weight:600;color:var(--td)}
+.gopt-sub{font-size:11px;color:var(--tm);margin-top:4px;line-height:1.4}
+
+/* FORM FIELDS */
+.fld{display:flex;flex-direction:column;gap:6px;max-width:440px;margin:0 auto}
+.fld+.fld{margin-top:16px}
+.fld-lbl{font-size:12px;font-weight:600;color:var(--tm);letter-spacing:.04em;text-transform:uppercase}
+.fld-inp{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);transition:border-color .18s,box-shadow .18s;outline:none;width:100%}
+.fld-inp:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,56,100,.08)}
+.fld-inp::placeholder{color:var(--tl)}
+.phone-wrap{display:flex;gap:8px}
+.prefix-sel{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 12px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);transition:border-color .18s;outline:none;cursor:pointer;min-width:110px}
+.prefix-sel:focus{border-color:var(--navy)}
+
+/* AGE PICKER */
+.age-wrap{display:flex;flex-direction:column;gap:18px;max-width:360px;margin:0 auto}
+.age-row{display:flex;flex-direction:column;gap:6px}
+.age-lbl{font-size:12px;font-weight:600;color:var(--tm);letter-spacing:.04em;text-transform:uppercase}
+.age-slider-wrap{position:relative}
+.age-val{font-size:36px;font-family:'Cormorant Garamond',serif;font-weight:400;color:var(--navy);text-align:center;line-height:1;margin-bottom:8px}
+.age-val span{font-size:14px;color:var(--tm);font-family:'DM Sans',sans-serif;font-weight:400}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:linear-gradient(90deg,var(--navy) var(--pct,35%),var(--brd) var(--pct,35%));border-radius:99px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--navy);box-shadow:0 2px 8px rgba(31,56,100,.30);cursor:pointer;transition:transform .15s;border:3px solid var(--white)}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.age-hint{font-size:11px;color:var(--tm);text-align:center;margin-top:6px}
+.age-warning{background:var(--goldp);border:1px solid rgba(201,168,76,.35);border-radius:var(--rs);padding:10px 14px;font-size:12px;color:var(--td);line-height:1.5;margin-top:8px;display:none}
+.age-warning.vis{display:block;animation:fadeUp .3s ease}
+
+/* MULTI-CHOICE OPTIONS (for conditional questions) */
+.mchoice{display:flex;flex-direction:column;gap:9px;max-width:500px;margin:0 auto}
+.mopt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 16px;cursor:pointer;transition:all .2s;font-size:13.5px;font-weight:500;color:var(--td);box-shadow:var(--sc)}
+.mopt:hover{border-color:var(--brdA);transform:translateX(3px)}
+.mopt.sel{border-color:var(--navy);background:#EEF4FF;color:var(--navy)}
+
+/* COUNTRY CARDS */
+.country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;max-width:420px;margin:0 auto}
+.ccard{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:18px 12px;cursor:pointer;text-align:center;transition:all .22s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--sc)}
+.ccard:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.ccard.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.ccard-flag{font-size:28px;margin-bottom:6px}
+.ccard-name{font-size:13px;font-weight:600;color:var(--td)}
+
+/* BRANCH CARDS */
+.branch-grid{display:flex;flex-direction:column;gap:11px;max-width:520px;margin:0 auto}
+.bcard{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:14px;box-shadow:var(--sc)}
+.bcard:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--brdA)}
+.bcard.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.bcard.recommended{border-color:var(--gold);background:linear-gradient(145deg,var(--goldp),var(--white))}
+.bcard-tag{position:absolute;top:-8px;right:14px;background:var(--gold);color:var(--white);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:99px}
+.bcard{position:relative}
+.bcard-ico{font-size:22px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--off);flex-shrink:0}
+.bcard-body{flex:1}
+.bcard-title{font-size:14px;font-weight:600;color:var(--td)}
+.bcard-sub{font-size:11.5px;color:var(--tm);margin-top:3px;line-height:1.4}
+
+/* INFO BOX */
+.info-box{background:var(--tealL);border:1px solid rgba(15,110,86,.20);border-radius:var(--rs);padding:12px 15px;font-size:12.5px;color:var(--teal);line-height:1.6;margin:14px auto;max-width:520px}
+.info-box strong{font-weight:700}
+.warn-box{background:var(--goldp);border:1px solid rgba(201,168,76,.35);border-radius:var(--rs);padding:12px 15px;font-size:12.5px;color:var(--td);line-height:1.6;margin:14px auto;max-width:520px}
+
+/* NSE BADGE (hidden debug indicator for demo) */
+.nse-debug{position:fixed;top:70px;right:12px;background:rgba(31,56,100,.85);color:var(--white);border-radius:8px;padding:6px 10px;font-size:10px;font-family:monospace;z-index:999;line-height:1.6;pointer-events:none;display:none}
+.nse-debug.vis{display:block}
+
+/* CONFIRMATION */
+.confirm-card{background:var(--white);border-radius:24px;box-shadow:var(--sa);padding:32px 28px;max-width:460px;margin:0 auto;text-align:center}
+.confirm-ico{font-size:52px;margin-bottom:16px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) .2s both}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.confirm-t{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--navy);line-height:1.2;margin-bottom:8px}
+.confirm-s{font-size:13px;color:var(--tm);line-height:1.6}
+.confirm-coord{display:flex;align-items:center;gap:12px;background:var(--off);border-radius:var(--rs);padding:14px 16px;margin:20px 0;text-align:left}
+.coord-ava{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--navy3));color:var(--white);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.coord-name{font-size:13px;font-weight:600;color:var(--td)}
+.coord-role{font-size:11.5px;color:var(--tm)}
+.confirm-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0}
+.pill{background:var(--off);border:1px solid var(--brd);border-radius:99px;padding:5px 12px;font-size:11.5px;color:var(--tm);font-weight:500}
+.pill.active{background:#EEF4FF;border-color:var(--navy);color:var(--navy)}
+
+/* NSE INDICATOR (in confirm) */
+.nse-bar-wrap{margin:16px 0}
+.nse-bar-lbl{font-size:11px;color:var(--tm);text-align:left;margin-bottom:5px}
+.nse-bar{height:6px;background:var(--brd);border-radius:99px;overflow:hidden;margin-bottom:4px}
+.nse-bar-fill{height:100%;border-radius:99px;transition:width 1s ease .5s;background:linear-gradient(90deg,var(--navy),var(--navy3))}
+.nse-bar-labels{display:flex;justify-content:space-between;font-size:9.5px;color:var(--tl)}
+
+/* BOTTOM CTA */
+.btm{position:fixed;bottom:0;left:0;right:0;padding:12px 18px;background:var(--white);border-top:1px solid var(--brd);box-shadow:0 -4px 24px rgba(31,56,100,.09);display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.btm.vis{transform:translateY(0)}
+.btm-info{font-size:12.5px;color:var(--tm);line-height:1.4}
+.btm-info strong{color:var(--td);font-weight:600}
+.btn{background:linear-gradient(135deg,var(--navy),var(--navy3));color:var(--white);border:none;border-radius:99px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 4px 16px rgba(31,56,100,.25);white-space:nowrap}
+.btn:hover{background:linear-gradient(135deg,var(--navy2),var(--navy));box-shadow:0 6px 24px rgba(31,56,100,.32);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(3px)}
+.btn-ghost{background:none;border:1.5px solid var(--brd);color:var(--tm);border-radius:99px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{border-color:var(--brdA);color:var(--td)}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--white);border-radius:99px;padding:11px 18px;font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,.20);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:150;white-space:nowrap;max-width:calc(100vw - 36px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast em{color:var(--goldl);font-style:normal;font-weight:600}
+
+/* UTIL */
+.center{text-align:center}
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
+.mb8{margin-bottom:8px}
+.divider{height:1px;background:var(--brd);margin:20px 0;max-width:440px;margin-left:auto;margin-right:auto}
+.sep-txt{text-align:center;font-size:11.5px;color:var(--tl);margin:14px 0;position:relative}
+.sep-txt::before,.sep-txt::after{content:'';position:absolute;top:50%;width:calc(50% - 30px);height:1px;background:var(--brd)}
+.sep-txt::before{left:0}.sep-txt::after{right:0}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .4s ease both}
+
+/* SCROLL HINT */
+.scroll-hint{text-align:center;margin-bottom:22px}
+.scroll-hint p{font-size:11.5px;color:var(--tl)}
+.sdots{display:flex;justify-content:center;gap:4px;margin-top:5px}
+.sdots span{width:4px;height:4px;border-radius:50%;background:var(--tl);opacity:.4}
+.sdots span:first-child{opacity:.9}
+
+/* REFERRAL */
+.ref-grid{display:flex;flex-direction:column;gap:9px;max-width:460px;margin:0 auto}
+.ref-opt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;box-shadow:var(--sc)}
+.ref-opt:hover{border-color:var(--brdA);transform:translateX(3px)}
+.ref-opt.sel{border-color:var(--navy);background:#EEF4FF}
+.ref-ico{font-size:20px;width:36px;height:36px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ref-body{flex:1}
+.ref-title{font-size:13.5px;font-weight:600;color:var(--td)}
+.ref-sub{font-size:11.5px;color:var(--tm);margin-top:2px}
+
+/* INICIO — 3 preguntas en una pantalla */
+.istep{margin-bottom:24px;transition:opacity .3s}
+.istep-lbl{font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--navy3);margin:0 0 11px 2px;display:flex;align-items:center;gap:9px}
+.istep-lbl .num{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--navy);color:var(--white);font-size:10.5px;align-items:center;justify-content:center;font-weight:700;letter-spacing:0}
+.istep.disabled{opacity:.4;pointer-events:none}
+.istep.disabled .istep-lbl .num{background:var(--tl)}
+.need-grid{display:flex;flex-direction:column;gap:9px;max-width:520px;margin:0 auto}
+.need-card{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:13px;box-shadow:var(--sc);-webkit-tap-highlight-color:transparent;user-select:none}
+.need-card:hover{border-color:var(--brdA);transform:translateY(-1px);box-shadow:var(--sh)}
+.need-card.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.need-ico{width:42px;height:42px;border-radius:11px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:all .2s}
+.need-card.sel .need-ico{background:var(--navy);color:var(--white);transform:scale(1.05)}
+.need-body{flex:1}
+.need-ttl{font-size:14px;font-weight:600;color:var(--td);line-height:1.3}
+.need-card.sel .need-ttl{color:var(--navy)}
+.need-sub{font-size:11.5px;color:var(--tm);margin-top:2px;line-height:1.4}
+.need-chk{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--brd);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.need-card.sel .need-chk{background:var(--navy);border-color:var(--navy)}
+.need-chk svg{opacity:0;transition:opacity .15s}
+.need-card.sel .need-chk svg{opacity:1}
+.sex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;margin:0 auto}
+.sex-grid.three{grid-template-columns:repeat(3,1fr)}
+.sex-card{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:16px 10px;cursor:pointer;text-align:center;transition:all .22s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--sc);-webkit-tap-highlight-color:transparent;user-select:none}
+.sex-card:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--brdA)}
+.sex-card.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.sex-ico{font-size:26px;margin-bottom:4px;line-height:1}
+.sex-lbl{font-size:13px;font-weight:600;color:var(--td);margin-top:4px}
+.sex-card.sel .sex-lbl{color:var(--navy)}
+
+/* OVODONACIÓN */
+.ovo-grid{display:flex;flex-direction:column;gap:11px;max-width:480px;margin:0 auto}
+.ovo-opt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:flex-start;gap:14px;box-shadow:var(--sc);-webkit-tap-highlight-color:transparent}
+.ovo-opt:hover{border-color:var(--brdA);transform:translateY(-1px);box-shadow:var(--sh)}
+.ovo-opt.sel{border-color:var(--navy);background:linear-gradient(145deg,#EEF4FF,var(--white))}
+.ovo-ico{font-size:22px;width:42px;height:42px;border-radius:10px;background:var(--off);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ovo-opt.sel .ovo-ico{background:var(--navy);color:var(--white)}
+.ovo-body{flex:1}
+.ovo-ttl{font-size:14px;font-weight:600;color:var(--td);line-height:1.3}
+.ovo-opt.sel .ovo-ttl{color:var(--navy)}
+.ovo-sub{font-size:11.5px;color:var(--tm);margin-top:3px;line-height:1.45}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <button class="hdr-back hidden" id="btn-back" onclick="goBack()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="back-lbl">Regresar</span>
+  </button>
+  <div class="hdr-logo">
+    <div class="hdr-logo-i">🌟</div>
+    Ingenes
+  </div>
+  <div class="hdr-prog">
+    <span class="hdr-step" id="step-lbl">Paso 1 de 8</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:12%"></div></div>
+  </div>
+</header>
+
+<!-- NSE DEBUG (demo only) -->
+<div class="nse-debug vis" id="nse-debug">NSE: <span id="nse-val">—</span> | Score5: <span id="s5-val">0</span></div>
+
+<!-- SCREENS WRAPPER -->
+<div class="screens" id="screens">
+
+<!-- ═══════════════════════════════════════════════
+     S0: INICIO — Necesidad + Sexo + Sexo de pareja
+═══════════════════════════════════════════════ -->
+<div class="screen active" id="s-inicio">
+  <div class="hero">
+    <div class="hero-chip" id="lang-chip">Bienvenida/o</div>
+    <h1 class="hero-t">Hola, <em>cuéntanos cómo podemos ayudarte</em></h1>
+    <p class="hero-s" id="hero-s0">Tres preguntas rápidas para conectarte con el equipo correcto desde el inicio.</p>
+  </div>
+  <div class="main">
+
+    <!-- 1. Necesidad -->
+    <section class="istep" id="istep-need">
+      <div class="istep-lbl"><span class="num">1</span><span>¿Qué te trae a Ingenes?</span></div>
+      <div class="need-grid">
+        <div class="need-card" data-need="baby" onclick="selectNeed('baby')">
+          <div class="need-ico">👶</div>
+          <div class="need-body">
+            <div class="need-ttl">Quiero tener un bebé</div>
+            <div class="need-sub">Buscamos lograr un embarazo o ya estamos en tratamiento</div>
+          </div>
+          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="need-card" data-need="care" onclick="selectNeed('care')">
+          <div class="need-ico">🌿</div>
+          <div class="need-body">
+            <div class="need-ttl">Quiero cuidar o evaluar mi fertilidad</div>
+            <div class="need-sub">Preservar óvulos/esperma o un check-up reproductivo</div>
+          </div>
+          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="need-card" data-need="health" onclick="selectNeed('health')">
+          <div class="need-ico">💜</div>
+          <div class="need-body">
+            <div class="need-ttl">Quiero mejorar mi salud sexual o reproductiva</div>
+            <div class="need-sub">Menopausia, andropausia, salud hormonal o sexual</div>
+          </div>
+          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="need-card" data-need="birth_control" onclick="selectNeed('birth_control')">
+          <div class="need-ico">✋</div>
+          <div class="need-body">
+            <div class="need-ttl">Quiero un método anticonceptivo definitivo</div>
+            <div class="need-sub">Cirugía: salpingoclasia o vasectomía</div>
+          </div>
+          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Tu sexo -->
+    <section class="istep disabled" id="istep-sex">
+      <div class="istep-lbl"><span class="num">2</span><span>¿Cuál es tu sexo?</span></div>
+      <div class="sex-grid">
+        <div class="sex-card" data-sex="female" onclick="selectSex('female')">
+          <div class="sex-ico">👩</div>
+          <div class="sex-lbl">Mujer</div>
+        </div>
+        <div class="sex-card" data-sex="male" onclick="selectSex('male')">
+          <div class="sex-ico">👨</div>
+          <div class="sex-lbl">Hombre</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Sexo de pareja -->
+    <section class="istep disabled" id="istep-partner">
+      <div class="istep-lbl"><span class="num">3</span><span id="partner-q-lbl">¿Cuál es el sexo de tu pareja?</span></div>
+      <div class="sex-grid three">
+        <div class="sex-card" data-partner="female" onclick="selectPartner('female')">
+          <div class="sex-ico">👩</div>
+          <div class="sex-lbl">Mujer</div>
+        </div>
+        <div class="sex-card" data-partner="male" onclick="selectPartner('male')">
+          <div class="sex-ico">👨</div>
+          <div class="sex-lbl">Hombre</div>
+        </div>
+        <div class="sex-card" data-partner="none" onclick="selectPartner('none')">
+          <div class="sex-ico">🌱</div>
+          <div class="sex-lbl">Sin pareja</div>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:100px"></div>
+  </div>
+  <div class="btm" id="btm-inicio">
+    <div class="btm-info"><strong id="btm-inicio-info">Selecciona tu necesidad para empezar</strong></div>
+    <button class="btn" onclick="advanceFromInicio()">
+      <span>Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S3: AGE
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-edad">
+  <div class="hero">
+    <div class="hero-chip">🎂 Tu edad</div>
+    <h1 class="hero-t" id="t-edad">¿Cuántos <em>años tienes?</em></h1>
+    <p class="hero-s" id="s-edad-s">Este dato es clave para orientarte de la manera correcta</p>
+  </div>
+  <div class="main">
+    <div class="age-wrap">
+      <div class="age-row">
+        <div class="age-lbl" id="lbl-tu-edad">Tu edad</div>
+        <div class="age-val"><span id="age-display">32</span> <span id="age-anos-lbl">años</span></div>
+        <input type="range" min="18" max="60" value="32" id="age-slider" oninput="updateAge(this.value,'self')">
+        <div class="age-hint" id="age-hint-self"></div>
+        <div class="age-warning" id="age-warning-self"></div>
+      </div>
+      <div class="age-row" id="partner-age-row" style="display:none">
+        <div class="age-lbl" id="lbl-partner-edad">Edad de tu pareja</div>
+        <div class="age-val"><span id="age-partner-display">34</span> <span id="age-anos-lbl2">años</span></div>
+        <input type="range" min="18" max="70" value="34" id="age-slider-partner" oninput="updateAge(this.value,'partner')">
+        <div class="age-hint" id="age-hint-partner"></div>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info" id="btm-edad-info"><strong id="btm-edad-txt">Edad registrada</strong></div>
+    <button class="btn" onclick="advanceFromEdad()">
+      <span id="btn-edad">Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S4: CONDITIONAL UP QUESTIONS
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-contexto">
+  <div class="hero" id="ctx-hero">
+    <div class="hero-chip" id="ctx-chip">Tu historial</div>
+    <h1 class="hero-t" id="ctx-title">Una pregunta más</h1>
+    <p class="hero-s" id="ctx-sub">Para orientarte mejor antes de tu consulta</p>
+  </div>
+  <div class="main" id="ctx-content"><!-- Dynamic --></div>
+  <div class="btm vis" id="btm-ctx">
+    <div class="btm-info" id="btm-ctx-info"></div>
+    <button class="btn" onclick="advanceFromCtx()">
+      <span id="btn-ctx">Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S5: CONTACT
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-contacto">
+  <div class="hero">
+    <div class="hero-chip" id="chip-contact">¡Ya casi!</div>
+    <h1 class="hero-t" id="t-contact">No pierdas tu <em>avance</em></h1>
+    <p class="hero-s" id="s-contact-s">Comparte tus datos para guardar tu información y contactarte</p>
+  </div>
+  <div class="main">
+    <div class="fld"><div class="fld-lbl" id="lbl-nombre">Nombre</div><input class="fld-inp" id="inp-nombre" type="text" placeholder="Tu nombre" oninput="updateScore5(2)"></div>
+    <div class="fld mt16"><div class="fld-lbl" id="lbl-apellido">Apellidos</div><input class="fld-inp" id="inp-apellido" type="text" placeholder="Tus apellidos"></div>
+    <div class="fld mt16">
+      <div class="fld-lbl" id="lbl-tel">Teléfono celular *</div>
+      <div class="phone-wrap">
+        <select class="prefix-sel" id="prefix-sel" onchange="detectIntlFromPrefix()">
+          <option value="+52" data-country="MX">🇲🇽 +52</option>
+          <option value="+1" data-country="US">🇺🇸 +1</option>
+          <option value="+1-CA" data-country="CA">🇨🇦 +1</option>
+          <option value="+49" data-country="DE">🇩🇪 +49</option>
+          <option value="+44" data-country="UK">🇬🇧 +44</option>
+          <option value="+61" data-country="AU">🇦🇺 +61</option>
+          <option value="+33" data-country="FR">🇫🇷 +33</option>
+          <option value="+34" data-country="ES">🇪🇸 +34</option>
+          <option value="+55" data-country="BR">🇧🇷 +55</option>
+          <option value="+57" data-country="CO">🇨🇴 +57</option>
+          <option value="+54" data-country="AR">🇦🇷 +54</option>
+          <option value="+56" data-country="CL">🇨🇱 +56</option>
+          <option value="+0" data-country="OTHER">🌍 Otro</option>
+        </select>
+        <input class="fld-inp" id="inp-tel" type="tel" placeholder="Número de celular" oninput="updateScore5(3)">
+      </div>
+    </div>
+    <div class="fld mt16">
+      <div class="fld-lbl" id="lbl-email">Correo electrónico</div>
+      <input class="fld-inp" id="inp-email" type="email" placeholder="tu@correo.com" oninput="detectNSEFromEmail();updateScore5(1)">
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"><strong id="contact-hint">Tus datos están seguros</strong><br><span style="font-size:11px;color:var(--tl)">🔒 Privacidad garantizada</span></div>
+    <button class="btn" onclick="advanceFromContact()">
+      <span id="btn-contact">Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S5b: OVODONACIÓN — solo si aplica (mujer + pareja hombre/sin pareja, necesidad bebé)
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-ovodonacion">
+  <div class="hero">
+    <div class="hero-chip">🥚 Óvulos</div>
+    <h1 class="hero-t" id="t-ovo">¿Has considerado usar <em>óvulos de donante?</em></h1>
+    <p class="hero-s" id="s-ovo">En algunos casos, recurrir a óvulos donados aumenta significativamente las posibilidades. Sin presión: tu coordinadora lo evaluará contigo.</p>
+  </div>
+  <div class="main">
+    <div class="ovo-grid">
+      <div class="ovo-opt" data-ovo="own" onclick="selectOvo('own')">
+        <div class="ovo-ico">💙</div>
+        <div class="ovo-body">
+          <div class="ovo-ttl">Quiero usar mis propios óvulos</div>
+          <div class="ovo-sub">Prefiero intentar primero con mis óvulos</div>
+        </div>
+      </div>
+      <div class="ovo-opt" data-ovo="open" onclick="selectOvo('open')">
+        <div class="ovo-ico">🌟</div>
+        <div class="ovo-body">
+          <div class="ovo-ttl">Estoy abierta/o a evaluar óvulos donados</div>
+          <div class="ovo-sub">Me gustaría conocer la opción y entender cuándo conviene</div>
+        </div>
+      </div>
+      <div class="ovo-opt" data-ovo="yes" onclick="selectOvo('yes')">
+        <div class="ovo-ico">✅</div>
+        <div class="ovo-body">
+          <div class="ovo-ttl">Sí, ya sé que quiero óvulos donados</div>
+          <div class="ovo-sub">Tengo claridad de que esta es la mejor opción para mí</div>
+        </div>
+      </div>
+      <div class="ovo-opt" data-ovo="unsure" onclick="selectOvo('unsure')">
+        <div class="ovo-ico">🤔</div>
+        <div class="ovo-body">
+          <div class="ovo-ttl">No lo sé, prefiero hablarlo en consulta</div>
+          <div class="ovo-sub">Quiero orientación médica antes de decidir</div>
+        </div>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="btm" id="btm-ovo">
+    <div class="btm-info" id="btm-ovo-info"><strong>Selecciona una opción</strong></div>
+    <button class="btn" onclick="advanceFromOvo()">
+      <span>Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S6: LOCATION
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-ubicacion">
+  <div class="hero">
+    <div class="hero-chip">📍 Ubicación</div>
+    <h1 class="hero-t" id="t-ubic">¿Desde qué <em>país nos contactas?</em></h1>
+    <p class="hero-s" id="s-ubic-s">Esto nos ayuda a asignarte el equipo y sede más conveniente</p>
+  </div>
+  <div class="main">
+    <div class="country-grid">
+      <div class="ccard" data-country="MX" onclick="selectCountry('MX')">
+        <div class="ccard-flag">🇲🇽</div>
+        <div class="ccard-name">México</div>
+      </div>
+      <div class="ccard" data-country="US" onclick="selectCountry('US')">
+        <div class="ccard-flag">🇺🇸</div>
+        <div class="ccard-name">Estados Unidos</div>
+      </div>
+      <div class="ccard" data-country="OTHER" onclick="selectCountry('OTHER')">
+        <div class="ccard-flag">🌍</div>
+        <div class="ccard-name">Otro país</div>
+      </div>
+    </div>
+
+    <div class="mt24 fld" id="cp-field" style="display:none">
+      <div class="fld-lbl" id="lbl-cp">Código postal</div>
+      <input class="fld-inp" id="inp-cp" type="text" maxlength="10" placeholder="Ej: 11000" oninput="detectNSEFromCP()">
+      <div id="cp-hint" style="font-size:11.5px;color:var(--tl);margin-top:6px"></div>
+    </div>
+
+    <!-- MX: sede selector -->
+    <div id="sede-section" style="display:none" class="mt24">
+      <div style="font-size:12px;font-weight:700;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-bottom:12px" id="lbl-sede">¿Qué sede te quedaría más conveniente?</div>
+      <div class="branch-grid" id="branch-mx">
+        <div class="bcard" onclick="selectBranch('CDMX')"><div class="bcard-ico">🏙️</div><div class="bcard-body"><div class="bcard-title">Ciudad de México</div><div class="bcard-sub">Polanco · Condesa · Satélite · Santa Fe</div></div></div>
+        <div class="bcard" onclick="selectBranch('GDL')"><div class="bcard-ico">🌵</div><div class="bcard-body"><div class="bcard-title">Guadalajara</div><div class="bcard-sub">Puerta de Hierro · Providencia</div></div></div>
+        <div class="bcard" onclick="selectBranch('MTY')"><div class="bcard-ico">⛰️</div><div class="bcard-body"><div class="bcard-title">Monterrey</div><div class="bcard-sub">San Pedro Garza García</div></div></div>
+        <div class="bcard" onclick="selectBranch('OTHER_MX')"><div class="bcard-ico">📍</div><div class="bcard-body"><div class="bcard-title" id="lbl-otra-ciudad">Otra ciudad</div><div class="bcard-sub" id="sub-otra">Ver todas las sedes disponibles</div></div></div>
+        <div class="bcard" onclick="selectBranch('VIRTUAL')"><div class="bcard-ico">💻</div><div class="bcard-body"><div class="bcard-title" id="lbl-virtual">Prefiero consulta virtual</div><div class="bcard-sub" id="sub-virtual">Desde donde estés, en cualquier horario</div></div></div>
+      </div>
+    </div>
+
+    <!-- USA: state-based routing -->
+    <div id="usa-section" style="display:none" class="mt24">
+      <div style="font-size:12px;font-weight:700;color:var(--tm);letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-bottom:12px" id="lbl-state">Ingresa tu código postal (ZIP) para encontrar tu opción más conveniente</div>
+      <div id="usa-routing" class="branch-grid" style="display:none"><!-- Dynamic --></div>
+    </div>
+
+    <!-- INTERNATIONAL -->
+    <div id="intl-section" style="display:none" class="mt24">
+      <div class="info-box" id="intl-info-box">
+        🌍 <strong id="intl-title">Atención Internacional</strong><br>
+        <span id="intl-body">Un Coordinador Internacional que habla tu idioma se pondrá en contacto contigo en las próximas 2 horas. No tienes que viajar para tu primera consulta — la hacemos virtual.</span>
+      </div>
+      <div class="fld mt16" id="intl-lang-field">
+        <div class="fld-lbl" id="lbl-pref-lang">Idioma de preferencia</div>
+        <select class="fld-inp" id="sel-lang">
+          <option>Español</option>
+          <option>English</option>
+          <option>Deutsch</option>
+          <option>Français</option>
+          <option>Português</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+  </div>
+  <div class="btm" id="btm-ubic">
+    <div class="btm-info" id="btm-ubic-info"></div>
+    <button class="btn" onclick="advanceFromUbic()">
+      <span id="btn-ubic">Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S7: REFERRAL
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-referido">
+  <div class="hero">
+    <div class="hero-chip">🤝 Referido</div>
+    <h1 class="hero-t" id="t-ref-s">¿Alguien te <em>recomendó</em> Ingenes?</h1>
+    <p class="hero-s" id="s-ref-s">Queremos reconocer a quien te acercó a nosotros</p>
+  </div>
+  <div class="main">
+    <div class="ref-grid">
+      <div class="ref-opt" data-ref="none" onclick="selectRef('none')"><div class="ref-ico">—</div><div class="ref-body"><div class="ref-title" id="ref-no">No, encontré Ingenes por mi cuenta</div></div></div>
+      <div class="ref-opt" data-ref="patient" onclick="selectRef('patient')"><div class="ref-ico">👩‍👧</div><div class="ref-body"><div class="ref-title" id="ref-patient">Me recomendó un paciente o ex-paciente de Ingenes</div><div class="ref-sub" id="ref-patient-s">Alguien que ya fue atendido/a aquí</div></div></div>
+      <div class="ref-opt" data-ref="doctor" onclick="selectRef('doctor')"><div class="ref-ico">👨‍⚕️</div><div class="ref-body"><div class="ref-title" id="ref-doctor">Me recomendó mi médico o ginecólogo</div><div class="ref-sub" id="ref-doctor-s">Un especialista de salud me envió con Ingenes</div></div></div>
+      <div class="ref-opt" data-ref="company" onclick="selectRef('company')"><div class="ref-ico">🏢</div><div class="ref-body"><div class="ref-title" id="ref-company">Tengo un beneficio o convenio con Ingenes</div><div class="ref-sub" id="ref-company-s">Mi empresa o aseguradora tiene convenio</div></div></div>
+      <div class="ref-opt" data-ref="friend" onclick="selectRef('friend')"><div class="ref-ico">💬</div><div class="ref-body"><div class="ref-title" id="ref-friend">Me recomendó un amigo/a o familiar</div></div></div>
+      <div class="ref-opt" data-ref="social" onclick="selectRef('social')"><div class="ref-ico">📱</div><div class="ref-body"><div class="ref-title" id="ref-social">Redes sociales / Google / publicidad</div></div></div>
+    </div>
+    <div id="ref-name-wrap" style="display:none" class="mt16">
+      <div class="fld" style="max-width:440px;margin:0 auto">
+        <div class="fld-lbl" id="lbl-ref-name">¿Cómo se llama?</div>
+        <input class="fld-inp" id="inp-ref-name" type="text" placeholder="Nombre de quien te recomendó">
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="btm" id="btm-ref">
+    <div class="btm-info" id="btm-ref-info"></div>
+    <button class="btn" onclick="advanceFromRef()">
+      <span id="btn-ref">Continuar</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S8: CONFIRMATION
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-confirmacion">
+  <div class="main" style="padding-top:36px">
+    <div class="confirm-card fade-up">
+      <div class="confirm-ico" id="conf-ico">🎉</div>
+      <h2 class="confirm-t" id="conf-title">Estás en el lugar correcto</h2>
+      <p class="confirm-s" id="conf-sub">Ahora tenemos un panorama claro de tu caso. En Ingenes hemos acompañado a miles de personas en situaciones como la tuya.</p>
+      <div class="divider"></div>
+      <div class="confirm-coord">
+        <div class="coord-ava">👩‍💼</div>
+        <div>
+          <div class="coord-name" id="coord-name">Ana García te fue asignada</div>
+          <div class="coord-role" id="coord-role">Coordinadora especializada · te contacta hoy</div>
+        </div>
+      </div>
+      <div class="confirm-pills" id="conf-pills"></div>
+      <div class="nse-bar-wrap">
+        <div class="nse-bar-lbl" id="nse-bar-lbl">Perfil inicial calculado</div>
+        <div class="nse-bar"><div class="nse-bar-fill" id="nse-bar-fill" style="width:0%"></div></div>
+        <div class="nse-bar-labels"><span>—</span><span id="nse-hexante-lbl">—</span></div>
+      </div>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn" style="justify-content:center;width:100%" onclick="showAlert('agenda')">
+          <span id="btn-agenda">📅 Quiero agendar mi consulta ahora</span>
+        </button>
+        <button class="btn-ghost" style="width:100%;text-align:center" onclick="showAlert('explore')">
+          <span id="btn-explore">Explorar primero</span>
+        </button>
+      </div>
+    </div>
+    <div style="height:40px"></div>
+  </div>
+</div>
+
+</div><!-- end .screens -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<script>
+// ═══════════════════════════════════════════════
+// LANGUAGE DETECTION
+// ═══════════════════════════════════════════════
+const LANG = (() => {
+  const l = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+  if(l.startsWith('de')) return 'de';
+  if(l.startsWith('en')) return 'en';
+  return 'es';
+})();
+
+const TX = {
+  es:{
+    welcome:'Bienvenida/o', back:'Regresar',
+    step:'Paso %d de 8',
+    t_patient:'Soy quien busca el tratamiento o servicio',
+    s_patient:'Quiero información sobre mis opciones en Ingenes',
+    t_ref:'Quiero referir a un familiar, amiga/o o paciente',
+    s_ref:'Conozco a alguien que podría beneficiarse de Ingenes',
+    chip_s1:'Tu situación',
+    t_maestra:'Para ayudarte de la mejor manera posible, cuéntanos cuál es tu situación',
+    sub_maestra:'Puedes seleccionar más de una opción si aplica',
+    g1:'Quiero un bebé', g2:'Cuidar o evaluar mi fertilidad', g3:'Salud y bienestar reproductivo',
+    t1:'Llevamos tiempo buscando un bebé y no lo hemos logrado',
+    t2:'Me operé para no tener hijos y ahora quiero tenerlo',
+    t3:'Quiero ser mamá o papá sin pareja',
+    t4:'Somos pareja del mismo sexo y queremos un bebé',
+    t5:'Necesito que otra persona lleve el embarazo por mí (gestante)',
+    t6:'He tenido tratamientos sin éxito y busco restauración ovular (IVF MORE)',
+    t7:'Quiero preservar mi fertilidad (congelar óvulos, esperma o embriones)',
+    t8:'Quiero un check-up o evaluación de mi salud reproductiva',
+    t9:'Quiero un diagnóstico o tratamiento genético reproductivo',
+    t10:'Quiero un tratamiento con óvulos de donante de catálogo especial',
+    t11:'Quiero medicina regenerativa para mejorar mi salud o fertilidad',
+    t12:'Necesito medicamentos de fertilidad',
+    t13:'Quiero mejorar mi salud sexual o metabólica (menopausia, andropausia)',
+    t14:'Quiero una cirugía para no tener más hijos (salpingoclasia o vasectomía)',
+    comp:'Complementaria',
+    regen_hint:'✨ Este tratamiento puede combinarse con tu selección para mejores resultados',
+    scroll_p:'Desplázate para ver todas las opciones',
+    continuar:'Continuar',
+    sels_lbl: (n) => n===1 ? '1 opción seleccionada' : `${n} opciones seleccionadas`,
+    sels_more:'Puedes seleccionar más de una',
+    chip_s2:'Sobre ti', t_familia:'Cuéntanos un poco más', s_familia:'Esto nos ayuda a asignarte el especialista correcto',
+    t_edad:'¿Cuántos años tienes?', s_edad:'Este dato es clave para orientarte de la manera correcta',
+    tu_edad:'Tu edad', pareja_edad:'Edad de tu pareja', anos:'años',
+    age_ovagen:'Candidata a protocolo OVAGEN para optimizar tus óvulos antes del tratamiento',
+    age_more:'Combinado con tu historial: candidata a IVF MORE — la tecnología de restauración ovular',
+    age_urgent:'A esta edad cada mes importa. Te conectamos hoy mismo con una especialista.',
+    age_preserve:'Es un excelente momento para preservar. Tu fertilidad está en su punto óptimo.',
+    nombre:'Nombre', apellido:'Apellidos', tel:'Teléfono celular *', email:'Correo electrónico',
+    contact_hint:'Tus datos están seguros',
+    lbl_cp:'Código postal', lbl_sede:'¿Qué sede te quedaría más conveniente?',
+    lbl_otra:'Otra ciudad', sub_otra:'Ver todas las sedes disponibles',
+    lbl_virtual:'Prefiero consulta virtual', sub_virtual:'Desde donde estés, en cualquier horario',
+    intl_title:'Atención Internacional',
+    intl_body:'Un Coordinador Internacional que habla tu idioma se pondrá en contacto contigo en las próximas 2 horas.',
+    pref_lang:'Idioma de preferencia',
+    t_ref_s:'¿Alguien te recomendó Ingenes?', s_ref_s:'Queremos reconocer a quien te acercó a nosotros',
+    ref_no:'No, encontré Ingenes por mi cuenta',
+    ref_patient:'Me recomendó un paciente o ex-paciente de Ingenes',
+    ref_patient_s:'Alguien que ya fue atendido/a aquí',
+    ref_doctor:'Me recomendó mi médico o ginecólogo',
+    ref_doctor_s:'Un especialista de salud me envió con Ingenes',
+    ref_company:'Tengo un beneficio o convenio con Ingenes',
+    ref_company_s:'Mi empresa o aseguradora tiene convenio',
+    ref_friend:'Me recomendó un amigo/a o familiar',
+    ref_social:'Redes sociales / Google / publicidad',
+    lbl_ref_name:'¿Cómo se llama?',
+    conf_title:'Estás en el lugar correcto',
+    conf_sub:'Ahora tenemos un panorama claro de tu caso. En Ingenes hemos acompañado a miles de personas en situaciones como la tuya.',
+    coord_assigned:'te fue asignada', coord_role:'Coordinadora especializada · te contacta hoy',
+    nse_profile:'Perfil inicial calculado',
+    btn_agenda:'📅 Quiero agendar mi consulta ahora',
+    btn_explore:'Explorar primero',
+  },
+  en:{
+    welcome:'Welcome', back:'Back',
+    step:'Step %d of 8',
+    t_patient:'I am the person seeking treatment or service',
+    s_patient:'I want information about my options at Ingenes',
+    t_ref:'I want to refer a family member, friend or patient',
+    s_ref:'I know someone who could benefit from Ingenes',
+    chip_s1:'Your situation',
+    t_maestra:'To help you in the best possible way, tell us about your situation',
+    sub_maestra:'You can select more than one option if applicable',
+    g1:'I want a baby', g2:'Care for or evaluate my fertility', g3:'Reproductive health & wellness',
+    t1:'We have been trying for a baby and have not succeeded',
+    t2:'I had surgery to not have children and now I want to',
+    t3:'I want to be a mom or dad without a partner',
+    t4:'We are a same-sex couple and want a baby',
+    t5:'I need another person to carry the pregnancy for me (surrogate)',
+    t6:'I have had failed treatments and want ovarian restoration (IVF MORE)',
+    t7:'I want to preserve my fertility (freeze eggs, sperm or embryos)',
+    t8:'I want a check-up or evaluation of my reproductive health',
+    t9:'I want a genetic reproductive diagnosis or treatment',
+    t10:'I want treatment with donor eggs from a special catalog',
+    t11:'I want regenerative medicine to improve my health or fertility',
+    t12:'I need fertility medications',
+    t13:'I want to improve my sexual or metabolic health (menopause, andropause)',
+    t14:'I want surgery to not have more children (tubal ligation or vasectomy)',
+    comp:'Complementary',
+    regen_hint:'✨ This treatment can be combined with your selection for better results',
+    scroll_p:'Scroll down to see all options',
+    continuar:'Continue',
+    sels_lbl: (n) => n===1 ? '1 option selected' : `${n} options selected`,
+    sels_more:'You can select more than one',
+    chip_s2:'About you', t_familia:'Tell us a little more', s_familia:'This helps us assign the right specialist',
+    t_edad:'How old are you?', s_edad:'This is key to guide you correctly',
+    tu_edad:'Your age', pareja_edad:'Your partner\'s age', anos:'years old',
+    age_ovagen:'Candidate for OVAGEN protocol to optimize your eggs before treatment',
+    age_more:'Combined with your history: candidate for IVF MORE — ovarian restoration technology',
+    age_urgent:'At this age, every month matters. We connect you with a specialist today.',
+    age_preserve:'This is an excellent time to preserve. Your fertility is at its peak.',
+    nombre:'First name', apellido:'Last name', tel:'Mobile phone *', email:'Email address',
+    contact_hint:'Your information is secure',
+    lbl_cp:'ZIP / Postal code', lbl_sede:'Which location is most convenient for you?',
+    lbl_otra:'Other city', sub_otra:'See all available locations',
+    lbl_virtual:'I prefer a virtual consultation', sub_virtual:'From anywhere, at any time',
+    intl_title:'International Patients',
+    intl_body:'An International Coordinator who speaks your language will contact you within 2 hours.',
+    pref_lang:'Preferred language',
+    t_ref_s:'Did someone recommend Ingenes to you?', s_ref_s:'We want to recognize who brought you to us',
+    ref_no:'No, I found Ingenes on my own',
+    ref_patient:'A patient or former patient of Ingenes recommended me',
+    ref_patient_s:'Someone who has already been treated here',
+    ref_doctor:'My doctor or gynecologist recommended Ingenes',
+    ref_doctor_s:'A health specialist referred me to Ingenes',
+    ref_company:'I have a benefit or agreement with Ingenes',
+    ref_company_s:'My company or insurer has a partnership',
+    ref_friend:'A friend or family member recommended me',
+    ref_social:'Social media / Google / advertising',
+    lbl_ref_name:'What is their name?',
+    conf_title:'You are in the right place',
+    conf_sub:'We now have a clear picture of your case. At Ingenes we have accompanied thousands of people in situations like yours.',
+    coord_assigned:'has been assigned to you', coord_role:'Specialized Coordinator · will contact you today',
+    nse_profile:'Initial profile calculated',
+    btn_agenda:'📅 I want to schedule my consultation now',
+    btn_explore:'Explore first',
+  }
+};
+TX.de = {...TX.en,
+  welcome:'Willkommen', back:'Zurück',
+  t_patient:'Ich suche eine Behandlung',
+  t_ref:'Ich möchte jemanden empfehlen',
+  continuar:'Weiter',
+};
+const T = TX[LANG] || TX.es;
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const state = {
+  screen: 's-inicio', history: [],
+  need: null,                          // 'baby' | 'care' | 'health' | 'birth_control'
+  ups: new Set(), primaryUP: null,
+  sex: null, partner: null, familyConfig: null,
+  age: 32, partnerAge: 34, hasPartner: false,
+  ctxAnswers: {},
+  name:'', email:'', phone:'', prefix:'+52',
+  country: null, cp:'', branch: null,
+  referral: null, referralName:'',
+  isIntl: false, intlCountry: null,
+  nse: 0, intention: 0,
+  // NSE signals
+  deviceNSE: 0, emailNSE: 0, cpNSE: 0,
+  ovoChoice: null,
+  flags: new Set()
+};
+
+// ═══════════════════════════════════════════════
+// NSE PASSIVE DETECTION
+// ═══════════════════════════════════════════════
+function detectDeviceNSE(){
+  const ua = navigator.userAgent;
+  let pts = 0;
+  if(/iPhone|Mac OS X/.test(ua)) pts = 3;
+  else if(/Android/.test(ua)){
+    if(/SM-S[89]\d\d|SM-G9|SM-N9/.test(ua)) pts = 2; // Samsung flagship
+    else pts = 1;
+  } else if(/Windows NT/.test(ua)) pts = 1;
+  state.deviceNSE = pts;
+  return pts;
+}
+
+function detectNSEFromEmail(){
+  const email = document.getElementById('inp-email').value.toLowerCase();
+  const domain = email.split('@')[1] || '';
+  let pts = 0;
+  const premiumCorp = ['google','microsoft','apple','mckinsey','deloitte','hsbc','bbva','cemex','bimbo','femsa','banorte','santander','banamex','citibanamex','goldman','jpmorgan','amazon','meta'];
+  const premiumEdu = ['tec.mx','itam.mx','ibero.mx','anahuac.mx','udg.mx','uanl.mx','stanford.edu','harvard.edu','mit.edu','columbia.edu'];
+  const freeDomains = ['gmail.com','hotmail.com','yahoo.com','outlook.com','live.com'];
+  if(premiumCorp.some(c => domain.includes(c))) pts = 3;
+  else if(premiumEdu.some(e => domain.includes(e))) pts = 2;
+  else if(!freeDomains.includes(domain) && domain.includes('.')) pts = 1;
+  state.emailNSE = pts;
+  updateNSE();
+}
+
+function detectNSEFromCP(){
+  const cp = document.getElementById('inp-cp').value.replace(/\s/g,'');
+  const hint = document.getElementById('cp-hint');
+  let pts = 0;
+  // Mexico CP zones (simplified)
+  const nsea = ['11000','11200','11520','11580','11600','11620','11650','11800','01000','01210','01219','05100','05110','05120','05300','01900','01040','05200','05370','05500','01310','10200'];
+  const nseb = ['06600','06700','06140','11300','11400','03720','03710','04120','04220','04230','04340'];
+  if(nsea.some(z => cp.startsWith(z.substring(0,4)))) pts = 4;
+  else if(nseb.some(z => cp.startsWith(z.substring(0,4)))) pts = 3;
+  else if(/^\d{5}$/.test(cp)) pts = 2; // valid MX CP
+  // USA ZIP zones
+  const usaHighZip = ['90210','90402','90403','10012','10013','10022','94027','94010','98004','77019'];
+  if(state.country === 'US'){
+    if(usaHighZip.includes(cp)) pts = 4;
+    else if(/^\d{5}$/.test(cp)) pts = 2;
+    // Texas routing
+    if(cp.startsWith('7')) { state.branch = 'HOUSTON'; state.flags.add('BRANCH_HOUSTON'); }
+    // California routing
+    else if(cp.startsWith('9') && parseInt(cp) < 95000) { state.branch = 'OC'; state.flags.add('BRANCH_OC'); }
+    else { state.branch = 'MEXICO_DIRECTO'; state.flags.add('BRANCH_MEXICO_DIRECTO'); }
+    renderUSARouting();
+  }
+  if(hint && cp.length >= 4){
+    const labels = ['','Zona media-baja','Zona media','Zona alta','Zona premium'];
+    hint.textContent = pts > 0 ? '📍 ' + (labels[pts] || '') : '';
+  }
+  state.cpNSE = pts;
+  updateNSE();
+}
+
+function updateNSE(){
+  const total = Math.min(20, state.deviceNSE + state.emailNSE + state.cpNSE);
+  state.nse = total;
+  let cat = total >= 15 ? 'A · Premium' : total >= 10 ? 'B · Intermedio Alto' : total >= 6 ? 'C · Estándar' : 'D · Accesible';
+  document.getElementById('nse-val').textContent = `${total} pts → NSE ${cat}`;
+}
+
+// ═══════════════════════════════════════════════
+// INTENTION SCORE
+// ═══════════════════════════════════════════════
+function updateScore5(pts){
+  state.intention += pts;
+  document.getElementById('s5-val').textContent = state.intention;
+}
+
+// ═══════════════════════════════════════════════
+// LANGUAGE INIT
+// ═══════════════════════════════════════════════
+function setText(id, txt){ const el = document.getElementById(id); if(el) el.textContent = txt; }
+function applyLang(){
+  setText('lang-chip', T.welcome);
+  setText('back-lbl', T.back);
+  setText('t-ref-s', T.t_ref_s);
+  setText('s-ref-s', T.s_ref_s);
+  setText('ref-no', T.ref_no);
+  setText('ref-patient', T.ref_patient);
+  setText('ref-doctor', T.ref_doctor);
+  setText('ref-company', T.ref_company);
+  setText('ref-friend', T.ref_friend);
+  setText('ref-social', T.ref_social);
+  setText('lbl-nombre', T.nombre);
+  setText('lbl-apellido', T.apellido);
+  setText('lbl-tel', T.tel);
+  setText('lbl-email', T.email);
+  setText('contact-hint', T.contact_hint);
+  setText('lbl-cp', T.lbl_cp);
+  setText('lbl-sede', T.lbl_sede);
+  setText('lbl-otra-ciudad', T.lbl_otra);
+  setText('sub-otra', T.sub_otra);
+  setText('lbl-virtual', T.lbl_virtual);
+  setText('sub-virtual', T.sub_virtual);
+  setText('intl-title', T.intl_title);
+  setText('intl-body', T.intl_body);
+  setText('lbl-pref-lang', T.pref_lang);
+  setText('lbl-ref-name', T.lbl_ref_name);
+  setText('conf-title', T.conf_title);
+  setText('conf-sub', T.conf_sub);
+  // Set prefix based on language
+  if(LANG==='en') { document.getElementById('prefix-sel').value = '+1'; state.isIntl = true; }
+  if(LANG==='de') { document.getElementById('prefix-sel').value = '+49'; state.isIntl = true; }
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN NAVIGATION
+// ═══════════════════════════════════════════════
+function showScreen(id){
+  const cur = document.getElementById(state.screen);
+  const nxt = document.getElementById(id);
+  if(!nxt) return;
+  state.history.push(state.screen);
+  cur.classList.add('out');
+  setTimeout(()=>{ cur.classList.remove('active','out'); cur.style.display='none'; }, 280);
+  nxt.style.display='flex';
+  requestAnimationFrame(()=>{ nxt.classList.add('active'); });
+  state.screen = id;
+  updateProgress();
+  updateBackBtn();
+  nxt.querySelector('.main,.screen')?.scrollTo(0,0);
+  nxt.scrollTop = 0;
+}
+
+function goBack(){
+  if(!state.history.length) return;
+  const prev = state.history.pop();
+  const cur = document.getElementById(state.screen);
+  const prv = document.getElementById(prev);
+  cur.classList.add('out');
+  setTimeout(()=>{ cur.classList.remove('active','out'); cur.style.display='none'; }, 280);
+  prv.style.display='flex';
+  requestAnimationFrame(()=>{ prv.classList.add('active'); });
+  state.screen = prev;
+  updateProgress();
+  updateBackBtn();
+}
+
+const SCREEN_ORDER = ['s-inicio','s-edad','s-contexto','s-contacto','s-ovodonacion','s-ubicacion','s-referido','s-confirmacion'];
+function updateProgress(){
+  const idx = Math.max(0, SCREEN_ORDER.indexOf(state.screen));
+  const pct = Math.round((idx / (SCREEN_ORDER.length-1))*100);
+  document.getElementById('prog').style.width = pct+'%';
+  document.getElementById('step-lbl').textContent = (T.step||'Paso %d de %t').replace('%d', idx+1).replace('%t', SCREEN_ORDER.length);
+}
+function updateBackBtn(){
+  const btn = document.getElementById('btn-back');
+  btn.classList.toggle('hidden', !state.history.length);
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: INICIO — necesidad + sexo + sexo de pareja
+// ═══════════════════════════════════════════════
+function selectNeed(val){
+  state.need = val;
+  document.querySelectorAll('.need-card').forEach(c => c.classList.toggle('sel', c.dataset.need===val));
+  document.getElementById('istep-sex').classList.remove('disabled');
+  updateScore5(4);
+  updateInicioBtm();
+  // Si ya tenía sexo, ajustar pregunta de pareja
+  if(state.sex) updatePartnerQuestion();
+}
+
+function selectSex(val){
+  state.sex = val;
+  document.querySelectorAll('#istep-sex .sex-card').forEach(c => c.classList.toggle('sel', c.dataset.sex===val));
+  document.getElementById('istep-partner').classList.remove('disabled');
+  updateScore5(2);
+  updatePartnerQuestion();
+  updateInicioBtm();
+}
+
+function updatePartnerQuestion(){
+  const lbl = document.getElementById('partner-q-lbl');
+  if(state.need==='birth_control'){
+    lbl.textContent = '¿Tu pareja es hombre o mujer?';
+  } else {
+    lbl.textContent = '¿Cuál es el sexo de tu pareja?';
+  }
+}
+
+function selectPartner(val){
+  state.partner = val;
+  state.hasPartner = (val !== 'none');
+  state.familyConfig = val;
+  document.querySelectorAll('#istep-partner .sex-card').forEach(c => c.classList.toggle('sel', c.dataset.partner===val));
+  updateScore5(3);
+  updateInicioBtm();
+}
+
+function updateInicioBtm(){
+  const btm = document.getElementById('btm-inicio');
+  const info = document.getElementById('btm-inicio-info');
+  if(!state.need){ info.innerHTML = '<strong>Selecciona tu necesidad para empezar</strong>'; btm.classList.remove('vis'); return; }
+  if(!state.sex){ info.innerHTML = '<strong>Cuéntanos tu sexo</strong>'; btm.classList.remove('vis'); return; }
+  if(!state.partner){ info.innerHTML = '<strong>Indícanos sobre tu pareja</strong>'; btm.classList.remove('vis'); return; }
+  info.innerHTML = '<strong>¡Listo! Continuemos</strong>';
+  btm.classList.add('vis');
+}
+
+// Mapeo necesidad+sexo+pareja → primaryUP, ups y flags
+function mapNeedToUPs(){
+  const { need, sex, partner } = state;
+  state.ups.clear();
+  state.flags.delete('FLAG_ROPA');
+  state.flags.delete('FLAG_SURRO_GAY');
+  state.flags.delete('FLAG_DONANTE_OVULOS_IMPLICITO');
+  state.flags.delete('FLAG_GESTANTE_IMPLICITA');
+  state.flags.delete('FLAG_SALPINGOCLASIA');
+  state.flags.delete('FLAG_VASECTOMIA');
+  state.flags.delete('FLAG_PRESERVAR_ANTES_CIRUGIA');
+
+  if(need === 'baby'){
+    if(sex==='female' && partner==='male'){ state.primaryUP = 'T1'; }
+    else if(sex==='female' && partner==='female'){ state.primaryUP = 'T4'; state.flags.add('FLAG_ROPA'); }
+    else if(sex==='female' && partner==='none'){ state.primaryUP = 'T3'; state.flags.add('FLAG_DONANTE_ESPERMA_IMPLICITO'); }
+    else if(sex==='male' && partner==='female'){ state.primaryUP = 'T1'; }
+    else if(sex==='male' && partner==='male'){
+      state.primaryUP = 'T4';
+      state.flags.add('FLAG_SURRO_GAY');
+      state.flags.add('FLAG_GESTANTE_IMPLICITA');
+      state.flags.add('FLAG_DONANTE_OVULOS_IMPLICITO');
+    }
+    else if(sex==='male' && partner==='none'){
+      state.primaryUP = 'T3';
+      state.flags.add('FLAG_GESTANTE_IMPLICITA');
+      state.flags.add('FLAG_DONANTE_OVULOS_IMPLICITO');
+    }
+  } else if(need === 'care'){
+    state.primaryUP = 'T7';
+  } else if(need === 'health'){
+    state.primaryUP = 'T13';
+  } else if(need === 'birth_control'){
+    state.primaryUP = 'T14';
+    if(sex==='female') state.flags.add('FLAG_SALPINGOCLASIA');
+    if(sex==='male') state.flags.add('FLAG_VASECTOMIA');
+    if(state.hasPartner) state.flags.add('FLAG_PRESERVAR_ANTES_CIRUGIA');
+  }
+  if(state.primaryUP) state.ups.add(state.primaryUP);
+}
+
+function advanceFromInicio(){
+  if(!state.need || !state.sex || !state.partner){
+    showToast('⚠️ Completa las tres preguntas para continuar');
+    return;
+  }
+  updateScore5(5);
+  mapNeedToUPs();
+  // Mostrar/ocultar slider de edad de pareja
+  const partnerRow = document.getElementById('partner-age-row');
+  if(partnerRow) partnerRow.style.display = state.hasPartner ? 'block' : 'none';
+  showScreen('s-edad');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: EDAD
+// ═══════════════════════════════════════════════
+function updateAge(val, who){
+  const slider = who==='self' ? document.getElementById('age-slider') : document.getElementById('age-slider-partner');
+  const display = document.getElementById(who==='self' ? 'age-display' : 'age-partner-display');
+  const hint = document.getElementById(who==='self' ? 'age-hint-self' : 'age-hint-partner');
+  const warning = document.getElementById('age-warning-self');
+  val = parseInt(val);
+  display.textContent = val;
+  slider.style.setProperty('--pct', Math.round(((val-18)/(60-18))*100)+'%');
+  if(who==='self'){
+    state.age = val;
+    const fertUPs = ['T1','T2','T5','T6','T7','T8'];
+    const hasFert = [...state.ups].some(u => fertUPs.includes(u));
+    if(hasFert && val >= 37){
+      state.flags.add('FLAG_OVAGEN');
+      hint.textContent = T.age_ovagen;
+      if(warning) { warning.textContent = '⏱ ' + T.age_urgent; warning.classList.add('vis'); }
+    } else if(hasFert && val >= 40 && state.ups.has('T6')){
+      state.flags.add('FLAG_MORE'); state.flags.add('FLAG_OVAGEN');
+      hint.textContent = T.age_more;
+    } else if(state.ups.has('T7') && val <= 34){
+      hint.textContent = T.age_preserve;
+      if(warning) warning.classList.remove('vis');
+    } else {
+      hint.textContent = '';
+      if(warning) warning.classList.remove('vis');
+    }
+  } else { state.partnerAge = val; }
+  document.getElementById('btm-edad-txt').textContent = T.tu_edad + ': ' + state.age + ' ' + T.anos;
+}
+
+function advanceFromEdad(){
+  updateScore5(2);
+  buildContextScreen();
+  showScreen('s-contexto');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: CONTEXTO
+// ═══════════════════════════════════════════════
+function mchoice(el, key, val, advance){
+  el.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
+  el.classList.add('sel');
+  state.ctxAnswers[key] = val;
+  document.getElementById('btm-ctx-info').innerHTML = `<strong>${LANG==='en'?'Selected':'Seleccionado'}</strong>`;
+  document.getElementById('btm-ctx').classList.add('vis');
+  if(advance) setTimeout(() => advanceFromCtx(), 320);
+}
+
+function buildContextScreen(){
+  const up = state.primaryUP;
+  const hero = document.getElementById('ctx-hero');
+  const content = document.getElementById('ctx-content');
+  let title = '', chip = '', html = '';
+
+  if(['T1','T6'].includes(up)){
+    chip = LANG==='en'?'Your history':'Tu historial';
+    title = LANG==='en'?'Have you had fertility treatment before?':'¿Has tenido algún tratamiento de fertilidad antes?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'prev_tx','fiv',false)">${LANG==='en'?'Yes, IVF or ICSI':'Sí, FIV o ICSI'}</div>
+      <div class="mopt" onclick="mchoice(this,'prev_tx','insem',false)">${LANG==='en'?'Yes, insemination or medications':'Sí, inseminación o medicamentos'}</div>
+      <div class="mopt" onclick="mchoice(this,'prev_tx','none',true)">${LANG==='en'?'No, none':'No, ninguno'}</div>
+    </div>
+    <div id="cycles-section" style="display:none;margin-top:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--tm);letter-spacing:.06em;text-transform:uppercase;text-align:center;margin-bottom:10px">${LANG==='en'?'How many cycles?':'¿Cuántos ciclos?'}</div>
+      <div class="mchoice">
+        <div class="mopt" onclick="mchoice(this,'cycles','1',true)">1 ${LANG==='en'?'cycle':'ciclo'}</div>
+        <div class="mopt" onclick="mchoice(this,'cycles','2',true)">2 ${LANG==='en'?'cycles':'ciclos'}</div>
+        <div class="mopt" onclick="mchoice(this,'cycles','3+',true)">3+ ${LANG==='en'?'cycles':'ciclos'}</div>
+      </div>
+    </div>`;
+  } else if(up==='T2'){
+    chip = LANG==='en'?'Your preference':'Tu preferencia';
+    title = LANG==='en'?'What do you prefer?':'¿Qué prefieres?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'t2_pref','fiv',true)">${LANG==='en'?'I already know I want IVF':'Ya sé que quiero FIV directamente'}</div>
+      <div class="mopt" onclick="mchoice(this,'t2_pref','reversal',true)">${LANG==='en'?'I\'m still evaluating reversal surgery':'Aún evalúo la reversión quirúrgica'}</div>
+    </div>`;
+  } else if(up==='T5'){
+    chip = LANG==='en'?'Embryos':'Embriones';
+    title = LANG==='en'?'Do you already have frozen embryos?':'¿Ya tienen embriones criopreservados?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'embryos','yes',true)">${LANG==='en'?'Yes, we have embryos ready':'Sí, ya tenemos embriones'}</div>
+      <div class="mopt" onclick="mchoice(this,'embryos','no',true)">${LANG==='en'?'No, we start from zero':'No, empezamos de cero'}</div>
+    </div>`;
+  } else if(up==='T7'){
+    chip = LANG==='en'?'Your reason':'Tu motivo';
+    title = LANG==='en'?'Why do you want to preserve your fertility?':'¿Cuál es la razón principal para preservar?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'pres_why','social',true)">${LANG==='en'?'Personal planning (social)':'Planificación personal (social)'}</div>
+      <div class="mopt" onclick="mchoice(this,'pres_why','onco',false);showOncoUrgency()">${LANG==='en'?'Medical treatment / cancer (URGENT)':'Tratamiento médico o cáncer (URGENTE)'}</div>
+      <div class="mopt" onclick="mchoice(this,'pres_why','age',true)">${LANG==='en'?'My age — I want to know my fertility':'Por mi edad, quiero evaluar mi fertilidad'}</div>
+      <div class="mopt" onclick="mchoice(this,'pres_why','before_op',true)">${LANG==='en'?'Before a surgery':'Antes de una operación'}</div>
+    </div>
+    <div id="onco-urgent" style="display:none" class="mt16">
+      <div style="background:var(--redL);border:1px solid rgba(192,57,43,.25);border-radius:var(--rs);padding:12px 15px;font-size:12.5px;color:var(--red);line-height:1.6;max-width:480px;margin:0 auto">
+        ⚡ <strong>${LANG==='en'?'URGENT: P0 case':'URGENTE: Caso P0'}</strong><br>
+        ${LANG==='en'?'A specialist will call you TODAY. Every hour counts before your treatment starts.':'Una especialista te llamará HOY. Cada hora cuenta antes de iniciar tu tratamiento.'}
+      </div>
+    </div>`;
+  } else if(up==='T8'){
+    chip = LANG==='en'?'Your reason':'Tu motivo';
+    title = LANG==='en'?'Why do you want a fertility check-up?':'¿Por qué quieres un check-up de fertilidad?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'checkup_why','curiosity',true)">${LANG==='en'?'Curiosity and prevention — not planning yet':'Curiosidad y prevención — aún no planifico'}</div>
+      <div class="mopt" onclick="mchoice(this,'checkup_why','planning',true)">${LANG==='en'?'I plan a pregnancy in the next 2 years':'Planeo un embarazo en los próximos 2 años'}</div>
+      <div class="mopt" onclick="mchoice(this,'checkup_why','trying',true);reclassifyToInfertility()">${LANG==='en'?'I\'ve been trying for a while without success':'Llevo tiempo intentando sin lograrlo'}</div>
+      <div class="mopt" onclick="mchoice(this,'checkup_why','age',true)">${LANG==='en'?'My age — I want to know how I am':'Por mi edad, quiero saber cómo estoy'}</div>
+      <div class="mopt" onclick="mchoice(this,'checkup_why','doctor',true)">${LANG==='en'?'My doctor recommended it':'Mi médico me lo recomendó'}</div>
+    </div>`;
+  } else if(up==='T9'){
+    chip = LANG==='en'?'Your goal':'Tu objetivo';
+    title = LANG==='en'?'What is your main objective?':'¿Cuál es tu objetivo principal?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'pgt_why','pgt_a',true)">${LANG==='en'?'Evaluate embryos (PGT-A) before transfer':'Evaluar embriones (PGT-A) antes de transferencia'}</div>
+      <div class="mopt" onclick="mchoice(this,'pgt_why','pgt_m',true)">${LANG==='en'?'Prevent hereditary disease (PGT-M)':'Prevenir enfermedad hereditaria (PGT-M)'}</div>
+      <div class="mopt" onclick="mchoice(this,'pgt_why','eligender',true)">${LANG==='en'?'Choose baby\'s sex (Eligender)':'Elegir el sexo del bebé (Eligender)'}</div>
+      <div class="mopt" onclick="mchoice(this,'pgt_why','nipt',true)">${LANG==='en'?'Non-invasive prenatal test (NIPT)':'Test prenatal no invasivo (NIPT)'}</div>
+      <div class="mopt" onclick="mchoice(this,'pgt_why','carrier',true)">${LANG==='en'?'Carrier detection test':'Detección de portadores'}</div>
+    </div>`;
+  } else if(up==='T4' && state.sex==='male' && state.partner==='male'){
+    chip = LANG==='en'?'Double Family':'Double Family';
+    title = LANG==='en'?'Are you interested in both being biological parents of your children?':'¿Les interesaría que los dos sean padres biológicos de sus hijos?';
+    html = `<div class="info-box" style="margin-bottom:16px">${LANG==='en'?'<strong>Double Family program</strong>: both partners contribute sperm to fertilize eggs from the same donor, with two surrogates carrying simultaneously — biological sibling pregnancies at the same time.':'<strong>Programa Double Family</strong>: ambos aportan esperma para fecundar óvulos de una misma donante, con dos gestantes en simultáneo — embarazos de hermanitos al mismo tiempo.'}</div>
+    <div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'double_family','yes',true);state.flags.add('DOUBLE_FAMILY_CONFIRMED')">${LANG==='en'?'Yes, we\'re very interested!':'¡Sí, nos interesa mucho!'}</div>
+      <div class="mopt" onclick="mchoice(this,'double_family','maybe',true)">${LANG==='en'?'We want to learn more first':'Queremos saber más primero'}</div>
+      <div class="mopt" onclick="mchoice(this,'double_family','no',true)">${LANG==='en'?'No, just one biological parent':'No, solo uno de los dos'}</div>
+    </div>`;
+  } else {
+    // Generic fallback
+    chip = LANG==='en'?'One more question':'Una pregunta más';
+    title = LANG==='en'?'When would you like to start?':'¿Cuándo te gustaría comenzar?';
+    html = `<div class="mchoice">
+      <div class="mopt" onclick="mchoice(this,'timing','asap',true)">${LANG==='en'?'As soon as possible':'Lo antes posible'}</div>
+      <div class="mopt" onclick="mchoice(this,'timing','6m',true)">${LANG==='en'?'In the next 6 months':'En los próximos 6 meses'}</div>
+      <div class="mopt" onclick="mchoice(this,'timing','later',true)">${LANG==='en'?'In more than 6 months':'En más de 6 meses'}</div>
+    </div>`;
+  }
+  document.getElementById('ctx-chip').textContent = chip;
+  document.getElementById('ctx-title').textContent = title;
+  content.innerHTML = `${html}<div style="height:80px"></div>`;
+  // Wire up prev_tx change
+  if(['T1','T6'].includes(up)){
+    setTimeout(()=>{
+      document.querySelectorAll('#ctx-content .mopt').forEach((m,i) => {
+        if(i<2) m.addEventListener('click', ()=>{ document.getElementById('cycles-section').style.display='block'; });
+      });
+    },100);
+  }
+}
+
+function showOncoUrgency(){
+  state.flags.add('FLAG_P0_ONCOLOGICA');
+  const el = document.getElementById('onco-urgent');
+  if(el) el.style.display='block';
+}
+
+function reclassifyToInfertility(){
+  state.primaryUP = 'T1';
+  state.ups.add('T1');
+  showToast(LANG==='en'?'📋 Reclassified: <em>Infertility evaluation</em>':'📋 Reclasificado: <em>Evaluación de infertilidad</em>');
+}
+
+function advanceFromCtx(){
+  updateScore5(4);
+  showScreen('s-contacto');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: CONTACT
+// ═══════════════════════════════════════════════
+function detectIntlFromPrefix(){
+  const sel = document.getElementById('prefix-sel');
+  const opt = sel.options[sel.selectedIndex];
+  const country = opt.dataset.country;
+  state.isIntl = (country !== 'MX');
+  state.intlCountry = country;
+  if(country==='US') state.flags.add('FLAG_INTERNACIONAL');
+  if(country==='DE') { state.flags.add('FLAG_INTERNACIONAL'); state.flags.add('FLAG_PAIS_DE'); }
+  updateNSE();
+}
+
+function advanceFromContact(){
+  state.name = document.getElementById('inp-nombre').value;
+  state.email = document.getElementById('inp-email').value;
+  state.phone = document.getElementById('inp-tel').value;
+  if(!state.name || !state.phone){ showToast(LANG==='en'?'⚠️ Name and phone are required':'⚠️ Nombre y teléfono son obligatorios'); return; }
+  updateScore5(5);
+  // Pre-select country based on phone prefix
+  const prefix = document.getElementById('prefix-sel').value;
+  if(prefix==='+52') { state.country='MX'; setTimeout(()=>{ selectCountry('MX'); }, 100); }
+  else if(prefix==='+1') { state.country='US'; setTimeout(()=>{ selectCountry('US'); }, 100); }
+  // Mostrar pantalla de óvodonación cuando aplica
+  if(shouldAskOvo()){ showScreen('s-ovodonacion'); return; }
+  showScreen('s-ubicacion');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: OVODONACIÓN
+// ═══════════════════════════════════════════════
+function shouldAskOvo(){
+  // Solo aplica para necesidad "bebé" cuando NO está implícito ya el donante
+  if(state.need !== 'baby') return false;
+  if(state.flags.has('FLAG_DONANTE_OVULOS_IMPLICITO')) return false; // hombre solo / hombre+hombre
+  if(state.flags.has('FLAG_ROPA')) return false; // mujer+mujer usa óvulos propios
+  // Aplica a: mujer+hombre, mujer+sin pareja, hombre+mujer
+  return ['female','male'].includes(state.sex);
+}
+
+function selectOvo(val){
+  state.ovoChoice = val;
+  document.querySelectorAll('.ovo-opt').forEach(o => o.classList.toggle('sel', o.dataset.ovo===val));
+  if(val==='yes'){ state.flags.add('FLAG_OVODONACION'); state.ups.add('T10'); }
+  if(val==='open'){ state.flags.add('FLAG_OVODONACION_EVALUAR'); }
+  if(val==='unsure'){ state.flags.add('FLAG_OVODONACION_CONSULTA'); }
+  document.getElementById('btm-ovo').classList.add('vis');
+  document.getElementById('btm-ovo-info').innerHTML = '<strong>Selección registrada</strong>';
+  updateScore5(2);
+}
+
+function advanceFromOvo(){
+  if(!state.ovoChoice){ showToast('⚠️ Selecciona una opción'); return; }
+  showScreen('s-ubicacion');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: UBICACION
+// ═══════════════════════════════════════════════
+function selectCountry(c){
+  document.querySelectorAll('.ccard').forEach(cc => cc.classList.remove('sel'));
+  document.querySelector(`.ccard[data-country="${c}"]`)?.classList.add('sel');
+  state.country = c;
+  document.getElementById('cp-field').style.display = (c!=='OTHER') ? 'block' : 'none';
+  document.getElementById('sede-section').style.display = (c==='MX') ? 'block' : 'none';
+  document.getElementById('usa-section').style.display = (c==='US') ? 'block' : 'none';
+  document.getElementById('intl-section').style.display = (c==='OTHER') ? 'block' : 'none';
+  if(c!=='MX') { state.isIntl=true; state.flags.add('FLAG_INTERNACIONAL'); }
+  document.getElementById('btm-ubic').classList.add('vis');
+  if(c==='OTHER') document.getElementById('btm-ubic-info').textContent = T.intl_title;
+}
+
+function selectBranch(b){
+  document.querySelectorAll('.bcard').forEach(bc => bc.classList.remove('sel','recommended'));
+  event.currentTarget.classList.add('sel');
+  state.branch = b;
+  state.flags.add('FLAG_BRANCH_CONFIRMADA');
+  document.getElementById('btm-ubic').classList.add('vis');
+  document.getElementById('btm-ubic-info').innerHTML = `<strong>${LANG==='en'?'Branch selected':'Sede seleccionada'}</strong>`;
+}
+
+function renderUSARouting(){
+  const routing = document.getElementById('usa-routing');
+  if(!routing) return;
+  routing.style.display = 'flex';
+  const br = state.branch;
+  let cards = '';
+  if(br==='HOUSTON'){
+    cards = `
+    <div class="bcard recommended" onclick="selectBranch('HOUSTON')">
+      <span class="bcard-tag">${LANG==='en'?'Recommended':'Recomendada'}</span>
+      <div class="bcard-ico">🤠</div>
+      <div class="bcard-body"><div class="bcard-title">Branch Houston</div><div class="bcard-sub">${LANG==='en'?'Board-certified US doctor · Texas legislation compliant · Closer to you':'Médico certificado USA · Cumple legislación Texas · Más cercana a ti'}</div></div>
+    </div>
+    <div class="bcard" onclick="selectBranch('MEXICO_DIRECTO')">
+      <div class="bcard-ico">🇲🇽</div>
+      <div class="bcard-body"><div class="bcard-title">${LANG==='en'?'Mexico Direct':'México Directo'}</div><div class="bcard-sub">${LANG==='en'?'Complete Ingenes team · IVF MORE technology · Direct flight Houston → CDMX 2.5h':'Equipo completo · Tecnología IVF MORE · Vuelo directo Houston → CDMX 2.5h'}</div></div>
+    </div>`;
+  } else if(br==='OC'){
+    cards = `
+    <div class="bcard recommended" onclick="selectBranch('OC')">
+      <span class="bcard-tag">${LANG==='en'?'Recommended':'Recomendada'}</span>
+      <div class="bcard-ico">🌴</div>
+      <div class="bcard-body"><div class="bcard-title">Branch Orange County</div><div class="bcard-sub">${LANG==='en'?'Board-certified US doctor · California legislation compliant · Closest to you':'Médico certificado USA · Cumple legislación California · Más cercana a ti'}</div></div>
+    </div>
+    <div class="bcard" onclick="selectBranch('MEXICO_DIRECTO')">
+      <div class="bcard-ico">🇲🇽</div>
+      <div class="bcard-body"><div class="bcard-title">${LANG==='en'?'Mexico Direct':'México Directo'}</div><div class="bcard-sub">${LANG==='en'?'Full Ingenes experience · IVF MORE · Flight LAX → CDMX 3.5h · Most patients from CA choose this':'Experiencia Ingenes completa · IVF MORE · Vuelo LAX → CDMX 3.5h'}</div></div>
+    </div>`;
+  } else {
+    cards = `
+    <div class="bcard recommended" onclick="selectBranch('MEXICO_DIRECTO')">
+      <span class="bcard-tag">${LANG==='en'?'Recommended':'Recomendada'}</span>
+      <div class="bcard-ico">🇲🇽</div>
+      <div class="bcard-body"><div class="bcard-title">${LANG==='en'?'Mexico Direct (CDMX)':'México Directo (CDMX)'}</div><div class="bcard-sub">${LANG==='en'?'Direct flight from your state · Full team · Exclusive technology (IVF MORE, OVAGEN) not available in the US':'Vuelo directo desde tu estado · Equipo completo · Tecnología exclusiva (IVF MORE, OVAGEN) no disponible en USA'}</div></div>
+    </div>`;
+  }
+  cards += `
+    <div class="bcard" onclick="showScreen('s-referido');state.branch='ORIENTATION_SESSION'">
+      <div class="bcard-ico">💬</div>
+      <div class="bcard-body"><div class="bcard-title">${LANG==='en'?'I\'m not sure which to choose':'No sé cuál me conviene más'}</div><div class="bcard-sub">${LANG==='en'?'Free 30-min session with an International Coordinator who will guide you':'Sesión gratuita de 30 min con coordinadora internacional que te orienta'}</div></div>
+    </div>`;
+  routing.innerHTML = cards;
+}
+
+function advanceFromUbic(){
+  if(!state.country){ showToast(LANG==='en'?'Please select your country':'Por favor selecciona tu país'); return; }
+  updateScore5(3);
+  showScreen('s-referido');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: REFERIDO
+// ═══════════════════════════════════════════════
+function selectRef(type){
+  document.querySelectorAll('.ref-opt').forEach(r => r.classList.remove('sel'));
+  document.querySelector(`.ref-opt[data-ref="${type}"]`)?.classList.add('sel');
+  state.referral = type;
+  const nameWrap = document.getElementById('ref-name-wrap');
+  const nameField = document.getElementById('inp-ref-name');
+  const showName = ['patient','doctor','company','friend'].includes(type);
+  nameWrap.style.display = showName ? 'block' : 'none';
+  if(type==='doctor') { state.flags.add('FLAG_REFERIDO_MEDICO'); nameField.placeholder = LANG==='en'?'Doctor\'s name':'Nombre del médico'; }
+  if(type==='company') { state.flags.add('FLAG_REFERIDO_EMPRESA'); nameField.placeholder = LANG==='en'?'Company or insurer name':'Nombre de la empresa o aseguradora'; }
+  if(type==='patient') { state.flags.add('FLAG_REFERIDO_PACIENTE'); nameField.placeholder = LANG==='en'?'Patient\'s name':'Nombre del paciente'; }
+  document.getElementById('btm-ref').classList.add('vis');
+  document.getElementById('btm-ref-info').innerHTML = `<strong>${LANG==='en'?'Source registered':'Fuente registrada'}</strong>`;
+}
+
+function advanceFromRef(){
+  state.referralName = document.getElementById('inp-ref-name').value;
+  buildConfirmation();
+  showScreen('s-confirmacion');
+}
+
+// ═══════════════════════════════════════════════
+// SCREEN: CONFIRMATION
+// ═══════════════════════════════════════════════
+const COORDINATORS = {
+  T1:'María Rodríguez', T2:'Carmen López', T3:'Sofia Herrera', T4:'Valentina Castro',
+  T5:'Ana García', T6:'Isabella Moreno', T7:'Daniela Soto', T8:'Lucía Ramírez',
+  T9:'Andrea Torres', T10:'Patricia Vargas', T11:'Elena Jiménez', T12:'Fernanda Díaz',
+  T13:'Rosa Méndez', T14:'Gabriela Ruiz', default:'Ana García'
+};
+const UP_LABELS = {
+  T1:'Infertilidad', T2:'Salpingoclasia/Vasectomía', T3:'Sin pareja', T4:'Pareja mismo sexo',
+  T5:'Subrogación', T6:'IVF MORE', T7:'Preservación', T8:'Check-up', T9:'Genético/PGT',
+  T10:'Ovodonación', T11:'Medicina Regenerativa', T12:'Medicamentos', T13:'Menopausia',
+  T14:'No más hijos'
+};
+const UP_LABELS_EN = {
+  T1:'Infertility', T2:'Reversal', T3:'Single parent', T4:'Same-sex couple',
+  T5:'Surrogacy', T6:'IVF MORE', T7:'Preservation', T8:'Check-up', T9:'Genetics/PGT',
+  T10:'Egg donation', T11:'Regenerative Med.', T12:'Medications', T13:'Menopause',
+  T14:'No more children'
+};
+
+function buildConfirmation(){
+  const up = state.primaryUP || 'T1';
+  const coord = COORDINATORS[up] || COORDINATORS.default;
+  document.getElementById('coord-name').textContent = coord + ' ' + T.coord_assigned;
+  document.getElementById('coord-role').textContent = T.coord_role;
+  // Conf icon per UP
+  const icons = {T1:'💙',T2:'🔗',T3:'🌱',T4:'🌈',T5:'🤝',T6:'⭐',T7:'❄️',T8:'🔬',T9:'🧬',T10:'📋',T11:'🔮',T12:'💊',T13:'🌙',T14:'✋'};
+  document.getElementById('conf-ico').textContent = icons[up] || '🎉';
+  document.getElementById('conf-title').textContent = T.conf_title;
+  document.getElementById('conf-sub').textContent = T.conf_sub;
+  // Pills
+  const pills = document.getElementById('conf-pills');
+  const labelMap = LANG==='en' ? UP_LABELS_EN : UP_LABELS;
+  let pillHTML = '';
+  state.ups.forEach(u => { pillHTML += `<span class="pill active">${labelMap[u]||u}</span>`; });
+  if(state.flags.has('FLAG_OVAGEN')) pillHTML += `<span class="pill active">OVAGEN</span>`;
+  if(state.flags.has('DOUBLE_FAMILY_CONFIRMED')) pillHTML += `<span class="pill active" style="background:#FFF8E8;border-color:var(--gold);color:var(--td)">Double Family ✦</span>`;
+  if(state.flags.has('FLAG_P0_ONCOLOGICA')) pillHTML += `<span class="pill" style="background:var(--redL);border-color:var(--red);color:var(--red)">⚡ URGENTE P0</span>`;
+  if(state.branch) pillHTML += `<span class="pill">📍 ${state.branch.replace('_',' ')}</span>`;
+  if(state.isIntl) pillHTML += `<span class="pill">🌍 Internacional</span>`;
+  pills.innerHTML = pillHTML;
+  // NSE bar
+  const nseTotal = Math.min(20, state.deviceNSE + state.emailNSE + state.cpNSE);
+  const nsePct = Math.round((nseTotal/20)*100);
+  document.getElementById('nse-bar-fill').style.width = nsePct+'%';
+  const hexantes = ['—', 'D · Accesible','D · Accesible','D · Accesible','D · Accesible','C · Estándar','C · Estándar','C · Estándar','C · Estándar','C · Estándar','B · Intermedio','B · Intermedio','B · Intermedio','B · Intermedio','B · Intermedio','A · Premium','A · Premium','A · Premium','A · Premium','A · Premium','A · Premium'];
+  document.getElementById('nse-hexante-lbl').textContent = hexantes[nseTotal] || 'Calculando...';
+  document.getElementById('nse-bar-lbl').textContent = T.nse_profile;
+  document.getElementById('btn-agenda').textContent = T.btn_agenda;
+  document.getElementById('btn-explore').textContent = T.btn_explore;
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.innerHTML = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function showAlert(type){
+  if(type==='agenda') alert(LANG==='en'?'→ Calendar opens to schedule your consultation with the assigned doctor.\n\n(In production: connects directly to the booking system for the selected branch)':'→ Se abre el calendario para agendar tu consulta con el médico asignado.\n\n(En producción: conecta directamente con el sistema de agenda de la sede elegida)');
+  if(type==='explore') alert(LANG==='en'?'→ Nurturing sequence activated.\n\nD1: Personalized email for your UP.\nD2: WhatsApp with a testimony from a similar case.\nCoordinator will contact you within 2 hours.':'→ Secuencia de nurturing activada.\n\nD1: Email personalizado para tu UP.\nD2: WhatsApp con testimonio de caso similar.\nLa coordinadora te contactará en las próximas 2 horas.');
+  if(type==='ref') alert(LANG==='en'?'Referral sent successfully. We will contact this person very soon.':'Referido enviado correctamente. Nos pondremos en contacto con esta persona muy pronto.');
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  detectDeviceNSE();
+  updateNSE();
+  // Auto-detect prefix from browser lang
+  if(LANG==='en') document.getElementById('prefix-sel').value = '+1';
+  if(LANG==='de') document.getElementById('prefix-sel').value = '+49';
+  // Show back btn logic
+  updateBackBtn();
+  // Age slider init
+  document.getElementById('age-slider').style.setProperty('--pct', '28%');
+  document.getElementById('age-slider-partner').style.setProperty('--pct', '32%');
+  // Progreso inicial
+  updateProgress();
+});
+</script>
+</body>
+</html>

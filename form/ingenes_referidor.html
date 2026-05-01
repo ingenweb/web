@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ingenes — Referir a alguien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1F3864; --navy2:#142548; --navy3:#2a4a7f;
+  --gold:#C9A84C; --goldl:#e8c97a; --goldp:#FFF8E8;
+  --white:#FFFFFF; --off:#F7F9FC;
+  --td:#1a2a45; --tm:#4a5a7a; --tl:#8a9ab8;
+  --brd:rgba(31,56,100,.10); --brdA:rgba(31,56,100,.30);
+  --sc:0 2px 16px rgba(31,56,100,.07),0 1px 4px rgba(31,56,100,.04);
+  --sh:0 8px 32px rgba(31,56,100,.13),0 2px 8px rgba(31,56,100,.06);
+  --r:16px; --rs:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--td);min-height:100vh}
+
+.hdr{background:var(--navy);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.18)}
+.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--white);letter-spacing:.02em}
+.hdr-logo-i{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hdr-tag{font-size:11.5px;color:rgba(255,255,255,.55);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+
+.hero{background:linear-gradient(160deg,var(--navy2) 0%,var(--navy) 55%,#2a4a7f 100%);padding:44px 22px 36px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 80%,rgba(201,168,76,.10) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 80% 20%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.35);border-radius:99px;padding:4px 13px;font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--goldl);margin-bottom:16px}
+.hero-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.hero-t{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5vw,32px);font-weight:400;color:var(--white);line-height:1.3;max-width:540px;margin:0 auto 10px}
+.hero-t em{color:var(--goldl);font-style:italic;font-weight:300}
+.hero-s{font-size:13px;color:rgba(255,255,255,.65);font-weight:400;max-width:480px;margin:0 auto;line-height:1.55}
+
+.main{max-width:520px;margin:0 auto;padding:28px 18px 120px;width:100%}
+
+.section-lbl{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy3);margin:0 0 12px 4px;display:flex;align-items:center;gap:8px}
+.section-lbl::before{content:'';width:18px;height:2px;background:var(--gold);border-radius:2px}
+
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld+.fld{margin-top:14px}
+.fld-lbl{font-size:12px;font-weight:600;color:var(--tm);letter-spacing:.04em;text-transform:uppercase}
+.fld-inp{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);transition:border-color .18s,box-shadow .18s;outline:none;width:100%}
+.fld-inp:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,56,100,.08)}
+.fld-inp::placeholder{color:var(--tl)}
+.phone-wrap{display:flex;gap:8px}
+.prefix-sel{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 12px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);outline:none;cursor:pointer;min-width:110px}
+.prefix-sel:focus{border-color:var(--navy)}
+
+.card{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--r);padding:20px 20px 22px;box-shadow:var(--sc);margin-bottom:16px}
+.card-hdr{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.card-ico{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#EEF4FF,#D6E4F7);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.card-ttl{font-size:14.5px;font-weight:600;color:var(--td);line-height:1.3}
+.card-sub{font-size:12px;color:var(--tm);margin-top:2px;font-weight:400}
+
+.note{background:var(--goldp);border:1px solid rgba(201,168,76,.30);border-radius:var(--rs);padding:11px 14px;font-size:12px;color:var(--td);line-height:1.55;margin-top:8px}
+.note strong{color:var(--navy);font-weight:600}
+
+.btm{position:fixed;bottom:0;left:0;right:0;padding:14px 18px;background:var(--white);border-top:1px solid var(--brd);box-shadow:0 -4px 24px rgba(31,56,100,.09);display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100}
+.btm-info{font-size:12.5px;color:var(--tm);line-height:1.4}
+.btm-info strong{color:var(--td);font-weight:600}
+.btn{background:linear-gradient(135deg,var(--navy),var(--navy3));color:var(--white);border:none;border-radius:99px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 4px 16px rgba(31,56,100,.25);white-space:nowrap}
+.btn:hover{background:linear-gradient(135deg,var(--navy2),var(--navy));box-shadow:0 6px 24px rgba(31,56,100,.32);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--white);border-radius:99px;padding:11px 18px;font-size:12.5px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.20);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:150;white-space:nowrap;max-width:calc(100vw - 36px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.success{display:none;text-align:center;padding:48px 24px}
+.success.vis{display:block;animation:fadeUp .4s ease}
+.success-ico{font-size:64px;margin-bottom:18px}
+.success-t{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--navy);line-height:1.2;margin-bottom:10px}
+.success-t em{color:var(--gold);font-style:italic}
+.success-s{font-size:14px;color:var(--tm);line-height:1.6;max-width:440px;margin:0 auto}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.consent{display:flex;align-items:flex-start;gap:9px;margin-top:14px;font-size:12px;color:var(--tm);line-height:1.55;cursor:pointer;user-select:none}
+.consent input{margin-top:2px;flex-shrink:0;cursor:pointer;accent-color:var(--navy)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo"><div class="hdr-logo-i">🌟</div>Ingenes</div>
+  <div class="hdr-tag">Referir a alguien</div>
+</header>
+
+<div id="form-view">
+  <div class="hero">
+    <div class="hero-chip">💌 Ayuda a alguien</div>
+    <h1 class="hero-t">Conoces a alguien que <em>busca tener un bebé</em></h1>
+    <p class="hero-s">Compártenos sus datos y nuestra coordinadora se pondrá en contacto con todo el cuidado y la discreción que merece.</p>
+  </div>
+
+  <div class="main">
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-ico">👤</div>
+        <div>
+          <div class="card-ttl">Datos de la persona referida</div>
+          <div class="card-sub">A quién quieres ayudar</div>
+        </div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">Nombre completo</div>
+        <input class="fld-inp" id="ref-name" type="text" placeholder="Nombre y apellido" autocomplete="off">
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">Teléfono celular</div>
+        <div class="phone-wrap">
+          <select class="prefix-sel" id="ref-prefix">
+            <option value="+52">🇲🇽 +52</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+1-CA">🇨🇦 +1</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+57">🇨🇴 +57</option>
+            <option value="+54">🇦🇷 +54</option>
+            <option value="+56">🇨🇱 +56</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+0">🌍 Otro</option>
+          </select>
+          <input class="fld-inp" id="ref-phone" type="tel" placeholder="Número de celular" inputmode="tel">
+        </div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">Correo electrónico <span style="color:var(--tl);text-transform:none;font-weight:400">(opcional)</span></div>
+        <input class="fld-inp" id="ref-email" type="email" placeholder="correo@ejemplo.com" autocomplete="off">
+      </div>
+      <div class="note">
+        <strong>Discreción garantizada.</strong> Llamamos como Ingenes y mencionamos que tú nos pediste contactarle. Si prefieres, puedes avisarle antes.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">
+        <div class="card-ico" style="background:linear-gradient(135deg,#FFF8E8,#F4E4B5)">💛</div>
+        <div>
+          <div class="card-ttl">Tus datos</div>
+          <div class="card-sub">Para reconocerte como quien refirió</div>
+        </div>
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">Tu nombre</div>
+        <input class="fld-inp" id="my-name" type="text" placeholder="Tu nombre" autocomplete="off">
+      </div>
+      <div class="fld">
+        <div class="fld-lbl">Tu teléfono</div>
+        <div class="phone-wrap">
+          <select class="prefix-sel" id="my-prefix">
+            <option value="+52">🇲🇽 +52</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+1-CA">🇨🇦 +1</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+57">🇨🇴 +57</option>
+            <option value="+54">🇦🇷 +54</option>
+            <option value="+56">🇨🇱 +56</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+0">🌍 Otro</option>
+          </select>
+          <input class="fld-inp" id="my-phone" type="tel" placeholder="Número de celular" inputmode="tel">
+        </div>
+      </div>
+      <label class="consent">
+        <input type="checkbox" id="consent">
+        <span>Confirmo que la persona referida sabe (o sabrá pronto) que estoy compartiendo sus datos con Ingenes.</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="btm">
+    <div class="btm-info"><strong>Tus datos están seguros</strong><br><span style="font-size:11px;color:var(--tl)">🔒 Privacidad garantizada</span></div>
+    <button class="btn" id="btn-submit" onclick="submitReferral()">
+      Enviar referido
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="success" id="success-view">
+  <div class="success-ico">🤝</div>
+  <h2 class="success-t">Gracias por <em>confiar en nosotros</em></h2>
+  <p class="success-s">Recibimos los datos. Una coordinadora especializada se pondrá en contacto con esta persona en las próximas horas, con toda la discreción y el cuidado que merece.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function submitReferral(){
+  const refName = document.getElementById('ref-name').value.trim();
+  const refPhone = document.getElementById('ref-phone').value.trim();
+  const myName = document.getElementById('my-name').value.trim();
+  const myPhone = document.getElementById('my-phone').value.trim();
+  const consent = document.getElementById('consent').checked;
+
+  if(!refName){ showToast('⚠️ Falta el nombre del referido'); document.getElementById('ref-name').focus(); return; }
+  if(!refPhone){ showToast('⚠️ Falta el teléfono del referido'); document.getElementById('ref-phone').focus(); return; }
+  if(!myName){ showToast('⚠️ Falta tu nombre'); document.getElementById('my-name').focus(); return; }
+  if(!myPhone){ showToast('⚠️ Falta tu teléfono'); document.getElementById('my-phone').focus(); return; }
+  if(!consent){ showToast('⚠️ Confirma el aviso de discreción'); return; }
+
+  // En producción: POST a backend con payload
+  const payload = {
+    referido: { nombre: refName, prefix: document.getElementById('ref-prefix').value, telefono: refPhone, email: document.getElementById('ref-email').value.trim() },
+    referidor: { nombre: myName, prefix: document.getElementById('my-prefix').value, telefono: myPhone },
+    timestamp: new Date().toISOString(),
+    fuente: 'formulario_referidor'
+  };
+  console.log('Payload de referido:', payload);
+
+  document.getElementById('form-view').style.display = 'none';
+  document.querySelector('.btm').style.display = 'none';
+  document.getElementById('success-view').classList.add('vis');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

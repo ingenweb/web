@@ -254,6 +254,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .confirm-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 4px}
 .pill{background:var(--off);border:1px solid var(--brd);border-radius:99px;padding:5px 12px;font-size:11.5px;color:var(--tm);font-weight:500}
 
+/* UP DEBUG INDICATOR (interno, no visible al paciente) */
+.up-debug{position:fixed;top:70px;right:12px;background:rgba(31,56,100,.92);color:var(--white);border-radius:10px;padding:8px 12px;font-size:11px;font-family:'DM Sans',monospace;z-index:999;line-height:1.45;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.18);max-width:200px;display:none}
+.up-debug.vis{display:block;animation:fadeUp .3s ease}
+.up-debug-tag{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--goldl);display:block;margin-bottom:2px}
+.up-debug-id{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--white);line-height:1}
+.up-debug-name{font-size:10.5px;color:rgba(255,255,255,.78);margin-top:3px;line-height:1.35}
+
 /* PLACEHOLDER */
 .ph-wrap{padding:60px 24px;text-align:center;max-width:480px;margin:0 auto}
 .ph-emoji{font-size:64px;margin-bottom:14px;opacity:.7}
@@ -283,6 +290,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   </div>
 </header>
 
+<!-- UP debug (solo equipo interno) -->
+<div class="up-debug" id="up-debug">
+  <span class="up-debug-tag">User Persona detectado</span>
+  <span class="up-debug-id" id="up-debug-id">—</span>
+  <span class="up-debug-name" id="up-debug-name">Aún no determinado</span>
+</div>
+
 <div class="screens" id="screens">
 
 <!-- ═══════════════════════════════════════════════
@@ -310,7 +324,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
           <div class="need-ico">🌿</div>
           <div class="need-body">
             <div class="need-ttl">No estoy buscando un bebé en este momento, pero quiero evaluar mi salud reproductiva</div>
-            <div class="need-sub">Check-up o diagnóstico</div>
+            <div class="need-sub">Test y Check Up de Fertilidad</div>
           </div>
           <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
@@ -341,13 +355,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       </div>
     </section>
 
-    <div style="height:90px"></div>
-  </div>
-  <div class="btm" id="btm-inicio">
-    <div class="btm-info"><strong id="btm-inicio-info">Selecciona tu necesidad para empezar</strong></div>
-    <button class="btn" onclick="advanceFromInicio()">Continuar
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    <div style="height:24px"></div>
   </div>
 </div>
 
@@ -389,14 +397,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     PLACEHOLDER (otras necesidades)
+     PLACEHOLDER (donate / pregnant)
 ═══════════════════════════════════════════════ -->
 <div class="screen" id="s-placeholder">
   <div class="ph-wrap">
-    <div class="ph-emoji">🚧</div>
-    <h2 class="ph-t">Este flujo está en construcción</h2>
-    <p class="ph-s">Estamos terminando de diseñar el camino para esta necesidad. Por ahora, el mockup completo está disponible solo para <strong>"Quiero tener un bebé"</strong>.</p>
-    <button class="btn-ghost" onclick="goBack()">Volver al inicio</button>
+    <div class="ph-emoji" id="ph-emoji">💛</div>
+    <h2 class="ph-t" id="ph-title">Te llevamos al flujo correcto</h2>
+    <p class="ph-s" id="ph-desc">Una coordinadora especializada te acompañará desde aquí.</p>
+    <button class="btn" style="display:inline-flex" id="ph-btn" onclick="goBack()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 </div>
 
@@ -629,7 +639,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   </div>
   <div class="btm vis">
     <div class="btm-info"><strong id="btm-prod-info">Selecciona "No / no lo sé" si no aplica</strong></div>
-    <button class="btn" onclick="advance('s-busqueda')">Continuar
+    <button class="btn" onclick="advanceProductos()">Continuar
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
@@ -641,8 +651,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div class="screen" id="s-busqueda">
   <div class="hero">
     <div class="hero-chip">Tiempo</div>
-    <h1 class="hero-t">¿Hace cuánto <em>buscan un bebé?</em></h1>
-    <p class="hero-s">Para entender en qué punto del camino están.</p>
+    <h1 class="hero-t" id="t-busq">¿Hace cuánto <em>buscan un bebé?</em></h1>
+    <p class="hero-s" id="s-busq-s">Para entender en qué punto del camino están.</p>
   </div>
   <div class="main">
     <div class="mchoice">
@@ -699,8 +709,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 <div class="screen" id="s-tiempo-emb">
   <div class="hero">
     <div class="hero-chip">Tu plan</div>
-    <h1 class="hero-t">¿En cuánto tiempo <em>te gustaría embarazarte?</em></h1>
-    <p class="hero-s">Tu deseo nos ayuda a planificar el ritmo del proceso.</p>
+    <h1 class="hero-t" id="t-temb">¿En cuánto tiempo <em>te gustaría lograr el embarazo?</em></h1>
+    <p class="hero-s" id="s-temb-s">Saber tu deseo nos ayuda a planificar el ritmo del proceso.</p>
   </div>
   <div class="main">
     <div class="mchoice">
@@ -735,7 +745,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       </div>
     </div>
     <div style="text-align:center;margin-top:24px">
-      <button class="btn" onclick="advance('s-motivo')" style="display:inline-flex">Continuar
+      <button class="btn" onclick="afterNutri1()" style="display:inline-flex">Continuar
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
@@ -1029,7 +1039,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   </div>
   <div class="btm vis">
     <div class="btm-info"><strong>Mock:</strong> cualquier código funciona</div>
-    <button class="btn" onclick="advance('s-agenda')">Verificar
+    <button class="btn" onclick="afterCodigo()">Verificar
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
@@ -1193,13 +1203,31 @@ function showToast(msg){
 function selectNeed(val){
   state.need = val;
   document.querySelectorAll('.need-card').forEach(c => c.classList.toggle('sel', c.dataset.need===val));
-  document.getElementById('btm-inicio-info').innerHTML = '¡Listo! Continuemos';
-  document.getElementById('btm-inicio').classList.add('vis');
+  // Auto-advance — la persona puede volver atrás si se equivoca
+  setTimeout(() => advanceFromInicio(), 360);
 }
 function advanceFromInicio(){
   if(!state.need){ showToast('⚠️ Selecciona tu necesidad'); return; }
-  if(state.need !== 'baby'){ advance('s-placeholder'); return; }
-  advance('s-quien');
+  if(['baby','preserve','evaluate'].includes(state.need)){
+    advance('s-quien');
+    return;
+  }
+  // donate o pregnant → pantalla informativa
+  advance('s-placeholder');
+}
+function buildPlaceholder(){
+  const emoji = document.getElementById('ph-emoji');
+  const title = document.getElementById('ph-title');
+  const desc = document.getElementById('ph-desc');
+  if(state.need === 'donate'){
+    emoji.textContent = '💛';
+    title.innerHTML = 'Te llevamos al flujo de <em>donación</em>';
+    desc.innerHTML = 'En la siguiente pantalla nuestro equipo de donación de óvulos y esperma te recibirá para guiarte por el proceso.';
+  } else if(state.need === 'pregnant'){
+    emoji.textContent = '🤰';
+    title.innerHTML = '<em>Atención Materno Fetal</em> de Alta Especialidad';
+    desc.innerHTML = 'Te conectamos con el equipo médico que cuida embarazos de alta especialidad. Resolvemos tu caso con la atención que merece.';
+  }
 }
 
 // QUIÉN — sexo + pareja
@@ -1208,12 +1236,14 @@ function selectSex(val){
   document.querySelectorAll('#istep-sex .sex-card').forEach(c => c.classList.toggle('sel', c.dataset.sex===val));
   document.getElementById('istep-partner').classList.remove('disabled');
   updateQuienBtm();
+  refreshUP();
 }
 function selectPartner(val){
   state.partner = val;
   state.hasPartner = (val !== 'none');
   document.querySelectorAll('#istep-partner .sex-card').forEach(c => c.classList.toggle('sel', c.dataset.partner===val));
   updateQuienBtm();
+  refreshUP();
 }
 function updateQuienBtm(){
   const btm = document.getElementById('btm-quien');
@@ -1225,6 +1255,12 @@ function updateQuienBtm(){
 }
 function advanceFromQuien(){
   if(!state.sex || !state.partner){ showToast('⚠️ Completa las dos preguntas'); return; }
+  // Preservación y evaluación no preguntan estado civil
+  if(state.need === 'preserve' || state.need === 'evaluate'){
+    showPartnerAgeIfNeeded();
+    advance('s-edad');
+    return;
+  }
   if(state.hasPartner){ advance('s-civil'); }
   else { showPartnerAgeIfNeeded(); advance('s-edad'); }
 }
@@ -1243,6 +1279,7 @@ function setSimple(key, val, auto){
     evt.currentTarget.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
     evt.currentTarget.classList.add('sel');
   }
+  if(['gestacion','trompas'].includes(key)) refreshUP();
   if(auto){ setTimeout(()=>{ autoAdvanceFor(key); }, 320); }
   else { showBtmFor(key); }
 }
@@ -1251,6 +1288,60 @@ function showBtmFor(key){
   const id = map[key]; if(!id) return;
   const btm = document.getElementById(id);
   if(btm){ btm.classList.add('vis'); }
+}
+function isMaleNoFemale(){
+  return state.sex === 'male' && (state.partner === 'male' || state.partner === 'none');
+}
+
+// ═══════════════════════════════════════════════
+// USER PERSONA — detección y badge interno
+// ═══════════════════════════════════════════════
+const UP_NAMES = {
+  'UP 1':'Pareja heterosexual',
+  'UP 2':'Pareja de mujeres',
+  'UP 3':'Heterosexual + salpingo',
+  'UP 6':'Mujer sin pareja',
+  'UP 30':'Heterosexual surrogacy',
+  'UP 32':'Pareja de hombres surrogacy',
+  'UP 34':'Hombre sin pareja surrogacy',
+  'UP 40':'Preservación de óvulos',
+  'UP 41':'Preservación de esperma',
+  'UP 15':'Mujer evaluando fertilidad',
+  'UP 16':'Hombre evaluando fertilidad'
+};
+function detectUP(){
+  const { sex, partner, need } = state;
+  if(!sex || !partner) return null;
+  // Evaluación
+  if(need === 'evaluate'){
+    if(sex === 'female') return 'UP 15';
+    if(sex === 'male') return 'UP 16';
+  }
+  // Preservación
+  if(need === 'preserve'){
+    if(sex === 'female') return 'UP 40';
+    if(sex === 'male') return 'UP 41';
+  }
+  // Combinaciones que se determinan al instante
+  if(sex==='female' && partner==='female') return 'UP 2';
+  if(sex==='female' && partner==='none') return 'UP 6';
+  if(sex==='male' && partner==='male') return 'UP 32';
+  if(sex==='male' && partner==='none') return 'UP 34';
+  // Heterosexual: depende de respuestas posteriores
+  if((sex==='female' && partner==='male') || (sex==='male' && partner==='female')){
+    if(state.gestacion === 'surrogate') return 'UP 30';
+    if(state.trompas === 'yes') return 'UP 3';
+    return 'UP 1';
+  }
+  return null;
+}
+function refreshUP(){
+  const up = detectUP();
+  const el = document.getElementById('up-debug');
+  if(!up){ el.classList.remove('vis'); return; }
+  document.getElementById('up-debug-id').textContent = up;
+  document.getElementById('up-debug-name').textContent = UP_NAMES[up] || '';
+  el.classList.add('vis');
 }
 function autoAdvanceFor(key){
   if(key==='civil') advance('s-edad'), showPartnerAgeIfNeeded();
@@ -1267,6 +1358,24 @@ function autoAdvanceFor(key){
     else advance('s-codigo');
   }
   else if(key==='conociste') advance('s-codigo');
+}
+function advanceProductos(){
+  // Hombre solo / dos hombres: saltamos "hace cuánto buscas un bebé", "tx previos" y "tiempo deseado"
+  if(isMaleNoFemale()) advance('s-nutri-1');
+  else advance('s-busqueda');
+}
+function filterProductos(){
+  // Hombre solo / dos hombres: ocultar opciones que asumen óvulos propios
+  const noOvulosPropios = isMaleNoFemale();
+  ['mrt','rejuv-ovulos','rejuv-endo'].forEach(p => {
+    const el = document.querySelector(`[data-prod="${p}"]`);
+    if(!el) return;
+    el.style.display = noOvulosPropios ? 'none' : '';
+    if(noOvulosPropios && state.productos.has(p)){
+      state.productos.delete(p);
+      el.classList.remove('sel');
+    }
+  });
 }
 
 // ═══════════════════════════════════════════════
@@ -1306,6 +1415,15 @@ function refreshAgeHint(){
   let womanAge = null;
   if(state.sex==='female') womanAge = state.age;
   else if(state.partner==='female') womanAge = state.partnerAge;
+  // Preservación: a partir de 38, mensaje informativo positivo
+  if(state.need === 'preserve'){
+    if(womanAge !== null && womanAge >= 38){
+      hint.classList.add('vis');
+      hint.innerHTML = `✨ Contamos con <strong>Medicina Regenerativa</strong> para ayudar a mejorar la calidad de los óvulos antes de preservar. La coordinadora lo platicará en consulta.`;
+    } else hint.classList.remove('vis');
+    return;
+  }
+  // Flujo bebé
   if(womanAge !== null && womanAge >= 36){
     hint.classList.add('vis');
     const subject = state.sex==='female' ? 'tus' : 'sus';
@@ -1323,7 +1441,10 @@ function buildHijosScreen(){
   document.getElementById('hijos-self-no').textContent = 'No soy '+selfWord;
 
   const partnerBlock = document.getElementById('hijos-partner-block');
-  if(state.hasPartner){
+  // En preservación no preguntamos por la pareja
+  if(state.need === 'preserve'){
+    partnerBlock.style.display = 'none';
+  } else if(state.hasPartner){
     partnerBlock.style.display = 'block';
     const isFemalePartner = state.partner==='female';
     const partnerWord = isFemalePartner ? 'mamá' : 'papá';
@@ -1347,7 +1468,17 @@ function setHijos(who, n){
 }
 function advanceHijos(){
   if(state.hijosSelf===null){ showToast('⚠️ Responde la pregunta'); return; }
-  if(state.hasPartner && state.hijosPartner===null){ showToast('⚠️ Falta la pregunta de tu pareja'); return; }
+  // En preservación no se pregunta a la pareja
+  if(state.need !== 'preserve' && state.hasPartner && state.hijosPartner===null){ showToast('⚠️ Falta la pregunta de tu pareja'); return; }
+  // Preservación salta directo a la pantalla de nutrición
+  if(state.need === 'preserve'){ advance('s-nutri-1'); return; }
+  // Evaluación: trompas no aplica; sí embarazos y gestación si hay mujer; salta productos/búsqueda/tx/tiempo
+  if(state.need === 'evaluate'){
+    if(canAskEmbarazos()) advance('s-embarazos');
+    else if(canAskGestacion()) advance('s-gestacion');
+    else advance('s-nutri-1');
+    return;
+  }
   if(shouldAskTrompas()){ advance('s-trompas'); }
   else if(canAskEmbarazos()) advance('s-embarazos');
   else if(canAskGestacion()) advance('s-gestacion');
@@ -1395,6 +1526,7 @@ function setTrompas(val){
     document.getElementById('trompas-q2').style.display = 'none';
     document.getElementById('btm-trompas').classList.add('vis');
   }
+  refreshUP();
 }
 function setTrompasOpt(val){
   state.trompasOpt = val;
@@ -1427,11 +1559,31 @@ function buildEmbarazosScreen(){
   }
 }
 function buildGestacionScreen(){
-  // La pregunta debe ir dirigida a quien gestaría (la mujer)
   const t = document.getElementById('t-gest');
   const s = document.getElementById('s-gest-s');
   const selfLbl = document.getElementById('gest-self-lbl');
   const surrLbl = document.getElementById('gest-surr-lbl');
+  // Evaluación: framing en futuro
+  if(state.need === 'evaluate'){
+    if(state.sex === 'male' && state.partner === 'female'){
+      t.innerHTML = '¿Tu pareja tiene algún padecimiento que <em>le impida llevar un embarazo en el futuro?</em>';
+      s.textContent = 'No pasa nada si no estás seguro. Lo evaluamos juntos en la consulta.';
+      selfLbl.textContent = 'Podría llevar un embarazo en el futuro';
+      surrLbl.textContent = 'Probablemente necesitaríamos una gestante';
+    } else if(state.sex === 'female' && state.partner === 'female'){
+      t.innerHTML = '¿Alguna de las dos tiene algún padecimiento que <em>le impida llevar un embarazo en el futuro?</em>';
+      s.textContent = 'No pasa nada si no están seguras. Lo evaluamos juntas en la consulta.';
+      selfLbl.textContent = 'Alguna podría llevar un embarazo en el futuro';
+      surrLbl.textContent = 'Probablemente necesitaríamos una gestante';
+    } else {
+      t.innerHTML = '¿Tienes algún padecimiento que <em>te impida llevar un embarazo en el futuro?</em>';
+      s.textContent = 'No pasa nada si no estás segura. Lo evaluamos juntas en la consulta.';
+      selfLbl.textContent = 'Podría llevar un embarazo en el futuro';
+      surrLbl.textContent = 'Probablemente necesitaría una gestante';
+    }
+    return;
+  }
+  // Flujo bebé
   if(state.sex === 'male' && state.partner === 'female'){
     t.innerHTML = '¿Tu pareja tiene algún padecimiento que <em>le impida llevar el embarazo?</em>';
     s.textContent = 'No pasa nada si no estás seguro. Lo evaluamos juntos en la consulta.';
@@ -1452,11 +1604,13 @@ function buildGestacionScreen(){
 function advanceEmbarazos(){
   if(!state.embarazos){ showToast('⚠️ Elige una opción'); return; }
   if(canAskGestacion()) advance('s-gestacion');
+  else if(state.need === 'evaluate') advance('s-nutri-1');
   else advance('s-productos');
 }
 function advanceGestacion(){
   if(!state.gestacion){ showToast('⚠️ Elige una opción'); return; }
-  advance('s-productos');
+  if(state.need === 'evaluate') advance('s-nutri-1');
+  else advance('s-productos');
 }
 
 // ═══════════════════════════════════════════════
@@ -1491,6 +1645,58 @@ function showCiclos(){
 // ═══════════════════════════════════════════════
 // MOTIVO — copy dinámico en pantalla de contacto
 // ═══════════════════════════════════════════════
+function buildBusquedaScreen(){
+  const t = document.getElementById('t-busq');
+  if(state.hasPartner) t.innerHTML = '¿Hace cuánto <em>buscan un bebé?</em>';
+  else t.innerHTML = '¿Hace cuánto <em>buscas un bebé?</em>';
+}
+function buildTiempoEmbScreen(){
+  const t = document.getElementById('t-temb');
+  if(state.hasPartner) t.innerHTML = '¿En cuánto tiempo <em>les gustaría lograr el embarazo?</em>';
+  else t.innerHTML = '¿En cuánto tiempo <em>te gustaría lograr el embarazo?</em>';
+}
+function afterNutri1(){
+  // Evaluación salta la pantalla de motivo y va directo a la pregunta abierta
+  if(state.need === 'evaluate') advance('s-abierta');
+  else advance('s-motivo');
+}
+function buildAbiertaScreen(){
+  const t = document.getElementById('t-abierta');
+  // Evaluación: copy específico
+  if(state.need === 'evaluate'){
+    t.innerHTML = '¿Por qué <em>estás buscando una evaluación de tu fertilidad?</em>';
+    return;
+  }
+  // Preservación: copy específico
+  if(state.need === 'preserve'){
+    const cosa = state.sex === 'female'
+      ? (state.hasPartner ? 'tus óvulos y/o embriones' : 'tus óvulos')
+      : (state.hasPartner ? 'tu esperma y/o embriones' : 'tu esperma');
+    t.innerHTML = `¿Por qué <em>estás buscando congelar ${cosa}?</em>`;
+    return;
+  }
+  // Flujo bebé
+  const isSurrogacy = isMaleNoFemale() || state.gestacion === 'surrogate';
+  if(isSurrogacy){
+    if(state.hasPartner){
+      t.innerHTML = '¿Por qué <em>están buscando un programa de subrogación?</em>';
+    } else {
+      t.innerHTML = '¿Por qué <em>estás buscando un programa de subrogación?</em>';
+    }
+  } else {
+    t.innerHTML = '¿Por qué <em>crees que necesitas un tratamiento de fertilidad?</em>';
+  }
+}
+function buildMotivoScreen(){
+  // Preservación: ocultamos la opción de "segunda opinión" porque no aplica
+  const opts = document.querySelectorAll('#s-motivo .mopt');
+  opts.forEach(opt => {
+    const onclick = opt.getAttribute('onclick') || '';
+    if(onclick.includes('second_opinion')){
+      opt.style.display = state.need === 'preserve' ? 'none' : '';
+    }
+  });
+}
 function applyMotivoTitles(){
   const t = document.getElementById('t-contacto');
   const s = document.getElementById('s-contacto-s');
@@ -1697,10 +1903,37 @@ function resendCode(){
 // ═══════════════════════════════════════════════
 // AGENDA
 // ═══════════════════════════════════════════════
+function afterCodigo(){
+  // review_case ya pidió que un especialista revise su caso → saltamos la pregunta y vamos directo a la agenda
+  if(state.motivo === 'review_case'){ advance('s-widget'); return; }
+  advance('s-agenda');
+}
 function setupAgendaScreen(){
-  const sucWord = state.sucursal === 'VIRTUAL' ? 'consulta virtual' : (state.sucursal === 'help' ? 'sesión con coordinadora' : 'cita');
-  document.getElementById('t-agenda').innerHTML = `Nos encantaría <em>${state.hasPartner ? 'conocerlos' : 'conocerte'}</em>`;
-  document.getElementById('s-agenda-s').textContent = `Estudiamos ${state.hasPartner ? 'su caso' : 'tu caso'} en profundidad. ¿Te gustaría agendar una ${sucWord}?`;
+  const t = document.getElementById('t-agenda');
+  const s = document.getElementById('s-agenda-s');
+  // Evaluación: copy específico — la consulta de evaluación es el siguiente paso natural
+  if(state.need === 'evaluate'){
+    t.innerHTML = 'Tu <em>evaluación de fertilidad</em> empieza acá';
+    s.textContent = 'La mejor forma de evaluar tu salud reproductiva es con una consulta. Hacemos los estudios necesarios y te explicamos los resultados.';
+    return;
+  }
+  // Preservación: copy específico
+  if(state.need === 'preserve'){
+    t.innerHTML = 'Tu plan de <em>preservación</em> empieza acá';
+    s.textContent = 'En la consulta evaluamos tu situación y diseñamos contigo el mejor plan para preservar tu fertilidad.';
+    return;
+  }
+  if(state.motivo === 'second_opinion'){
+    t.innerHTML = 'Tu <em>segunda opinión</em> empieza con un especialista';
+    s.textContent = 'La mejor forma de tener una segunda opinión es platicando con uno de nuestros especialistas. Te invitamos a agendar tu cita.';
+  } else if(state.motivo === 'info'){
+    t.innerHTML = 'La mejor información <em>te la damos en consulta</em>';
+    s.textContent = 'La mejor forma de recibir información personalizada es platicando con un especialista. Te invitamos a agendar una cita sin compromiso.';
+  } else {
+    const sucWord = state.sucursal === 'VIRTUAL' ? 'consulta virtual' : (state.sucursal === 'help' ? 'sesión con coordinadora' : 'cita');
+    t.innerHTML = `Nos encantaría <em>${state.hasPartner ? 'conocerlos' : 'conocerte'}</em>`;
+    s.textContent = `Estudiamos ${state.hasPartner ? 'su caso' : 'tu caso'} en profundidad. ¿Te gustaría agendar una ${sucWord}?`;
+  }
 }
 function buildWidget(){
   const days = document.getElementById('cal-days');
@@ -1788,12 +2021,18 @@ function buildFinal(){
 const _origShow = showScreen;
 showScreen = function(id){
   _origShow(id);
+  if(id === 's-placeholder') buildPlaceholder();
   if(id === 's-civil') buildCivilScreen();
   if(id === 's-edad') refreshAgeHint();
   if(id === 's-hijos') buildHijosScreen();
   if(id === 's-trompas') buildTrompasScreen();
   if(id === 's-embarazos') buildEmbarazosScreen();
   if(id === 's-gestacion') buildGestacionScreen();
+  if(id === 's-productos') filterProductos();
+  if(id === 's-busqueda') buildBusquedaScreen();
+  if(id === 's-tiempo-emb') buildTiempoEmbScreen();
+  if(id === 's-motivo') buildMotivoScreen();
+  if(id === 's-abierta') buildAbiertaScreen();
   if(id === 's-camino') buildCamino();
   if(id === 's-sucursal') buildSucursal();
   if(id === 's-codigo') setupCodigoScreen();

@@ -320,19 +320,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
           </div>
           <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
-        <div class="need-card" data-need="evaluate" onclick="selectNeed('evaluate')">
-          <div class="need-ico">🌿</div>
-          <div class="need-body">
-            <div class="need-ttl">No estoy buscando un bebé en este momento, pero quiero evaluar mi salud reproductiva</div>
-            <div class="need-sub">Test y Check Up de Fertilidad</div>
-          </div>
-          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
         <div class="need-card" data-need="preserve" onclick="selectNeed('preserve')">
           <div class="need-ico">❄️</div>
           <div class="need-body">
             <div class="need-ttl">Quiero preservar mi fertilidad</div>
             <div class="need-sub">Óvulos, esperma y/o embriones</div>
+          </div>
+          <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+        <div class="need-card" data-need="evaluate" onclick="selectNeed('evaluate')">
+          <div class="need-ico">🌿</div>
+          <div class="need-body">
+            <div class="need-ttl">No estoy buscando un bebé en este momento, pero quiero evaluar mi salud reproductiva</div>
+            <div class="need-sub">Test y Check Up de Fertilidad</div>
           </div>
           <div class="need-chk"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
@@ -763,9 +763,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
   </div>
   <div class="main">
     <div class="mchoice">
-      <div class="mopt" onclick="setSimple('motivo','second_opinion',true)"><div class="mopt-ico">🔍</div><div class="mopt-body"><span>Estoy buscando una segunda opinión</span><span class="mopt-sub">Quiero validar lo que me dijo otro especialista</span></div></div>
       <div class="mopt" onclick="setSimple('motivo','review_case',true)"><div class="mopt-ico">📋</div><div class="mopt-body"><span>Quiero que un especialista revise mi caso</span><span class="mopt-sub">Me gustaría una evaluación completa</span></div></div>
       <div class="mopt" onclick="setSimple('motivo','info',true)"><div class="mopt-ico">📩</div><div class="mopt-body"><span>Quiero recibir información personalizada</span><span class="mopt-sub">Aún estoy explorando</span></div></div>
+      <div class="mopt" onclick="setSimple('motivo','second_opinion',true)"><div class="mopt-ico">🔍</div><div class="mopt-body"><span>Estoy buscando una segunda opinión</span><span class="mopt-sub">Quiero validar lo que me dijo otro especialista</span></div></div>
     </div>
   </div>
   <div class="btm" id="btm-motivo">
@@ -1462,8 +1462,9 @@ function setHijos(who, n){
   document.querySelectorAll('#'+blockId+' .mopt').forEach(m => m.classList.remove('sel'));
   const selector = who==='self' ? `[data-h="${n}"]` : `[data-hp="${n}"]`;
   document.querySelectorAll('#'+blockId+' '+selector).forEach(el => el.classList.add('sel'));
-  // Ya con todas las respuestas requeridas, mostrar btn
-  const ready = state.hijosSelf !== null && (!state.hasPartner || state.hijosPartner !== null);
+  // En preservación no se pregunta a la pareja, así que no se exige esa respuesta
+  const needsPartner = state.hasPartner && state.need !== 'preserve';
+  const ready = state.hijosSelf !== null && (!needsPartner || state.hijosPartner !== null);
   document.getElementById('btm-hijos').classList.toggle('vis', ready);
 }
 function advanceHijos(){

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ingenes — Encuesta de satisfacción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#1F3864; --navy2:#142548; --navy3:#2a4a7f;
+  --gold:#C9A84C; --goldl:#e8c97a; --goldp:#FFF8E8;
+  --white:#FFFFFF; --off:#F7F9FC;
+  --td:#1a2a45; --tm:#4a5a7a; --tl:#8a9ab8;
+  --teal:#0F6E56; --tealL:#E8F6F2;
+  --coral:#E8734A; --coralL:#FDF0EB;
+  --green:#1E6E42; --greenL:#D5F0E0;
+  --red:#C0392B; --redL:#FDECEC;
+  --amber:#D6921A; --amberL:#FFF3D8;
+  --brd:rgba(31,56,100,.10); --brdA:rgba(31,56,100,.30);
+  --sc:0 2px 16px rgba(31,56,100,.07),0 1px 4px rgba(31,56,100,.04);
+  --sh:0 8px 32px rgba(31,56,100,.13),0 2px 8px rgba(31,56,100,.06);
+  --sa:0 12px 40px rgba(31,56,100,.18),0 4px 12px rgba(31,56,100,.09);
+  --r:16px; --rs:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--off);color:var(--td);min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+.hdr{background:var(--navy);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.18)}
+.hdr-logo{display:flex;align-items:center;gap:9px;font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--white);letter-spacing:.02em}
+.hdr-logo-i{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--goldl));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hdr-prog{display:flex;align-items:center;gap:10px}
+.hdr-step{font-size:11.5px;color:rgba(255,255,255,.5);letter-spacing:.02em}
+.prog-bar{width:120px;height:3.5px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.hdr-back{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:99px;transition:all .18s;font-family:'DM Sans',sans-serif}
+.hdr-back:hover{background:rgba(255,255,255,.1);color:var(--white)}
+.hdr-back.hidden{visibility:hidden}
+
+/* SCREENS */
+.screens{position:relative;min-height:calc(100vh - 60px)}
+.screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
+.screen.active{display:flex;animation:slideIn .32s cubic-bezier(.4,0,.2,1)}
+.screen.out{animation:slideOut .28s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-24px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,var(--navy2) 0%,var(--navy) 55%,#2a4a7f 100%);padding:42px 22px 34px;text-align:center;position:relative;overflow:hidden;flex-shrink:0}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 80%,rgba(201,168,76,.10) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 80% 20%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.35);border-radius:99px;padding:4px 13px;font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--goldl);margin-bottom:14px;position:relative}
+.hero-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.hero-t{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5vw,30px);font-weight:400;color:var(--white);line-height:1.3;max-width:640px;margin:0 auto 10px}
+.hero-t em{color:var(--goldl);font-style:italic;font-weight:300}
+.hero-s{font-size:13.5px;color:rgba(255,255,255,.65);font-weight:400;max-width:540px;margin:0 auto;line-height:1.55}
+
+/* MAIN */
+.main{max-width:560px;margin:0 auto;padding:24px 18px 110px;width:100%}
+
+/* SINGLE-SELECT (mchoice) */
+.mchoice{display:flex;flex-direction:column;gap:9px;max-width:520px;margin:0 auto}
+.mopt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--rs);padding:14px 17px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;color:var(--td);box-shadow:var(--sc);display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent;user-select:none}
+.mopt:hover{border-color:var(--brdA);transform:translateX(3px)}
+.mopt.sel{border-color:var(--navy);background:#EEF4FF;color:var(--navy);font-weight:600}
+.mopt-ico{font-size:18px;width:30px;height:30px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.mopt.sel .mopt-ico{background:var(--navy);color:var(--white)}
+.mopt-body{flex:1;display:flex;flex-direction:column;gap:2px}
+.mopt-sub{font-size:11.5px;color:var(--tm);font-weight:400}
+.mopt.sel .mopt-sub{color:var(--navy3)}
+
+/* MULTI-SELECT */
+.multi{display:flex;flex-direction:column;gap:9px;max-width:520px;margin:0 auto}
+.multi-opt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--rs);padding:14px 17px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;color:var(--td);box-shadow:var(--sc);display:flex;align-items:center;gap:12px;user-select:none}
+.multi-opt:hover{border-color:var(--brdA)}
+.multi-opt.sel{border-color:var(--navy);background:#EEF4FF;color:var(--navy);font-weight:600}
+.multi-chk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--brd);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.multi-opt.sel .multi-chk{background:var(--navy);border-color:var(--navy)}
+.multi-chk svg{opacity:0;transition:opacity .15s}
+.multi-opt.sel .multi-chk svg{opacity:1}
+.multi-body{flex:1}
+
+/* FORM */
+.fld{display:flex;flex-direction:column;gap:6px;max-width:480px;margin:0 auto}
+.fld+.fld{margin-top:14px}
+.fld-lbl{font-size:12px;font-weight:600;color:var(--tm);letter-spacing:.04em;text-transform:uppercase}
+.fld-inp,.fld-ta{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);transition:border-color .18s,box-shadow .18s;outline:none;width:100%}
+.fld-ta{min-height:130px;resize:vertical;line-height:1.5}
+.fld-inp:focus,.fld-ta:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,56,100,.08)}
+.fld-inp::placeholder,.fld-ta::placeholder{color:var(--tl)}
+.phone-wrap{display:flex;gap:8px}
+.prefix-sel{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 12px;font-size:15px;background:var(--white);outline:none;cursor:pointer;min-width:108px;font-family:'DM Sans',sans-serif;color:var(--td)}
+.prefix-sel:focus{border-color:var(--navy)}
+
+/* NPS scale */
+.nps-wrap{max-width:560px;margin:14px auto 0}
+.nps-grid{display:grid;grid-template-columns:repeat(11,1fr);gap:6px}
+@media(max-width:520px){.nps-grid{grid-template-columns:repeat(11,minmax(0,1fr));gap:3px}}
+.nps-num{aspect-ratio:1/1;background:var(--white);border:1.5px solid var(--brd);border-radius:10px;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--td);display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:var(--sc);user-select:none}
+.nps-num:hover{transform:translateY(-2px);box-shadow:var(--sh);border-color:var(--brdA)}
+.nps-num.sel{color:var(--white);border-color:transparent;transform:scale(1.06)}
+.nps-num[data-band="d"]{}
+.nps-num[data-band="d"].sel{background:var(--red)}
+.nps-num[data-band="p"]{}
+.nps-num[data-band="p"].sel{background:var(--amber)}
+.nps-num[data-band="r"]{}
+.nps-num[data-band="r"].sel{background:var(--green)}
+.nps-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--tm);margin-top:10px;padding:0 4px}
+.nps-feedback{text-align:center;margin-top:14px;padding:12px 16px;border-radius:var(--rs);font-size:13px;display:none}
+.nps-feedback.vis{display:block;animation:fadeUp .3s ease}
+.nps-feedback.detractor{background:var(--redL);color:var(--red);border:1px solid rgba(192,57,43,.20)}
+.nps-feedback.passive{background:var(--amberL);color:var(--amber);border:1px solid rgba(214,146,26,.25)}
+.nps-feedback.promoter{background:var(--greenL);color:var(--green);border:1px solid rgba(30,110,66,.25)}
+
+/* Q LABELS */
+.q-num{font-size:11px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--goldl);margin-bottom:4px}
+
+/* CTA bar */
+.btm{position:fixed;bottom:0;left:0;right:0;padding:12px 18px;background:var(--white);border-top:1px solid var(--brd);box-shadow:0 -4px 24px rgba(31,56,100,.09);display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:100;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.btm.vis{transform:translateY(0)}
+.btm-info{font-size:12.5px;color:var(--tm);line-height:1.4}
+.btm-info strong{color:var(--td);font-weight:600}
+.btn{background:linear-gradient(135deg,var(--navy),var(--navy3));color:var(--white);border:none;border-radius:99px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 4px 16px rgba(31,56,100,.25);white-space:nowrap}
+.btn:hover{background:linear-gradient(135deg,var(--navy2),var(--navy));box-shadow:0 6px 24px rgba(31,56,100,.32);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn svg{transition:transform .18s}
+.btn:hover svg{transform:translateX(3px)}
+.btn-ghost{background:none;border:1.5px solid var(--brd);color:var(--tm);border-radius:99px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{border-color:var(--brdA);color:var(--td)}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:var(--white);border-radius:99px;padding:11px 18px;font-size:12.5px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,.20);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;z-index:150;max-width:calc(100vw - 36px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* INTRO + FINAL */
+.intro-card,.final-card{background:var(--white);border-radius:24px;box-shadow:var(--sa);padding:40px 32px;max-width:520px;margin:0 auto;text-align:center;animation:popIn .45s cubic-bezier(.34,1.56,.64,1)}
+.intro-ico,.final-ico{font-size:60px;margin-bottom:16px}
+.intro-t,.final-t{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--navy);line-height:1.25;margin-bottom:12px}
+.intro-t em,.final-t em{color:var(--gold);font-style:italic}
+.intro-s,.final-s{font-size:14px;color:var(--tm);line-height:1.65;margin-bottom:6px}
+
+/* INFO BOX */
+.info-box{background:var(--tealL);border:1px solid rgba(15,110,86,.20);border-radius:var(--rs);padding:13px 16px;font-size:12.5px;color:var(--teal);line-height:1.6;margin:14px auto 0;max-width:480px}
+.info-box.gold{background:var(--goldp);border-color:rgba(201,168,76,.30);color:var(--td)}
+.info-box.coral{background:var(--coralL);border-color:rgba(232,115,74,.25);color:var(--coral)}
+
+/* UTIL */
+.center{text-align:center}
+.mt12{margin-top:12px}
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <button class="hdr-back hidden" id="btn-back" onclick="goBack()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Regresar</span>
+  </button>
+  <div class="hdr-logo"><div class="hdr-logo-i">🌟</div>Ingenes</div>
+  <div class="hdr-prog">
+    <span class="hdr-step" id="step-lbl">Inicio</span>
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:2%"></div></div>
+  </div>
+</header>
+
+<div class="screens" id="screens">
+
+<!-- ═══════════════════════════════════════════════
+     INTRO
+═══════════════════════════════════════════════ -->
+<div class="screen active" id="s-intro">
+  <div class="main mt24">
+    <div class="intro-card">
+      <div class="intro-ico">💬</div>
+      <h1 class="intro-t">Tu opinión <em>nos importa</em></h1>
+      <p class="intro-s">Después de tu primera consulta queremos saber cómo te fue. Son 12 preguntas cortas y nos toma menos de 5 minutos.</p>
+      <p class="intro-s mt12" style="color:var(--tl);font-size:12.5px">Tus respuestas nos ayudan a entenderte mejor y mejorar la atención que damos.</p>
+      <div class="mt24">
+        <button class="btn" style="display:inline-flex" onclick="advance('s-q1')">Empezar
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q1 — Claridad de la información
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q1">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 1 de 12</div>
+    <h1 class="hero-t">¿Qué tan <em>clara fue la información</em> proporcionada durante tu consulta?</h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q1','a',true,'s-q2')"><div class="mopt-ico">⭐</div><div class="mopt-body"><span>Muy clara y con esto ya estoy dispuesto a iniciar</span></div></div>
+      <div class="mopt" onclick="setAnswer('q1','b',true,'s-q2')"><div class="mopt-ico">👍</div><div class="mopt-body"><span>Clara, pero necesito más información</span></div></div>
+      <div class="mopt" onclick="setAnswer('q1','c',true,'s-q2')"><div class="mopt-ico">🤔</div><div class="mopt-body"><span>Poco clara</span></div></div>
+      <div class="mopt" onclick="setAnswer('q1','d',true,'s-q2')"><div class="mopt-ico">⚠️</div><div class="mopt-body"><span>Nada clara, necesito otra consulta</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q2 — Aspectos clave
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q2">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 2 de 12</div>
+    <h1 class="hero-t">¿Sientes que se <em>abordaron todos los aspectos clave</em> del proceso o tratamiento?</h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q2','a',true,'s-q3')"><div class="mopt-ico">✅</div><div class="mopt-body"><span>Sí, completamente</span></div></div>
+      <div class="mopt" onclick="setAnswer('q2','b',true,'s-q3')"><div class="mopt-ico">🟡</div><div class="mopt-body"><span>En su mayoría, pero faltó información</span></div></div>
+      <div class="mopt" onclick="setAnswer('q2','c',true,'s-q3')"><div class="mopt-ico">🔴</div><div class="mopt-body"><span>No, faltó mucha información</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q3 — Especialista
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q3">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 3 de 12</div>
+    <h1 class="hero-t">¿Consideras que el especialista <em>entendió tus necesidades</em> y demostró compromiso con tu caso?</h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q3','a',true,'s-q4')"><div class="mopt-ico">😊</div><div class="mopt-body"><span>Satisfecho</span></div></div>
+      <div class="mopt" onclick="setAnswer('q3','b',true,'s-q4')"><div class="mopt-ico">😐</div><div class="mopt-body"><span>Neutral</span></div></div>
+      <div class="mopt" onclick="setAnswer('q3','c',true,'s-q4')"><div class="mopt-ico">😞</div><div class="mopt-body"><span>Insatisfecho</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q4 — Próxima cita
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q4">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 4 de 12</div>
+    <h1 class="hero-t">¿Tienes <em>programada ya tu próxima cita?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setQ4('a')"><div class="mopt-ico">📅</div><div class="mopt-body"><span>Sí, ya la programé</span></div></div>
+      <div class="mopt" onclick="setQ4('b')"><div class="mopt-ico">🕒</div><div class="mopt-body"><span>No aún, pero la programaré en los siguientes días</span></div></div>
+      <div class="mopt" onclick="setQ4('c')"><div class="mopt-ico">🚫</div><div class="mopt-body"><span>No la voy a programar</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q4-c FOLLOW-UP — Qué te detiene
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q4c">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 4 · seguimiento</div>
+    <h1 class="hero-t">Nos gustaría <em>entender qué te detiene</em> para seguir adelante</h1>
+    <p class="hero-s">Tu respuesta nos ayuda a saber qué podemos mejorar.</p>
+  </div>
+  <div class="main">
+    <div class="fld">
+      <div class="fld-lbl">Compártenos tu razón</div>
+      <textarea class="fld-ta" id="q4c-text" placeholder="Cuéntanos lo que sientas necesario…"></textarea>
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"><strong>Esta pregunta es opcional</strong></div>
+    <button class="btn" onclick="advanceFromQ4c()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q5 — Programa recomendado
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q5">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 5 de 12</div>
+    <h1 class="hero-t">¿Qué tan satisfecho estás con el <em>programa recomendado?</em></h1>
+    <p class="hero-s">¿Concuerda con tus expectativas?</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setQ5('a')"><div class="mopt-ico">😊</div><div class="mopt-body"><span>Satisfecho</span></div></div>
+      <div class="mopt" onclick="setQ5('b')"><div class="mopt-ico">😐</div><div class="mopt-body"><span>Neutral</span></div></div>
+      <div class="mopt" onclick="setQ5('c')"><div class="mopt-ico">😞</div><div class="mopt-body"><span>Insatisfecho</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q5 FOLLOW-UP — Qué te gustaría que te ofrezcamos
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q5f">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 5 · seguimiento</div>
+    <h1 class="hero-t">¿Qué te gustaría que <em>te ofreciéramos</em> para generar la satisfacción que buscas?</h1>
+    <p class="hero-s">Tu opinión nos sirve para mejorar.</p>
+  </div>
+  <div class="main">
+    <div class="fld">
+      <div class="fld-lbl">Tu sugerencia</div>
+      <textarea class="fld-ta" id="q5f-text" placeholder="Cuéntanos lo que sientas necesario…"></textarea>
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"><strong>Esta pregunta es opcional</strong></div>
+    <button class="btn" onclick="advanceFromQ5f()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q6 — Continuar con el proceso
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q6">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 6 de 12</div>
+    <h1 class="hero-t">¿Cómo te sientes respecto a <em>continuar con el proceso</em> después de esta primera consulta?</h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q6','a',true,'s-q7')"><div class="mopt-ico">🚀</div><div class="mopt-body"><span>Muy motivado/a y listo/a para seguir</span></div></div>
+      <div class="mopt" onclick="setAnswer('q6','b',true,'s-q7')"><div class="mopt-ico">📚</div><div class="mopt-body"><span>Necesito más información antes de decidir</span></div></div>
+      <div class="mopt" onclick="setAnswer('q6','c',true,'s-q7')"><div class="mopt-ico">🤔</div><div class="mopt-body"><span>No estoy seguro/a si es la mejor opción para mí</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q7 — Tratamiento al alcance
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q7">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 7 de 12</div>
+    <h1 class="hero-t">¿El tratamiento <em>está a tu alcance?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setQ7('a')"><div class="mopt-ico">✅</div><div class="mopt-body"><span>Sí</span></div></div>
+      <div class="mopt" onclick="setQ7('b')"><div class="mopt-ico">⏳</div><div class="mopt-body"><span>No por ahora</span></div></div>
+      <div class="mopt" onclick="setQ7('c')"><div class="mopt-ico">❌</div><div class="mopt-body"><span>No</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q7 FOLLOW-UP — Razones (multi-select)
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q7r">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 7 · razones</div>
+    <h1 class="hero-t">Por favor compártenos <em>tus razones</em></h1>
+    <p class="hero-s">Selecciona tantas como apliquen.</p>
+  </div>
+  <div class="main">
+    <div class="multi">
+      <div class="multi-opt" data-r="a" onclick="toggleQ7r('a')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Tendré que esperar hasta haber ahorrado lo suficiente</span></div>
+      </div>
+      <div class="multi-opt" data-r="b" onclick="toggleQ7r('b')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Debo consultarlo con mi pareja</span></div>
+      </div>
+      <div class="multi-opt" data-r="c" onclick="toggleQ7r('c')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>No me siento listo/a todavía</span></div>
+      </div>
+      <div class="multi-opt" data-r="d" onclick="toggleQ7r('d')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Necesito ver otras opciones de tratamiento en otro centro</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="btm" id="btm-q7r">
+    <div class="btm-info"><strong id="btm-q7r-info">Selecciona al menos una opción</strong></div>
+    <button class="btn" onclick="advanceFromQ7r()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q7 FINANCIAMIENTO — solo si seleccionó A/B/C
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q7fin">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 7 · financiamiento</div>
+    <h1 class="hero-t">¿Necesitas algún tipo de <em>financiamiento?</em></h1>
+    <p class="hero-s">Tenemos opciones que podrían ayudarte a empezar antes.</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q7fin','a',true,'s-q8')"><div class="mopt-ico">💳</div><div class="mopt-body"><span>Sí</span></div></div>
+      <div class="mopt" onclick="setAnswer('q7fin','b',true,'s-q8')"><div class="mopt-ico">—</div><div class="mopt-body"><span>No</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q8 — Asesor PBB
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q8">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 8 de 12</div>
+    <h1 class="hero-t">¿Qué tan satisfecho te sientes con la <em>atención brindada por tu asesor PBB?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q8','a',true,'s-q9')"><div class="mopt-ico">😊</div><div class="mopt-body"><span>Satisfecho</span></div></div>
+      <div class="mopt" onclick="setAnswer('q8','b',true,'s-q9')"><div class="mopt-ico">😐</div><div class="mopt-body"><span>Neutral</span></div></div>
+      <div class="mopt" onclick="setAnswer('q8','c',true,'s-q9')"><div class="mopt-ico">😞</div><div class="mopt-body"><span>Insatisfecho</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q9 — Cuándo iniciar tratamiento
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q9">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 9 de 12</div>
+    <h1 class="hero-t">¿Cuándo planeas <em>iniciar tu tratamiento?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q9','a',true,'s-q10')"><div class="mopt-ico">⚡</div><div class="mopt-body"><span>En menos de 3 meses</span></div></div>
+      <div class="mopt" onclick="setAnswer('q9','b',true,'s-q10')"><div class="mopt-ico">📅</div><div class="mopt-body"><span>De 3 a 6 meses</span></div></div>
+      <div class="mopt" onclick="setAnswer('q9','c',true,'s-q10')"><div class="mopt-ico">📆</div><div class="mopt-body"><span>Más de 6 meses</span></div></div>
+      <div class="mopt" onclick="setAnswer('q9','d',true,'s-q10')"><div class="mopt-ico">🤔</div><div class="mopt-body"><span>No he decidido aún</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q10 — Ingenes mejor lugar
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q10">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 10 de 12</div>
+    <h1 class="hero-t">¿Consideras a <em>Ingenes el mejor lugar</em> para resolver tu necesidad?</h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q10','a',true,'s-q11')"><div class="mopt-ico">😊</div><div class="mopt-body"><span>Satisfecho</span></div></div>
+      <div class="mopt" onclick="setAnswer('q10','b',true,'s-q11')"><div class="mopt-ico">😐</div><div class="mopt-body"><span>Neutral</span></div></div>
+      <div class="mopt" onclick="setAnswer('q10','c',true,'s-q11')"><div class="mopt-ico">😞</div><div class="mopt-body"><span>Insatisfecho</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q11 — NPS
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q11">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 11 de 12</div>
+    <h1 class="hero-t">¿Qué tan probable es que <em>nos recomiendes</em> con un familiar, amigo o colega?</h1>
+    <p class="hero-s">Considera una escala donde 0 es poco probable y 10 muy probable.</p>
+  </div>
+  <div class="main">
+    <div class="nps-wrap">
+      <div class="nps-grid">
+        <div class="nps-num" data-band="d" data-n="0" onclick="setNPS(0)">0</div>
+        <div class="nps-num" data-band="d" data-n="1" onclick="setNPS(1)">1</div>
+        <div class="nps-num" data-band="d" data-n="2" onclick="setNPS(2)">2</div>
+        <div class="nps-num" data-band="d" data-n="3" onclick="setNPS(3)">3</div>
+        <div class="nps-num" data-band="d" data-n="4" onclick="setNPS(4)">4</div>
+        <div class="nps-num" data-band="d" data-n="5" onclick="setNPS(5)">5</div>
+        <div class="nps-num" data-band="d" data-n="6" onclick="setNPS(6)">6</div>
+        <div class="nps-num" data-band="p" data-n="7" onclick="setNPS(7)">7</div>
+        <div class="nps-num" data-band="p" data-n="8" onclick="setNPS(8)">8</div>
+        <div class="nps-num" data-band="r" data-n="9" onclick="setNPS(9)">9</div>
+        <div class="nps-num" data-band="r" data-n="10" onclick="setNPS(10)">10</div>
+      </div>
+      <div class="nps-labels">
+        <span>Poco probable</span>
+        <span>Muy probable</span>
+      </div>
+      <div class="nps-feedback" id="nps-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q12 — Compartir referido
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q12">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 12 de 12</div>
+    <h1 class="hero-t">Si conoces a un familiar, amigo o colega <em>a quien podamos ayudar</em>, ¿nos compartes sus datos?</h1>
+    <p class="hero-s">Llamamos como Ingenes y mencionamos que tú nos pediste contactarle.</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setAnswer('q12','a',true,'s-q12data')"><div class="mopt-ico">💌</div><div class="mopt-body"><span>Sí, te comparto sus datos</span></div></div>
+      <div class="mopt" onclick="setAnswer('q12','b',true,'s-thanks')"><div class="mopt-ico">—</div><div class="mopt-body"><span>No por ahora</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     Q12 DATA — Datos del referido
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-q12data">
+  <div class="hero">
+    <div class="hero-chip">Pregunta 12 · datos</div>
+    <h1 class="hero-t">Datos de <em>la persona que quieres referir</em></h1>
+    <p class="hero-s">Contactamos con todo el cuidado y la discreción que merece.</p>
+  </div>
+  <div class="main">
+    <div class="fld">
+      <div class="fld-lbl">Nombre</div>
+      <input type="text" class="fld-inp" id="ref-name" placeholder="Nombre" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl">Apellido</div>
+      <input type="text" class="fld-inp" id="ref-last" placeholder="Apellido" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl">Teléfono</div>
+      <div class="phone-wrap">
+        <select class="prefix-sel" id="ref-prefix">
+          <option value="+52">🇲🇽 +52</option>
+          <option value="+1">🇺🇸 +1</option>
+          <option value="+1-CA">🇨🇦 +1</option>
+          <option value="+34">🇪🇸 +34</option>
+          <option value="+57">🇨🇴 +57</option>
+          <option value="+54">🇦🇷 +54</option>
+          <option value="+56">🇨🇱 +56</option>
+          <option value="+55">🇧🇷 +55</option>
+          <option value="+0">🌍 Otro</option>
+        </select>
+        <input type="tel" class="fld-inp" id="ref-phone" placeholder="Número de celular" inputmode="tel">
+      </div>
+    </div>
+    <div class="fld">
+      <div class="fld-lbl">Correo electrónico</div>
+      <input type="email" class="fld-inp" id="ref-email" placeholder="correo@ejemplo.com" autocomplete="off">
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"><strong>Discreción garantizada</strong><br><span style="font-size:11px;color:var(--tl)">🔒 Privacidad protegida</span></div>
+    <button class="btn" onclick="advanceFromQ12data()">Enviar y terminar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     FINAL
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-thanks">
+  <div class="main mt24">
+    <div class="final-card">
+      <div class="final-ico">🤝</div>
+      <h2 class="final-t">Te <em>agradecemos</em> por responder</h2>
+      <p class="final-s">Tu opinión es clave para entenderte mejor, apoyarte en cada paso y brindarte la mejor solución.</p>
+      <p class="final-s mt12">Queremos acompañarte siempre para lograr tu objetivo juntos.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .screens -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const state = {
+  screen: 's-intro', history: [],
+  q1:null, q2:null, q3:null,
+  q4:null, q4cText:'',
+  q5:null, q5fText:'',
+  q6:null,
+  q7:null, q7r:new Set(), q7fin:null,
+  q8:null, q9:null, q10:null,
+  q11:null,
+  q12:null,
+  refName:'', refLast:'', refPhone:'', refPrefix:'+52', refEmail:''
+};
+
+const ORDER = ['s-intro','s-q1','s-q2','s-q3','s-q4','s-q4c','s-q5','s-q5f','s-q6','s-q7','s-q7r','s-q7fin','s-q8','s-q9','s-q10','s-q11','s-q12','s-q12data','s-thanks'];
+
+// ═══════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════
+function showScreen(id){
+  const cur = document.getElementById(state.screen);
+  const nxt = document.getElementById(id);
+  if(!nxt) return;
+  if(id !== state.screen) state.history.push(state.screen);
+  cur.classList.add('out');
+  setTimeout(()=>{ cur.classList.remove('active','out'); cur.style.display='none'; }, 280);
+  nxt.style.display='flex';
+  requestAnimationFrame(()=>{ nxt.classList.add('active'); });
+  state.screen = id;
+  updateProgress();
+  updateBackBtn();
+  window.scrollTo(0,0);
+}
+function goBack(){
+  if(!state.history.length) return;
+  const prev = state.history.pop();
+  const cur = document.getElementById(state.screen);
+  const prv = document.getElementById(prev);
+  cur.classList.add('out');
+  setTimeout(()=>{ cur.classList.remove('active','out'); cur.style.display='none'; }, 280);
+  prv.style.display='flex';
+  requestAnimationFrame(()=>{ prv.classList.add('active'); });
+  state.screen = prev;
+  updateProgress();
+  updateBackBtn();
+  window.scrollTo(0,0);
+}
+function advance(id){ showScreen(id); }
+
+// Pasos visibles para barra de progreso (ignoramos sub-pantallas condicionales)
+const PROGRESS_STEPS = ['s-intro','s-q1','s-q2','s-q3','s-q4','s-q5','s-q6','s-q7','s-q8','s-q9','s-q10','s-q11','s-q12','s-thanks'];
+function updateProgress(){
+  // Mostrar avance basado en la última pregunta principal alcanzada
+  let main = state.screen;
+  if(['s-q4c'].includes(main)) main = 's-q4';
+  if(['s-q5f'].includes(main)) main = 's-q5';
+  if(['s-q7r','s-q7fin'].includes(main)) main = 's-q7';
+  if(main === 's-q12data') main = 's-q12';
+  const idx = Math.max(0, PROGRESS_STEPS.indexOf(main));
+  const pct = Math.round((idx/(PROGRESS_STEPS.length-1))*100);
+  document.getElementById('prog').style.width = pct+'%';
+  if(state.screen === 's-intro') document.getElementById('step-lbl').textContent = 'Inicio';
+  else if(state.screen === 's-thanks') document.getElementById('step-lbl').textContent = '¡Listo!';
+  else {
+    const m = main.match(/q(\d+)/);
+    document.getElementById('step-lbl').textContent = m ? `Pregunta ${m[1]} de 12` : '';
+  }
+}
+function updateBackBtn(){
+  document.getElementById('btn-back').classList.toggle('hidden', !state.history.length || state.screen === 's-thanks');
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast'); t.innerHTML = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// ═══════════════════════════════════════════════
+// SETTERS
+// ═══════════════════════════════════════════════
+function setAnswer(key, val, auto, nextId){
+  state[key] = val;
+  const evt = window.event;
+  if(evt && evt.currentTarget){
+    evt.currentTarget.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
+    evt.currentTarget.classList.add('sel');
+  }
+  if(auto && nextId){ setTimeout(()=>advance(nextId), 320); }
+}
+
+// ═══════════════════════════════════════════════
+// Q4 — bifurca según respuesta
+// ═══════════════════════════════════════════════
+function setQ4(val){
+  state.q4 = val;
+  const evt = window.event;
+  if(evt && evt.currentTarget){
+    evt.currentTarget.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
+    evt.currentTarget.classList.add('sel');
+  }
+  setTimeout(()=>{
+    if(val === 'c') advance('s-q4c');
+    else advance('s-q5');
+  }, 320);
+}
+function advanceFromQ4c(){
+  state.q4cText = document.getElementById('q4c-text').value.trim();
+  advance('s-q5');
+}
+
+// ═══════════════════════════════════════════════
+// Q5 — bifurca si b/c
+// ═══════════════════════════════════════════════
+function setQ5(val){
+  state.q5 = val;
+  const evt = window.event;
+  if(evt && evt.currentTarget){
+    evt.currentTarget.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
+    evt.currentTarget.classList.add('sel');
+  }
+  setTimeout(()=>{
+    if(val === 'b' || val === 'c') advance('s-q5f');
+    else advance('s-q6');
+  }, 320);
+}
+function advanceFromQ5f(){
+  state.q5fText = document.getElementById('q5f-text').value.trim();
+  advance('s-q6');
+}
+
+// ═══════════════════════════════════════════════
+// Q7 — bifurca si b/c
+// ═══════════════════════════════════════════════
+function setQ7(val){
+  state.q7 = val;
+  const evt = window.event;
+  if(evt && evt.currentTarget){
+    evt.currentTarget.closest('.mchoice').querySelectorAll('.mopt').forEach(m => m.classList.remove('sel'));
+    evt.currentTarget.classList.add('sel');
+  }
+  setTimeout(()=>{
+    if(val === 'b' || val === 'c') advance('s-q7r');
+    else advance('s-q8');
+  }, 320);
+}
+function toggleQ7r(r){
+  const card = document.querySelector(`#s-q7r .multi-opt[data-r="${r}"]`);
+  if(state.q7r.has(r)){ state.q7r.delete(r); card.classList.remove('sel'); }
+  else { state.q7r.add(r); card.classList.add('sel'); }
+  const n = state.q7r.size;
+  document.getElementById('btm-q7r-info').innerHTML = n ? `<strong>${n} ${n===1?'razón seleccionada':'razones seleccionadas'}</strong>` : '<strong>Selecciona al menos una opción</strong>';
+  document.getElementById('btm-q7r').classList.toggle('vis', n>0);
+}
+function advanceFromQ7r(){
+  if(!state.q7r.size){ showToast('⚠️ Selecciona al menos una razón'); return; }
+  // Si seleccionó A, B o C → financiamiento. Si solo D → saltar.
+  const triggersFin = state.q7r.has('a') || state.q7r.has('b') || state.q7r.has('c');
+  if(triggersFin) advance('s-q7fin');
+  else advance('s-q8');
+}
+
+// ═══════════════════════════════════════════════
+// Q11 — NPS
+// ═══════════════════════════════════════════════
+function setNPS(n){
+  state.q11 = n;
+  document.querySelectorAll('.nps-num').forEach(el => el.classList.remove('sel'));
+  document.querySelector(`.nps-num[data-n="${n}"]`).classList.add('sel');
+  const fb = document.getElementById('nps-feedback');
+  fb.classList.remove('detractor','passive','promoter','vis');
+  if(n <= 6){ fb.classList.add('detractor','vis'); fb.innerHTML = '🙏 Gracias por la sinceridad. Esto nos ayuda a saber dónde mejorar.'; }
+  else if(n <= 8){ fb.classList.add('passive','vis'); fb.innerHTML = '🤝 Vamos por más. Queremos ganarnos tu recomendación entusiasta.'; }
+  else { fb.classList.add('promoter','vis'); fb.innerHTML = '✨ ¡Gracias! Significa mucho que nos recomiendes.'; }
+  setTimeout(()=>advance('s-q12'), 700);
+}
+
+// ═══════════════════════════════════════════════
+// Q12 DATA
+// ═══════════════════════════════════════════════
+function advanceFromQ12data(){
+  state.refName = document.getElementById('ref-name').value.trim();
+  state.refLast = document.getElementById('ref-last').value.trim();
+  state.refPhone = document.getElementById('ref-phone').value.trim();
+  state.refEmail = document.getElementById('ref-email').value.trim();
+  state.refPrefix = document.getElementById('ref-prefix').value;
+  if(!state.refName || !state.refLast){ showToast('⚠️ Completa nombre y apellido'); return; }
+  if(!state.refPhone){ showToast('⚠️ Falta el teléfono'); return; }
+  // En producción: POST a backend
+  console.log('Encuesta enviada:', state);
+  advance('s-thanks');
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  updateProgress();
+  updateBackBtn();
+});
+</script>
+</body>
+</html>

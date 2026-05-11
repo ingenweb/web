@@ -260,6 +260,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
 .confirm-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 4px}
 .pill{background:var(--off);border:1px solid var(--brd);border-radius:99px;padding:5px 12px;font-size:11.5px;color:var(--tm);font-weight:500}
 
+/* MULTI-SELECT (padecimientos, antecedentes) */
+.multi{display:flex;flex-direction:column;gap:9px;max-width:520px;margin:0 auto}
+.multi-opt{background:var(--white);border:1.5px solid var(--brd);border-radius:var(--rs);padding:14px 17px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;color:var(--td);box-shadow:var(--sc);display:flex;align-items:center;gap:12px;-webkit-tap-highlight-color:transparent;user-select:none}
+.multi-opt:hover{border-color:var(--brdA)}
+.multi-opt.sel{border-color:var(--navy);background:#EEF4FF;color:var(--navy);font-weight:600}
+.multi-chk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--brd);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.multi-opt.sel .multi-chk{background:var(--navy);border-color:var(--navy)}
+.multi-chk svg{opacity:0;transition:opacity .15s}
+.multi-opt.sel .multi-chk svg{opacity:1}
+.multi-body{flex:1}
+
+/* DATE GRID (filiación) */
+.date-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.date-grid select{border:1.5px solid var(--brd);border-radius:var(--rs);padding:13px 10px;font-size:14.5px;font-family:'DM Sans',sans-serif;color:var(--td);background:var(--white);outline:none;cursor:pointer;width:100%}
+.date-grid select:focus{border-color:var(--navy)}
+
 /* UP DEBUG INDICATOR (interno, no visible al paciente) */
 .up-debug{position:fixed;top:70px;right:12px;background:rgba(31,56,100,.92);color:var(--white);border-radius:10px;padding:8px 12px;font-size:11px;font-family:'DM Sans',monospace;z-index:999;line-height:1.45;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.18);max-width:200px;display:none}
 .up-debug.vis{display:block;animation:fadeUp .3s ease}
@@ -1133,6 +1149,299 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
       <div class="divider"></div>
       <div class="confirm-pills" id="final-pills"></div>
     </div>
+
+    <!-- CTA a flujo de confirmación previa a la consulta -->
+    <div class="conf-prompt fade-up" style="margin:18px auto 0;max-width:520px;text-align:center">
+      <p style="font-size:13.5px;color:var(--tm);line-height:1.6;margin-bottom:14px">
+        Antes de tu cita, ayúdanos con <strong style="color:var(--td)">unas preguntas más</strong> que tu médico necesita revisar para llegar preparado a tu consulta.<br><span style="color:var(--tl);font-size:12.5px">Toma menos de 2 minutos.</span>
+      </p>
+      <div style="max-width:440px;margin:0 auto">
+        <button class="btn" style="justify-content:center;width:100%" onclick="advance('s-conf-intro')">Continuar
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S25: CONFIRMACIÓN — Intro
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-intro">
+  <div class="hero">
+    <div class="hero-chip">Antes de tu cita</div>
+    <h1 class="hero-t">Ayúdanos a llegar <em>preparados</em></h1>
+    <p class="hero-s">Tu médico necesita estos datos antes de tu primera consulta. Es importante completarlos para aprovechar mejor el tiempo en sala.</p>
+  </div>
+  <div class="main">
+    <div class="info-box gold" style="margin-top:0">
+      💡 <strong>Tip:</strong> si no recuerdas algún dato (fecha exacta, padecimientos familiares, etc.) puedes responder lo que sepas — lo completaremos juntos en la consulta.
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"></div>
+    <button class="btn" onclick="advance('s-conf-fil1')">Empezar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S26: FILIACIÓN — Tus datos
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-fil1">
+  <div class="hero">
+    <div class="hero-chip">Filiación · Paso 1</div>
+    <h1 class="hero-t">Tus <em>datos básicos</em></h1>
+    <p class="hero-s">Necesitamos tu nombre, apellido y fecha de nacimiento exactos para tu expediente.</p>
+  </div>
+  <div class="main">
+    <div class="fld">
+      <div class="fld-lbl">Tu nombre</div>
+      <input type="text" class="fld-inp" id="fil1-name" placeholder="Tu nombre completo" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl">Tu apellido</div>
+      <input type="text" class="fld-inp" id="fil1-last" placeholder="Tus apellidos" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl" id="fil1-dob-lbl">Tu fecha de nacimiento</div>
+      <div class="date-grid" id="fil1-date"></div>
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"></div>
+    <button class="btn" onclick="advanceFil1()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S27: FILIACIÓN — Datos de pareja
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-fil2">
+  <div class="hero">
+    <div class="hero-chip">Filiación · Paso 2</div>
+    <h1 class="hero-t">Datos de <em>tu pareja</em></h1>
+    <p class="hero-s">Para abrir su expediente con los datos correctos.</p>
+  </div>
+  <div class="main">
+    <div class="fld">
+      <div class="fld-lbl">Nombre de tu pareja</div>
+      <input type="text" class="fld-inp" id="fil2-name" placeholder="Nombre completo de tu pareja" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl">Apellido de tu pareja</div>
+      <input type="text" class="fld-inp" id="fil2-last" placeholder="Apellidos de tu pareja" autocomplete="off">
+    </div>
+    <div class="fld">
+      <div class="fld-lbl" id="fil2-dob-lbl">Fecha de nacimiento de tu pareja</div>
+      <div class="date-grid" id="fil2-date"></div>
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"></div>
+    <button class="btn" onclick="advanceFil2()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S28: PADECIMIENTOS relacionados con infertilidad
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-pad">
+  <div class="hero">
+    <div class="hero-chip">Padecimientos</div>
+    <h1 class="hero-t">¿Tienes algún padecimiento <em>relacionado con la fertilidad?</em></h1>
+    <p class="hero-s">Selecciona todos los que apliquen. Si no aplica ninguno, puedes saltarlo.</p>
+  </div>
+  <div class="main">
+    <div class="multi" id="pad-list">
+      <div class="multi-opt" data-p="endometriosis" onclick="toggleConfMulti('padecimientos','endometriosis')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Endometriosis</span></div>
+      </div>
+      <div class="multi-opt" data-p="sop" onclick="toggleConfMulti('padecimientos','sop')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Ovario poliquístico (SOP)</span></div>
+      </div>
+      <div class="multi-opt" data-p="miomatosis" onclick="toggleConfMulti('padecimientos','miomatosis')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Miomatosis</span></div>
+      </div>
+      <div class="multi-opt" data-p="trompas" onclick="toggleConfMulti('padecimientos','trompas')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Trompas obstruidas</span></div>
+      </div>
+      <div class="multi-opt" data-p="otro" onclick="toggleConfMulti('padecimientos','otro')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Otro</span></div>
+      </div>
+    </div>
+    <div class="fld mt16" id="pad-otro-wrap" style="display:none">
+      <div class="fld-lbl">¿Cuál?</div>
+      <input type="text" class="fld-inp" id="pad-otro-txt" placeholder="Especifica el padecimiento" autocomplete="off">
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info" id="btm-pad-info"><strong>Selecciona los que apliquen, o continúa si ninguno aplica</strong></div>
+    <button class="btn" onclick="advanceConfPad()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S29: ANTECEDENTES PERSONALES (no relacionados con infertilidad)
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-ant">
+  <div class="hero">
+    <div class="hero-chip">Antecedentes personales</div>
+    <h1 class="hero-t">¿Tienes algún <em>antecedente médico</em> personal?</h1>
+    <p class="hero-s">Padecimientos no relacionados directamente con la fertilidad. Selecciona los que apliquen.</p>
+  </div>
+  <div class="main">
+    <div class="multi">
+      <div class="multi-opt" data-p="diabetes" onclick="toggleConfMulti('antecedentes','diabetes')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Diabetes</span></div>
+      </div>
+      <div class="multi-opt" data-p="hipertension" onclick="toggleConfMulti('antecedentes','hipertension')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Hipertensión</span></div>
+      </div>
+      <div class="multi-opt" data-p="cancer" onclick="toggleConfMulti('antecedentes','cancer')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Cáncer</span></div>
+      </div>
+      <div class="multi-opt" data-p="otro" onclick="toggleConfMulti('antecedentes','otro')">
+        <div class="multi-chk"><svg width="12" height="9" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="multi-body"><span>Otro</span></div>
+      </div>
+    </div>
+    <div class="fld mt16" id="ant-otro-wrap" style="display:none">
+      <div class="fld-lbl">¿Cuál?</div>
+      <input type="text" class="fld-inp" id="ant-otro-txt" placeholder="Especifica el antecedente" autocomplete="off">
+    </div>
+  </div>
+  <div class="btm vis">
+    <div class="btm-info"><strong>Selecciona los que apliquen, o continúa si ninguno aplica</strong></div>
+    <button class="btn" onclick="advanceConfAnt()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S30: ANTECEDENTES FAMILIARES
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-fam">
+  <div class="hero">
+    <div class="hero-chip">Antecedentes familiares</div>
+    <h1 class="hero-t">¿Tienes <em>antecedentes familiares</em> relevantes?</h1>
+    <p class="hero-s">Enfermedades hereditarias, infertilidad de familiares cercanos, condiciones genéticas, etc.</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setConfFam('yes')"><div class="mopt-ico">✅</div><div class="mopt-body"><span>Sí</span></div></div>
+      <div class="mopt" onclick="setConfFam('no')"><div class="mopt-ico">—</div><div class="mopt-body"><span>No</span></div></div>
+    </div>
+    <div class="fld mt16" id="fam-detail-wrap" style="display:none">
+      <div class="fld-lbl">Cuéntanos cuáles</div>
+      <textarea class="fld-ta" id="fam-detail" placeholder="Comparte la información que recuerdes…"></textarea>
+    </div>
+  </div>
+  <div class="btm" id="btm-fam">
+    <div class="btm-info"></div>
+    <button class="btn" onclick="advanceConfFam()">Continuar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S31: SEGUROS DE GASTOS MÉDICOS
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-seg">
+  <div class="hero">
+    <div class="hero-chip">Seguros médicos</div>
+    <h1 class="hero-t">¿Cuentas con algún <em>seguro de gastos médicos?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setConfSeg('publico')"><div class="mopt-ico">🏥</div><div class="mopt-body"><span>IMSS / ISSSTE / Similar</span></div></div>
+      <div class="mopt" onclick="setConfSeg('privado')"><div class="mopt-ico">🛡️</div><div class="mopt-body"><span>Seguro de gastos médicos mayores</span></div></div>
+      <div class="mopt" onclick="setConfSeg('ambos')"><div class="mopt-ico">🤝</div><div class="mopt-body"><span>Ambas</span></div></div>
+      <div class="mopt" onclick="setConfSeg('ninguno')"><div class="mopt-ico">—</div><div class="mopt-body"><span>Ninguna</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S32: VASECTOMÍA — pregunta inicial
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-vasec">
+  <div class="hero">
+    <div class="hero-chip">Vasectomía</div>
+    <h1 class="hero-t" id="t-vasec">¿Te has hecho la <em>vasectomía?</em></h1>
+    <p class="hero-s" id="s-vasec-s">Este dato nos sirve para preparar el caso con la información correcta.</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setConfVasec('yes')"><div class="mopt-ico">✅</div><div class="mopt-body"><span id="vasec-yes-lbl">Sí, ya me la realicé</span></div></div>
+      <div class="mopt" onclick="setConfVasec('no')"><div class="mopt-ico">—</div><div class="mopt-body"><span>No</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S33: VASECTOMÍA — muestra congelada
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-vasec-bank">
+  <div class="hero">
+    <div class="hero-chip">Vasectomía · seguimiento</div>
+    <h1 class="hero-t" id="t-vasec-bank">¿Cuentas con una <em>muestra de semen congelada?</em></h1>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setConfVasecBank('yes')"><div class="mopt-ico">❄️</div><div class="mopt-body"><span>Sí, tengo muestra congelada</span></div></div>
+      <div class="mopt" onclick="setConfVasecBank('no')"><div class="mopt-ico">—</div><div class="mopt-body"><span>No</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S34: VASECTOMÍA — qué buscas
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-vasec-buscas">
+  <div class="hero">
+    <div class="hero-chip">Vasectomía · seguimiento</div>
+    <h1 class="hero-t" id="t-vasec-buscas">¿Qué <em>estás buscando?</em></h1>
+    <p class="hero-s">Tenemos diferentes caminos según lo que prefieras.</p>
+  </div>
+  <div class="main">
+    <div class="mchoice">
+      <div class="mopt" onclick="setConfVasecBuscas('recanal')"><div class="mopt-ico">↩️</div><div class="mopt-body"><span>Recanalización</span><span class="mopt-sub">Revertir quirúrgicamente la vasectomía</span></div></div>
+      <div class="mopt" onclick="setConfVasecBuscas('muestra')"><div class="mopt-ico">🧪</div><div class="mopt-body"><span>Muestra o biopsia</span><span class="mopt-sub">Obtener espermatozoides para tratamiento</span></div></div>
+      <div class="mopt" onclick="setConfVasecBuscas('banco')"><div class="mopt-ico">🏦</div><div class="mopt-body"><span>Banco de semen</span><span class="mopt-sub">Usar semen de donante</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     S35: CONFIRMACIÓN COMPLETA
+═══════════════════════════════════════════════ -->
+<div class="screen" id="s-conf-done">
+  <div class="main mt24">
+    <div class="confirm-card fade-up">
+      <div class="confirm-ico">✨</div>
+      <h2 class="confirm-t">¡Listo, <em>nos vemos pronto!</em></h2>
+      <p class="confirm-s">Tu información ya llegó a tu médico. Llegará preparado a tu consulta para que el tiempo se aproveche en lo que más importa: tu caso.</p>
+      <div class="divider"></div>
+      <p style="font-size:13px;color:var(--tm);line-height:1.6">Te confirmamos tu cita por WhatsApp un día antes.</p>
+    </div>
   </div>
 </div>
 
@@ -1159,7 +1468,15 @@ const state = {
   camino: null, sucursal: null,
   name:'', email:'', phone:'', prefix:'+52',
   recom: null, conociste: null,
-  citaDay: null, citaSlot: null
+  citaDay: null, citaSlot: null, citaDate: null, citaTime: null, citaMode: null,
+  // Confirmación previa a consulta
+  filSelf: { name:'', last:'', d:'', m:'', y:'' },
+  filPartner: { name:'', last:'', d:'', m:'', y:'' },
+  padecimientos: new Set(), padOtro:'',
+  antecedentes: new Set(), antOtro:'',
+  familiares: null, familiaresDetail:'',
+  seguros: null,
+  vasectomia: null, vasecBank: null, vasecBuscas: null
 };
 
 // Pantallas en orden — para barra de progreso
@@ -2194,11 +2511,21 @@ function selectSlot(s){
   document.querySelectorAll('.slot').forEach(sl => sl.classList.remove('sel'));
   document.querySelector(`[data-slot="${s}"]`)?.classList.add('sel');
   document.getElementById('btm-widget').classList.add('vis');
+  // Calcular fecha, hora y modalidad real para mostrarlas después
+  const parts = s.split('-');
+  const i = parseInt(parts[0]); const k = parseInt(parts[1]); const mode = parts[2];
+  const today = new Date();
+  const d = new Date(today); d.setDate(today.getDate()+i);
+  const seed = (d.getDate()*13 + d.getMonth()*7) % 8;
+  const baseTimes = ['9:00','10:30','12:00','13:30','15:00','16:30','18:00'];
+  state.citaDate = d;
+  state.citaTime = baseTimes[(seed + k) % baseTimes.length];
+  state.citaMode = mode === 'on' ? 'online' : 'presencial';
   document.querySelector('#btm-widget .btm-info').innerHTML = '<strong>Horario seleccionado</strong>';
 }
 
 // ═══════════════════════════════════════════════
-// FINAL
+// FINAL — confirmación de cita
 // ═══════════════════════════════════════════════
 function buildFinal(){
   const pills = document.getElementById('final-pills');
@@ -2212,6 +2539,194 @@ function buildFinal(){
   }
   if(state.citaSlot) items.push('📅 Cita confirmada');
   pills.innerHTML = items.map(i => `<span class="pill">${i}</span>`).join('');
+  // Mostrar la cita real si la hay
+  const t = document.getElementById('final-t');
+  const s = document.getElementById('final-s');
+  if(state.citaDate){
+    const dows = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const dow = dows[state.citaDate.getDay()];
+    const dnum = state.citaDate.getDate();
+    const month = meses[state.citaDate.getMonth()];
+    const modeWord = state.citaMode === 'online' ? '📹 modalidad online' : '🏥 presencial en sucursal';
+    t.innerHTML = `¡Listo! Tu cita es el <em>${dow} ${dnum} de ${month}</em>`;
+    s.innerHTML = `A las <strong style="color:var(--navy)">${state.citaTime}</strong> · ${modeWord}. Te confirmamos por WhatsApp el día anterior.`;
+  } else {
+    t.innerHTML = '¡Listo, <em>nos vemos pronto!</em>';
+    s.textContent = 'Te confirmaremos los detalles por WhatsApp y email. Tu coordinadora ya está revisando tu caso.';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// FLUJO DE CONFIRMACIÓN (post-agendamiento, pre-consulta)
+// ═══════════════════════════════════════════════
+function isUSDateFormat(){
+  // US/Canadá → MM/DD/YYYY
+  return state.prefix === '+1' || state.prefix === '+1-CA' || state.country === 'US';
+}
+function renderDateInputs(containerId, prefix){
+  const usFmt = isUSDateFormat();
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  const cy = new Date().getFullYear();
+  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const day = `<select id="${prefix}-d"><option value="">Día</option>${[...Array(31)].map((_,i)=>`<option>${i+1}</option>`).join('')}</select>`;
+  const month = `<select id="${prefix}-m"><option value="">Mes</option>${meses.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select>`;
+  const year = `<select id="${prefix}-y"><option value="">Año</option>${[...Array(85)].map((_,i)=>`<option>${cy-i}</option>`).join('')}</select>`;
+  c.innerHTML = usFmt ? (month + day + year) : (day + month + year);
+  // Etiqueta del orden esperado
+  const lblId = prefix === 'fil1' ? 'fil1-dob-lbl' : 'fil2-dob-lbl';
+  const lbl = document.getElementById(lblId);
+  if(lbl) lbl.textContent = usFmt ? 'Fecha de nacimiento (mes / día / año)' : 'Fecha de nacimiento (día / mes / año)';
+}
+
+// Filiación: tus datos
+function buildFil1(){
+  renderDateInputs('fil1-date', 'fil1');
+  // Pre-llenar nombre si ya lo tenemos del registro
+  const split = (state.name || '').trim().split(' ');
+  if(split.length >= 2 && !document.getElementById('fil1-name').value){
+    document.getElementById('fil1-name').value = split[0];
+    document.getElementById('fil1-last').value = split.slice(1).join(' ');
+  } else if(state.name && !document.getElementById('fil1-name').value){
+    document.getElementById('fil1-name').value = state.name;
+  }
+}
+function advanceFil1(){
+  const n = document.getElementById('fil1-name').value.trim();
+  const l = document.getElementById('fil1-last').value.trim();
+  const d = document.getElementById('fil1-d').value;
+  const m = document.getElementById('fil1-m').value;
+  const y = document.getElementById('fil1-y').value;
+  if(!n){ showToast('⚠️ Falta tu nombre'); return; }
+  if(!l){ showToast('⚠️ Faltan tus apellidos'); return; }
+  if(!d || !m || !y){ showToast('⚠️ Completa tu fecha de nacimiento'); return; }
+  state.filSelf = { name:n, last:l, d, m, y };
+  if(state.hasPartner) advance('s-conf-fil2');
+  else advance('s-conf-pad');
+}
+function buildFil2(){
+  renderDateInputs('fil2-date', 'fil2');
+}
+function advanceFil2(){
+  const n = document.getElementById('fil2-name').value.trim();
+  const l = document.getElementById('fil2-last').value.trim();
+  const d = document.getElementById('fil2-d').value;
+  const m = document.getElementById('fil2-m').value;
+  const y = document.getElementById('fil2-y').value;
+  if(!n){ showToast('⚠️ Falta el nombre de tu pareja'); return; }
+  if(!l){ showToast('⚠️ Faltan los apellidos de tu pareja'); return; }
+  if(!d || !m || !y){ showToast('⚠️ Completa la fecha de nacimiento de tu pareja'); return; }
+  state.filPartner = { name:n, last:l, d, m, y };
+  advance('s-conf-pad');
+}
+
+// Multi-select genérico (padecimientos / antecedentes)
+function toggleConfMulti(key, value){
+  const set = state[key];
+  const card = window.event.currentTarget;
+  if(set.has(value)){ set.delete(value); card.classList.remove('sel'); }
+  else { set.add(value); card.classList.add('sel'); }
+  // Mostrar/ocultar input "otro"
+  if(value === 'otro'){
+    const wrapId = key === 'padecimientos' ? 'pad-otro-wrap' : 'ant-otro-wrap';
+    document.getElementById(wrapId).style.display = set.has('otro') ? 'flex' : 'none';
+  }
+}
+function advanceConfPad(){
+  state.padOtro = document.getElementById('pad-otro-txt')?.value.trim() || '';
+  advance('s-conf-ant');
+}
+function advanceConfAnt(){
+  state.antOtro = document.getElementById('ant-otro-txt')?.value.trim() || '';
+  advance('s-conf-fam');
+}
+
+function setConfFam(val){
+  state.familiares = val;
+  document.querySelectorAll('#s-conf-fam .mopt').forEach(m => m.classList.remove('sel'));
+  window.event.currentTarget.classList.add('sel');
+  const wrap = document.getElementById('fam-detail-wrap');
+  if(val === 'yes'){
+    wrap.style.display = 'flex';
+    document.getElementById('btm-fam').classList.add('vis');
+  } else {
+    wrap.style.display = 'none';
+    document.getElementById('btm-fam').classList.add('vis');
+  }
+}
+function advanceConfFam(){
+  if(!state.familiares){ showToast('⚠️ Elige una opción'); return; }
+  if(state.familiares === 'yes'){
+    state.familiaresDetail = document.getElementById('fam-detail').value.trim();
+  }
+  advance('s-conf-seg');
+}
+
+function setConfSeg(val){
+  state.seguros = val;
+  document.querySelectorAll('#s-conf-seg .mopt').forEach(m => m.classList.remove('sel'));
+  window.event.currentTarget.classList.add('sel');
+  setTimeout(() => {
+    // ¿Aplica vasectomía?
+    if(shouldAskVasec()) advance('s-conf-vasec');
+    else advance('s-conf-done');
+  }, 320);
+}
+
+function shouldAskVasec(){
+  // Pregunta al hombre directamente cuando es él quien responde
+  if(state.sex === 'male') return true;
+  // Mujer con pareja hombre (pareja heterosexual) — pregunta sobre la pareja
+  if(state.sex === 'female' && state.partner === 'male') return true;
+  return false;
+}
+function buildVasecScreen(){
+  const t = document.getElementById('t-vasec');
+  const s = document.getElementById('s-vasec-s');
+  const yesLbl = document.getElementById('vasec-yes-lbl');
+  if(state.sex === 'female' && state.partner === 'male'){
+    t.innerHTML = '¿Tu pareja se ha hecho la <em>vasectomía?</em>';
+    s.textContent = 'Este dato nos sirve para preparar el caso con la información correcta.';
+    yesLbl.textContent = 'Sí, ya se la realizó';
+  } else {
+    t.innerHTML = '¿Te has hecho la <em>vasectomía?</em>';
+    s.textContent = 'Este dato nos sirve para preparar el caso con la información correcta.';
+    yesLbl.textContent = 'Sí, ya me la realicé';
+  }
+}
+function setConfVasec(val){
+  state.vasectomia = val;
+  document.querySelectorAll('#s-conf-vasec .mopt').forEach(m => m.classList.remove('sel'));
+  window.event.currentTarget.classList.add('sel');
+  setTimeout(() => {
+    if(val === 'yes'){
+      // Adaptar copy de banco según quién responde
+      const bankT = document.getElementById('t-vasec-bank');
+      if(state.sex === 'female') bankT.innerHTML = '¿Cuenta con una <em>muestra de semen congelada?</em>';
+      else bankT.innerHTML = '¿Cuentas con una <em>muestra de semen congelada?</em>';
+      advance('s-conf-vasec-bank');
+    } else {
+      advance('s-conf-done');
+    }
+  }, 320);
+}
+function setConfVasecBank(val){
+  state.vasecBank = val;
+  document.querySelectorAll('#s-conf-vasec-bank .mopt').forEach(m => m.classList.remove('sel'));
+  window.event.currentTarget.classList.add('sel');
+  setTimeout(() => {
+    const buscT = document.getElementById('t-vasec-buscas');
+    if(state.sex === 'female') buscT.innerHTML = '¿Qué <em>están buscando?</em>';
+    else buscT.innerHTML = '¿Qué <em>estás buscando?</em>';
+    advance('s-conf-vasec-buscas');
+  }, 320);
+}
+function setConfVasecBuscas(val){
+  state.vasecBuscas = val;
+  document.querySelectorAll('#s-conf-vasec-buscas .mopt').forEach(m => m.classList.remove('sel'));
+  window.event.currentTarget.classList.add('sel');
+  setTimeout(() => advance('s-conf-done'), 320);
 }
 
 // ═══════════════════════════════════════════════
@@ -2239,6 +2754,9 @@ showScreen = function(id){
   if(id === 's-agenda') setupAgendaScreen();
   if(id === 's-widget') buildWidget();
   if(id === 's-final') buildFinal();
+  if(id === 's-conf-fil1') buildFil1();
+  if(id === 's-conf-fil2') buildFil2();
+  if(id === 's-conf-vasec') buildVasecScreen();
 };
 
 // ═══════════════════════════════════════════════

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cuadro de Mando — Paid Int / Google Search</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #273449;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #a78bfa;
+    --accent-3: #34d399;
+    --warn: #fbbf24;
+    --danger: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #0b1224 0%, #0f172a 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    color: var(--muted);
+    margin-top: 4px;
+    font-size: 14px;
+  }
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .chip strong { color: var(--accent); margin-left: 4px; }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .controls select {
+    background: var(--panel-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease;
+  }
+  .kpi:hover { transform: translateY(-2px); }
+  .kpi::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+  }
+  .kpi.agendas::before { background: var(--accent-2); }
+  .kpi.pvr::before { background: var(--accent-3); }
+  .kpi.conv::before { background: var(--warn); }
+  .kpi-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .kpi-detail {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .card h2 {
+    margin: 0 0 14px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .card .hint { font-size: 12px; color: var(--muted); }
+  .chart-wrap { position: relative; height: 320px; }
+  .chart-wrap.small { height: 260px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th, td {
+    padding: 8px 10px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    background: var(--panel-2);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    position: sticky;
+    top: 0;
+  }
+  tr.month-row {
+    background: rgba(56, 189, 248, 0.08);
+    font-weight: 700;
+  }
+  tr.total-row {
+    background: rgba(167, 139, 250, 0.12);
+    font-weight: 700;
+    color: var(--accent-2);
+  }
+  tr:hover:not(.total-row):not(.month-row) { background: rgba(255,255,255,0.03); }
+  .table-wrap { max-height: 420px; overflow-y: auto; }
+
+  .footer {
+    margin-top: 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Cuadro de Mando — Performance Diario</h1>
+    <div class="subtitle">Leads, Agendas y PVR · Tabla dinámica Hoja 1</div>
+  </div>
+  <div class="filters">
+    <div class="chip">Campaign <strong>paid_int</strong></div>
+    <div class="chip">Medium <strong>google_search</strong></div>
+  </div>
+</header>
+
+<div class="controls">
+  <label>Mes:
+    <select id="monthFilter">
+      <option value="all">Todos</option>
+      <option value="abr">Abril</option>
+      <option value="may">Mayo</option>
+    </select>
+  </label>
+  <label>Métricas visibles:
+    <select id="metricFilter">
+      <option value="all">Leads, Agendas y PVR</option>
+      <option value="leads">Solo Leads</option>
+      <option value="agendas">Solo Agendas</option>
+      <option value="pvr">Solo PVR</option>
+    </select>
+  </label>
+</div>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Tendencia diaria</h2>
+    <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Comparativo mensual</h2>
+    <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+  </div>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Embudo de conversión</h2>
+    <div class="chart-wrap small"><canvas id="funnelChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h2>Tasas de conversión por mes</h2>
+    <div class="chart-wrap small"><canvas id="convChart"></canvas></div>
+  </div>
+</section>
+
+<section class="card" style="margin-top:16px;">
+  <h2>Detalle diario</h2>
+  <div class="table-wrap">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Leads</th>
+          <th>Agendas</th>
+          <th>PVR</th>
+          <th>% Agendas/Leads</th>
+          <th>% PVR/Agendas</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="footer">Fuente: base.xlsx · Hoja1 · Generado automáticamente</div>
+
+<script>
+const RAW = [
+  { date: "23-abr", month: "abr", leads: 1,  agendas: 0, pvr: 0 },
+  { date: "24-abr", month: "abr", leads: 8,  agendas: 1, pvr: 1 },
+  { date: "25-abr", month: "abr", leads: 5,  agendas: 1, pvr: 1 },
+  { date: "26-abr", month: "abr", leads: 8,  agendas: 1, pvr: 1 },
+  { date: "27-abr", month: "abr", leads: 4,  agendas: 1, pvr: 1 },
+  { date: "28-abr", month: "abr", leads: 11, agendas: 2, pvr: 2 },
+  { date: "29-abr", month: "abr", leads: 10, agendas: 2, pvr: 0 },
+  { date: "30-abr", month: "abr", leads: 7,  agendas: 0, pvr: 0 },
+  { date: "01-may", month: "may", leads: 8,  agendas: 1, pvr: 1 },
+  { date: "02-may", month: "may", leads: 3,  agendas: 0, pvr: 0 },
+  { date: "03-may", month: "may", leads: 5,  agendas: 1, pvr: 1 },
+  { date: "04-may", month: "may", leads: 6,  agendas: 2, pvr: 2 },
+  { date: "05-may", month: "may", leads: 7,  agendas: 1, pvr: 1 },
+  { date: "06-may", month: "may", leads: 12, agendas: 2, pvr: 2 },
+  { date: "07-may", month: "may", leads: 13, agendas: 5, pvr: 4 },
+  { date: "08-may", month: "may", leads: 11, agendas: 1, pvr: 1 },
+  { date: "09-may", month: "may", leads: 14, agendas: 0, pvr: 0 },
+  { date: "10-may", month: "may", leads: 16, agendas: 0, pvr: 0 },
+  { date: "11-may", month: "may", leads: 16, agendas: 2, pvr: 2 },
+  { date: "12-may", month: "may", leads: 17, agendas: 2, pvr: 1 },
+  { date: "13-may", month: "may", leads: 9,  agendas: 0, pvr: 0 },
+];
+
+const COLORS = {
+  leads:   { line: "#38bdf8", fill: "rgba(56,189,248,0.18)" },
+  agendas: { line: "#a78bfa", fill: "rgba(167,139,250,0.18)" },
+  pvr:     { line: "#34d399", fill: "rgba(52,211,153,0.18)" },
+};
+
+Chart.defaults.color = "#94a3b8";
+Chart.defaults.borderColor = "#334155";
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif";
+
+let lineChart, barChart, funnelChart, convChart;
+
+function fmt(n) { return n.toLocaleString("es-ES"); }
+function pct(num, den) { return den > 0 ? (num/den*100).toFixed(1) + "%" : "—"; }
+
+function renderKPIs(rows) {
+  const leads = rows.reduce((a,r)=>a+r.leads,0);
+  const agendas = rows.reduce((a,r)=>a+r.agendas,0);
+  const pvr = rows.reduce((a,r)=>a+r.pvr,0);
+  const convA = pct(agendas, leads);
+  const convP = pct(pvr, agendas);
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi"><div class="kpi-label">Leads</div><div class="kpi-value">${fmt(leads)}</div><div class="kpi-detail">${rows.length} días</div></div>
+    <div class="kpi agendas"><div class="kpi-label">Agendas</div><div class="kpi-value">${fmt(agendas)}</div><div class="kpi-detail">${convA} de leads</div></div>
+    <div class="kpi pvr"><div class="kpi-label">PVR</div><div class="kpi-value">${fmt(pvr)}</div><div class="kpi-detail">${convP} de agendas</div></div>
+    <div class="kpi conv"><div class="kpi-label">Lead → PVR</div><div class="kpi-value">${pct(pvr, leads)}</div><div class="kpi-detail">Conversión global</div></div>
+  `;
+}
+
+function getVisibleMetrics() {
+  const v = document.getElementById("metricFilter").value;
+  if (v === "all") return ["leads","agendas","pvr"];
+  return [v];
+}
+
+function buildLine(rows) {
+  const labels = rows.map(r=>r.date);
+  const metrics = getVisibleMetrics();
+  const datasets = metrics.map(m => ({
+    label: m.charAt(0).toUpperCase()+m.slice(1),
+    data: rows.map(r=>r[m]),
+    borderColor: COLORS[m].line,
+    backgroundColor: COLORS[m].fill,
+    fill: true,
+    tension: 0.35,
+    borderWidth: 2,
+    pointRadius: 3,
+    pointHoverRadius: 5,
+  }));
+  if (lineChart) lineChart.destroy();
+  lineChart = new Chart(document.getElementById("lineChart"), {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: { legend: { position: "bottom" } },
+      scales: {
+        x: { grid: { color: "rgba(255,255,255,0.04)" } },
+        y: { beginAtZero: true, grid: { color: "rgba(255,255,255,0.06)" } },
+      },
+    },
+  });
+}
+
+function buildBar(rows) {
+  const months = [...new Set(rows.map(r=>r.month))];
+  const labelMap = { abr: "Abril", may: "Mayo" };
+  const agg = m => rows.filter(r=>r.month===m).reduce((a,r)=>({
+    leads: a.leads+r.leads, agendas: a.agendas+r.agendas, pvr: a.pvr+r.pvr
+  }), {leads:0,agendas:0,pvr:0});
+  const data = months.map(agg);
+  const metrics = getVisibleMetrics();
+  const datasets = metrics.map(m => ({
+    label: m.charAt(0).toUpperCase()+m.slice(1),
+    data: data.map(d=>d[m]),
+    backgroundColor: COLORS[m].line,
+    borderRadius: 6,
+  }));
+  if (barChart) barChart.destroy();
+  barChart = new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: { labels: months.map(m=>labelMap[m]||m), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom" } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, grid: { color: "rgba(255,255,255,0.06)" } },
+      },
+    },
+  });
+}
+
+function buildFunnel(rows) {
+  const leads = rows.reduce((a,r)=>a+r.leads,0);
+  const agendas = rows.reduce((a,r)=>a+r.agendas,0);
+  const pvr = rows.reduce((a,r)=>a+r.pvr,0);
+  if (funnelChart) funnelChart.destroy();
+  funnelChart = new Chart(document.getElementById("funnelChart"), {
+    type: "bar",
+    data: {
+      labels: ["Leads", "Agendas", "PVR"],
+      datasets: [{
+        label: "Volumen",
+        data: [leads, agendas, pvr],
+        backgroundColor: [COLORS.leads.line, COLORS.agendas.line, COLORS.pvr.line],
+        borderRadius: 6,
+      }],
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const v = ctx.parsed.x;
+              const base = leads;
+              return ` ${fmt(v)}  (${base>0?(v/base*100).toFixed(1):0}% de leads)`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: "rgba(255,255,255,0.06)" } },
+        y: { grid: { display: false } },
+      },
+    },
+  });
+}
+
+function buildConv(rows) {
+  const months = [...new Set(rows.map(r=>r.month))];
+  const labelMap = { abr: "Abril", may: "Mayo" };
+  const ratios = months.map(m => {
+    const r = rows.filter(x=>x.month===m).reduce((a,x)=>({
+      leads:a.leads+x.leads, agendas:a.agendas+x.agendas, pvr:a.pvr+x.pvr
+    }),{leads:0,agendas:0,pvr:0});
+    return {
+      ag: r.leads>0 ? r.agendas/r.leads*100 : 0,
+      pv: r.agendas>0 ? r.pvr/r.agendas*100 : 0,
+      lp: r.leads>0 ? r.pvr/r.leads*100 : 0,
+    };
+  });
+  if (convChart) convChart.destroy();
+  convChart = new Chart(document.getElementById("convChart"), {
+    type: "bar",
+    data: {
+      labels: months.map(m=>labelMap[m]||m),
+      datasets: [
+        { label: "Agendas/Leads %", data: ratios.map(r=>+r.ag.toFixed(1)), backgroundColor: COLORS.agendas.line, borderRadius: 6 },
+        { label: "PVR/Agendas %",   data: ratios.map(r=>+r.pv.toFixed(1)), backgroundColor: COLORS.pvr.line,     borderRadius: 6 },
+        { label: "PVR/Leads %",     data: ratios.map(r=>+r.lp.toFixed(1)), backgroundColor: "#fbbf24",           borderRadius: 6 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: "bottom" },
+        tooltip: { callbacks: { label: (ctx)=> ` ${ctx.dataset.label}: ${ctx.parsed.y}%` } },
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, ticks: { callback: v=>v+"%" }, grid: { color: "rgba(255,255,255,0.06)" } },
+      },
+    },
+  });
+}
+
+function buildTable(rows) {
+  const tbody = document.querySelector("#dataTable tbody");
+  const monthsInData = [...new Set(rows.map(r=>r.month))];
+  const labelMap = { abr: "Abril", may: "Mayo" };
+  let html = "";
+  monthsInData.forEach(m => {
+    const monthRows = rows.filter(r=>r.month===m);
+    const tot = monthRows.reduce((a,r)=>({
+      leads:a.leads+r.leads, agendas:a.agendas+r.agendas, pvr:a.pvr+r.pvr
+    }),{leads:0,agendas:0,pvr:0});
+    html += `<tr class="month-row">
+      <td>${labelMap[m]||m}</td>
+      <td>${fmt(tot.leads)}</td>
+      <td>${fmt(tot.agendas)}</td>
+      <td>${fmt(tot.pvr)}</td>
+      <td>${pct(tot.agendas, tot.leads)}</td>
+      <td>${pct(tot.pvr, tot.agendas)}</td>
+    </tr>`;
+    monthRows.forEach(r => {
+      html += `<tr>
+        <td>${r.date}</td>
+        <td>${fmt(r.leads)}</td>
+        <td>${fmt(r.agendas)}</td>
+        <td>${fmt(r.pvr)}</td>
+        <td>${pct(r.agendas, r.leads)}</td>
+        <td>${pct(r.pvr, r.agendas)}</td>
+      </tr>`;
+    });
+  });
+  const grand = rows.reduce((a,r)=>({
+    leads:a.leads+r.leads, agendas:a.agendas+r.agendas, pvr:a.pvr+r.pvr
+  }),{leads:0,agendas:0,pvr:0});
+  html += `<tr class="total-row">
+    <td>Total general</td>
+    <td>${fmt(grand.leads)}</td>
+    <td>${fmt(grand.agendas)}</td>
+    <td>${fmt(grand.pvr)}</td>
+    <td>${pct(grand.agendas, grand.leads)}</td>
+    <td>${pct(grand.pvr, grand.agendas)}</td>
+  </tr>`;
+  tbody.innerHTML = html;
+}
+
+function render() {
+  const month = document.getElementById("monthFilter").value;
+  const rows = month === "all" ? RAW : RAW.filter(r=>r.month===month);
+  renderKPIs(rows);
+  buildLine(rows);
+  buildBar(rows);
+  buildFunnel(rows);
+  buildConv(rows);
+  buildTable(rows);
+}
+
+document.getElementById("monthFilter").addEventListener("change", render);
+document.getElementById("metricFilter").addEventListener("change", render);
+render();
+</script>
+</body>
+</html>
